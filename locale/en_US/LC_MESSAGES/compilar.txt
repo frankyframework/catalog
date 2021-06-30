@@ -1,0 +1,3 @@
+msgfmt catalog.po --output-file=catalog.mo
+Variables: _catalog("id")
+Cadenas: <?= _catalog('id') ?>

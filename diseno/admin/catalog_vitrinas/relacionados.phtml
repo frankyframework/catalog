@@ -1,0 +1,83 @@
+<div class="content">
+<?php if(!empty($callback)): ?>
+    <div class="w-xxxx-12 cont_header_panel">
+           
+        </div>
+                <?php endif; ?>
+        <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin"><?php echo $title_grid; ?></h1>
+        
+        <div  class="w-xxxx-12 cont_productos_relacionados">
+            
+        </div>
+ 
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="_wrapp_form_serch">
+               
+                <?php echo $MyFiltrosForm->openTag(); ?>
+                <?php echo $MyFiltrosForm->getAllRow(); ?>
+                <?php echo $MyFiltrosForm->endTag(); ?>
+                
+            </div>
+        </div>
+        <h1 class="titulo_seccion_admin">Otros productos</h1>
+        <div  class="w-xxxx-12 cont_gral_admin <?php echo $class_grid; ?>">
+            <div >
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-12 contenedor_titulo_columnas">
+                        <?php $i = 1; ?>
+                        <?php foreach($titulo_columnas_grid as $k =>$v): ?>
+                        <div class="<?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>"><?php echo makeHTMLOrder( $k, $v);  ?></div>
+                        <?php endforeach; ?>
+                        <div class="w-xxxx-1">
+                              <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                                  Relacionar
+                              <?php endif; ?>
+                        </div>
+                      
+                    </div>
+                    <div class="contenedor_columnas_info"  >
+                    <div class="w-xxxx-12 contenedor_columnas"  >
+                        <?php $i = 1; ?>
+                        <?php foreach($value_columnas_grid as $k): ?>
+                        <div class="{{_data.thisClass}}   <?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>">{{_data.<?php echo $k;  ?>}}</div>
+                        <?php endforeach; ?>
+                        <div class='w-xxxx-2 {{_data.thisClass}}'>
+                            <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                            <input type="checkbox" name="relacionado[]" value="{{_data.id}}" />
+                            <?php endif; ?>
+                        </div>
+                       
+                    </div>
+                    </div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="no_hay_datos" ><?php echo $error_grid; ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <?php echo render("admin/widget.paginar.phtml"); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script >
+
+$(".contenedor_columnas_info").htmlDataDum(<?php echo json_encode($lista_admin_data); ?>,".no_hay_datos");
+
+$(window).load(function(){
+    $("input[name='relacionado[]']").change(function(){
+
+        if($(this).is(':checked'))
+        {
+            ajax_products_agregarProductoRelacionadoVitrina('<?=$id?>',$(this).attr('value'))
+        }
+        else{
+            ajax_products_quitarProductoRelacionadoVitrina('<?=$id?>',$(this).attr('value'))
+        }
+      
+    });
+});
+ajax_products_cargarProductosRelacionadosVitrina('<?=$id?>');
+</script>

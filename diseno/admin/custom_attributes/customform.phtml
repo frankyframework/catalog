@@ -1,0 +1,37 @@
+<?php
+      if(!empty($custom_attr['custom_imputs']))
+      {
+
+        foreach($custom_attr['custom_imputs'] as $key => $data_attrs):
+        
+        ?>
+          <?=$adminForm->getRow($data_attrs['name'])?>
+          <?php if($data_attrs['type'] == 'file' && !empty($custom_attr['custom_values'][$data_attrs['name']])): ?>
+              <p>
+              <input type="checkbox" name="file__<?=$data_attrs['name']?>" checked="checked" value="1" />
+              <a href="<?=$MyConfigure->getUploadDir().$custom_attr['custom_values'][$data_attrs['name']]?>" target="_blank"><?=$MyConfigure->getUploadDir().$custom_attr['custom_values'][$data_attrs['name']]?></a>
+              
+              </p>
+          <?php endif; ?>
+
+
+          <?php if($data_attrs['type'] == 'multifile'): ?>
+            <?php $multifile = $custom_attr['custom_values'][$data_attrs['name']];?>
+            <?php if(!empty($multifile)): ?>
+              <?php foreach($multifile as $file): ?>
+              <p>
+              <input type="checkbox" name="file__<?=$data_attrs['name']?>" checked="checked" value="<?=$file?>" />
+              <a href="<?=$MyConfigure->getUploadDir().$file?>" target="_blank"><?=$MyConfigure->getUploadDir().$file?></a>
+              </p>
+              <?php endforeach; ?>
+              <?php endif; ?>
+          <?php endif; ?>
+
+
+
+          <label id="<?=$data_attrs['name']?>-error" class="error" for="<?=$data_attrs['name']?>" style="display:none;"></label>
+          <?php 
+          endforeach; 
+      }    
+?>
+     

@@ -1,0 +1,33 @@
+{
+    "schema" :
+    {
+        "attributes":[
+            {
+                "name":"id_parent",
+                "type":"int",
+                "length":11,
+                "null":0
+            },
+            {
+                "name":"id_product",
+                "type":"int",
+                "length":11,
+                "null":0
+            },
+            {
+                "name":"id_attribute",
+                "type":"int",
+                "length":11,
+                "null":0
+            }
+
+        ],
+        "config":{
+            "primary":["id_product","id_parent"],
+            "engine":"MyISAM"
+            
+        }
+    }
+    ,
+    "data":[]
+}

@@ -1,0 +1,77 @@
+<?php $class_btn = "_primary";?>
+<?php if($MyAccessList->MeDasChancePasar(CARRITO_ECOMMERCE) && $saleable == 1 && $in_stock == 1): ?>
+
+
+<form name="addCartForm" action="">
+  <div class='control_qty'>
+    <h3>QTY:</h3>
+      <div class='_cont_quantity'>
+          <a class="menos_qty" data-id='' href="#"><i class='icon icon-c-eliminar'></i></a>
+          <input type="text" data-id='' value="<?=$min_qty; ?>" name="qty"  class="required" />
+          <a class="mas_qty"  data-id=''  href="#"><i class='icon icon-c-agregar'></i></a>
+      </div>
+      <label id="qty-error" class="error" for="qty" style="display:none;"></label>
+  </div>
+
+
+
+   <a class="_btn <?=$class_btn?> _btn_add" href="javascript:void(0)" onclick="validateAddCart();"> Agregar a carrito</a>
+</form>
+
+<script >
+
+var stock_infinito = <?= $stock_infinito?>;
+$(document).ready(function(){
+    $("a.menos_qty").click(function(e){
+        e.preventDefault();
+        var qty = parseInt($("input[name=qty]").val());
+        if(qty > <?=$min_qty?>)
+        {
+            $("input[name=qty]").val(qty-1);
+        }
+    });
+    $("a.mas_qty").click(function(e){
+        e.preventDefault();
+        var qty = parseInt($("input[name=qty]").val());
+        if(qty < <?=$stock?> || stock_infinito == 1)
+        {
+            $("input[name=qty]").val(qty+1);
+        }
+
+    });
+
+});
+function validateAddCart()
+{
+    if($('form[name=addCartForm]').valid())
+    {
+        catalog_addProductoCarrito('<?php echo $id_producto; ?>',$('input[name=qty]').val());
+    }
+
+}
+
+</script>
+<?php $class_btn = "_secondary";?>
+<?php endif ;?>
+    <a class="_btn <?=$class_btn?> _btn_add link_form_info_product" href="javascript:void(0)" >Solicitar información</a>
+    <div class='w-xxxx-12 content_form_info_product' style='display:none;' >
+    <?php echo $contactanosForm->openTag(); ?>
+    <?php echo $contactanosForm->getAllRow(); ?>
+    <?php echo $contactanosForm->endTag(); ?>
+    </div>
+    <script >
+    $("textarea[name=comentarios]").maximaLongitud(1000,"contador_opina");
+    $('.link_form_info_product').click(function(){
+        $('.content_form_info_product').slideToggle();
+    });
+    $(window).load(function(){
+    $("form[name=frmContacto]").validate({
+                    submitHandler: function(form)
+                    {
+                        $("form[name=frmContacto]").find("input[type=submit]").attr('disabled',true);
+                        return true;
+
+                    }
+                });
+    });
+    </script>

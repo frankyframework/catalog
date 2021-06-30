@@ -1,0 +1,8 @@
+<div class="w-xxxx-12">
+    <h2><span>Productos relacionados</span></h2>
+</div>
+<div class="w-xxxx-12 cont_widget_catalog_results _vitrinas catalog_carrucel_productos_relacionados">
+<?php foreach($catalogo_relacionados as $data): ?>
+    <?=render('products/card.phtml',['data' => $data]);?>
+<?php endforeach ;?>
+</div>

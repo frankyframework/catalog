@@ -1,0 +1,262 @@
+<div class="w-xxxx-12">
+    <div class="content">
+        <h1 class="align_center"></h1>
+        <h3 class="align_center"></h3>
+        <?php echo $adminForm->openTag(); ?>
+        <?php  echo $adminForm->get("callback"); ?>
+
+
+        <?php if(!empty($id)): ?>
+        <?php  echo $adminForm->get("id"); ?>
+          <?php endif; ?>
+        <?php  echo $adminForm->getRow("name"); ?>
+        <?php  echo $adminForm->getRow("sku"); ?>
+        <div class="form-group">
+          <h3>Categorias</h3>
+         
+        <?php if(!empty($categorias)): ?>
+            <ul>
+            <?php foreach($categorias as $cat_id => $cat_label): ?>
+            <li>
+                <label ><input type="checkbox" name="category[]" value="<?=$cat_id;?>" <?=(in_array($cat_id,$data_category) ? 'checked="checked"' : '')?> class="required" /><?=$cat_label;?></label>
+                <?php if(!empty($subcategorias[$cat_id])): ?>
+                    <ul <?=(in_array($cat_id,$data_category) ? '' : 'style="display:none;"')?>>
+                    <?php foreach($subcategorias[$cat_id] as $subcat_id => $subcat_label): ?>
+                    <li> <label ><input type="checkbox" name="subcategory[]" value="<?=$subcat_id;?>"  <?=(in_array($subcat_id,$data_subcategory) ? 'checked="checked"' : '')?>  class="required" /><?=$subcat_label;?></label><li>
+                    <?php endforeach; ?>
+                    </ul>
+            <?php endif; ?>
+            <li>
+            <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+        <label id="category[]-error" class="error" for="category[]" style="display:none;"></label>
+        <label id="subcategory[]-error" class="error" for="subcategory[]" style="display:none;"></label>
+        </div>
+     
+
+        <?php  echo $adminForm->getRow("description"); ?>
+
+        <?php  echo $adminForm->getRow("stock"); ?>
+        <?php  echo $adminForm->getRow("in_stock"); ?>
+        <?php  echo $adminForm->getRow("stock_infinito"); ?>
+        <?php  echo $adminForm->getRow("saleable"); ?>
+        <?php  echo $adminForm->getRow("visible_in_search"); ?>
+        <?php  echo $adminForm->getRow("min_qty"); ?>
+        <div class="form-group">
+          <h3>Imagenes del producto</h3>
+          <div class="descripcion_fotos">
+              <div id='imageloadstatus' class="w-xxxx-12">
+
+              <div class="progress">
+                      <div id="progressbar" style="display:none;"><div class="progress-label">Loading...</div></div>
+               </div>
+              </div>
+              <div id='imageloadbutton' class="w-xxxx-12">
+              <a href="javascript:void(0);" onclick="$('#photoimg').click()">Click para subir imágenes (Hasta 12)</a>
+              <?php echo $adminForm->get("images[]"); ?>
+              </div>
+
+              <div class=" w-xxxx-12 ">
+                  <div class="w-xxxx-12 cont_100_p interiores one_column">
+
+                      <div id="galeria_clientes">
+
+                      <div class="ver_cabecera"></div>
+
+                      <div  id="cont_fotos" class="fondo_galeria"><?php echo $galeria_frm; ?></div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </div>
+        <?php  echo $adminForm->getRow("price"); ?>
+        <?php  echo $adminForm->getRow("iva"); ?>
+        <?php  echo $adminForm->getRow("incluye_iva"); ?>
+        
+        <div id="content_customattr"></div>
+
+        <div class="form-group"><h3>SEO</h3></div>
+        <?php echo $adminForm->getRow('url_key'); ?>
+        <?php echo $adminForm->getRow('meta_title'); ?>
+        <?php echo $adminForm->getRow('meta_description'); ?>
+        <?php echo $adminForm->getRow('meta_keyword'); ?>
+
+        <?php  //echo $adminForm->getRow("videos"); ?>
+
+        <?php  echo $adminForm->getRow("guardar"); ?>
+
+        <?php echo $adminForm->endTag(); ?>
+
+    </div>
+
+  
+
+</div>
+
+
+
+<script >
+$(document).ready(function()
+{
+  $( "#frmproduct" ).validate();
+  $('textarea[name=meta_keyword]').tagsInput({width:'auto'});
+  $('input[name=videos]').tagsInput({width:'auto'});
+
+
+  $('input[name="category[]"]').change(function(){
+      if($(this).is(':checked'))
+      {
+        
+        $(this).parents('li').children('ul').show();
+      }
+      else{
+        $(this).parents('li').children('ul').hide().find('input[type=checkbox]').prop('checked',false);
+      }
+
+      ajax_getCatalogCustomAttrFrm('<?= $id ?>');
+  });
+  $('input[name="subcategory[]"]').change(function(){
+      ajax_getCatalogCustomAttrFrm('<?= $id ?>');
+  });
+  ajax_getCatalogCustomAttrFrm('<?= $id ?>');
+});
+</script>
+<script>
+function uploadMultiGaleria(e)
+{
+    var files;
+    if(e.originalEvent.dataTransfer) {
+      files = e.originalEvent.dataTransfer.files;
+    } else if(e.target) {
+      files = e.originalEvent.target.files;
+    }
+
+    var fd = new FormData();
+
+
+    for (var i = 0; i < files.length; i++) { // Loop all files
+            fd.append('images[]', files[i]); // Create an append() method, one for each file dropped
+    }
+
+     var progressbar = $( "#progressbar" ),  progressLabel = $( ".progress-label" );
+    progressbar.progressbar({
+        value: false,
+        change: function() {
+          progressLabel.text( progressbar.progressbar( "value" ) + "%" );
+        },
+        complete: function() {
+          progressLabel.text( "Completo!" );
+        }
+    });
+
+    $.ajax({ // JQuery Ajax
+            type: 'POST',
+            url: "/admin/catalog_products/upload.php", // URL to the PHP file which will insert new value in the database
+            data:fd, // We send the data string
+            processData: false,
+            contentType: false,
+            mimeType:"multipart/form-data",
+            beforeSend:function(){
+                progressbar.show();
+                $("#imageloadbutton").hide();
+            },
+            success:function(response){
+
+               progressbar.show();
+
+                $("#imageloadbutton").show();
+
+
+                $("#photoimg").val('');
+
+                var respuesta = null;
+
+                if(response != "null")
+                {
+
+
+                  $(".no_hay_datos").hide();
+
+                  respuesta = JSON.parse(response);
+                  for(var  i=0; i < respuesta['img'].length; i++)
+                  {
+                      $("#cont_fotos").append(respuesta['img'][i]["html"]);
+                  }
+                  sortGaleria();
+                }
+
+
+            },
+            error:function(){
+
+                $("#imageloadbutton").show();
+            },
+            xhr: function () {
+                var xhr = $.ajaxSettings.xhr();
+                if(xhr.upload){
+                xhr.upload.addEventListener("progress", function (e) {
+                            if (e.lengthComputable) {
+                                    var pourc = Math.round(e.loaded / e.total * 100);
+                                     progressbar.progressbar( "value", pourc );
+                            }
+
+
+                    } , false);
+                }
+                return xhr;
+            },
+
+    });
+
+}
+$(document).ready(function()
+{
+    $('#photoimg').on('change', function(e)
+    {
+        uploadMultiGaleria(e);
+       
+    });
+    sortGaleria();
+
+});
+
+
+var sortGaleria = function() {    
+      $( "#cont_fotos" ).sortable({
+          connectWith: ".fondo_galeria",
+          update: function(event, ui){
+              var newOrder = $(this).sortable('toArray').toString();
+              setOrdenImagesProducts('<?php echo $album; ?>',newOrder);  
+          }  ,
+          placeholder: 'ui-state-default'
+      });
+      $( "#cont_fotos" ).disableSelection();
+    }
+    
+</script>
+<script >
+
+
+$(window).load(function(){
+  tinymce.init({
+    selector: '.editor_html',
+    height: 500,
+    menubar: false,
+    codesample_dialog_width: '600',
+    codesample_dialog_height: '400',
+    plugins: [
+      'advlist autolink lists link charmap print preview anchor textcolor',
+      'searchreplace visualblocks code fullscreen',
+      'insertdatetime media table contextmenu paste code help '
+    ],
+    toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify table | bullist numlist outdent indent | removeformat | code | help',
+    content_css: [
+      '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+      '//www.tinymce.com/css/codepen.min.css'],
+   relative_urls: true,
+  remove_script_host: false,
+  
+  });
+});
+</script>

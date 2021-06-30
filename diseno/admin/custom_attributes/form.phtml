@@ -1,0 +1,163 @@
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
+    <div class="w-xxxx-12">
+        <div class="w-xxxx-5 m-r-xxxx-1 change_float_right">
+            <h2><?=$title_form?></h2>
+            <ul class="_ul_default">
+                <li>Aqui descripcion</li>
+            </ul>
+        </div>
+         <div class="w-xxxx-4 m-l-xxxx-1 change_float_left">
+        <?php echo $adminForm->openTag(); ?>
+        <?php echo $adminForm->get('callback'); ?>
+        <?php echo $adminForm->get('type_option'); ?>
+        <?php if(!empty($id)): ?>
+        <?php echo $adminForm->get('id'); ?>
+        <?php endif; ?>
+
+        <?php echo $adminForm->getRow('name'); ?>
+        <?php echo $adminForm->getRow('label'); ?>
+
+        <?php echo $adminForm->getRow('type'); ?>
+             
+             <div class="w-xxxx-12 taps" style="display:none;">
+                <div class="w-xxxx-6">
+                <h3><a href="#options_attr" class="select_tap">Opciones</a></h3>
+                </div>
+                <div class="w-xxxx-6">
+                <h3><a href="#class_attr"  class="select_tap">Clase de datos</a></h3>
+                </div>   
+                
+                <div class="w-xxxx-12 content_tab" id="options_attr">
+                    <div class="w-xxxx-12" >
+                    <div class="w-xxxx-6">Valor</div>
+                    <div class="w-xxxx-6">Etiqueta</div>
+                    </div>
+                    
+                    <div class="w-xxxx-12 option_list">
+                        <div class="w-xxxx-12 opt_1" >
+                            <div class="w-xxxx-6"><?php echo $adminForm->get('option_value[]'); ?></div>
+                            <div class="w-xxxx-6"><?php echo $adminForm->get('option_label[]'); ?></div>
+                        </div>
+                        <div class="w-xxxx-12 opt_2" >
+                            <div class="w-xxxx-6"><?php echo $adminForm->get('option_value[]'); ?></div>
+                            <div class="w-xxxx-6"><?php echo $adminForm->get('option_label[]'); ?></div>
+                        </div>
+                        
+                       
+                    </div>   
+                    <div class="w-xxxx-12" >
+                        <a href="#" class="add_option">Agregar opcion</a>
+                    </div>
+                </div>
+                 
+                 <div class="w-xxxx-12 content_tab" id="class_attr" style="display:none;">
+                    <?php echo $adminForm->getRow('source'); ?>
+                </div>
+             </div>     
+        
+        <?php echo $adminForm->getRow('required'); ?>
+
+        <div class="form-group">
+          <h3>Categorias</h3>
+         
+        <?php if(!empty($categorias)): ?>
+            <ul>
+            <?php foreach($categorias as $cat_id => $cat_label): ?>
+            <li>
+                <label ><input type="checkbox" name="category[]" value="<?=$cat_id;?>" <?=(in_array($cat_id,$data_category) ? 'checked="checked"' : '')?> class="required" /><?=$cat_label;?></label>
+                <?php if(!empty($subcategorias[$cat_id])): ?>
+                    <ul <?=(in_array($cat_id,$data_category) ? '' : 'style="display:none;"')?>>
+                    <?php foreach($subcategorias[$cat_id] as $subcat_id => $subcat_label): ?>
+                    <li> <label ><input type="checkbox" name="subcategory[]" value="<?=$subcat_id;?>"  <?=(in_array($subcat_id,$data_subcategory) ? 'checked="checked"' : '')?>  class="required" /><?=$subcat_label;?></label><li>
+                    <?php endforeach; ?>
+                    </ul>
+            <?php endif; ?>
+            <li>
+            <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+        <label id="category[]-error" class="error" for="category[]" style="display:none;"></label>
+        <label id="subcategory[]-error" class="error" for="subcategory[]" style="display:none;"></label>
+        </div>
+
+        <?php echo $adminForm->getRow('guardar'); ?>
+        <?php echo $adminForm->endTag(); ?>
+        </div>
+    </div>
+</div>
+<script >
+
+
+
+$(document).ready(function(){
+         $("#frmattributes").validate();
+         
+         $('input[name="category[]"]').change(function(){
+            if($(this).is(':checked'))
+            {
+                
+                $(this).parents('li').children('ul').show();
+            }
+            else{
+                $(this).parents('li').children('ul').hide().find('input[type=checkbox]').prop('checked',false);
+            }
+        });
+
+         $('.taps').find('a.select_tap').click(function(e){ 
+             e.preventDefault();
+            $('.content_tab').hide();
+            var id = $(this).attr('href');
+            $(id).show();
+            $('input[name=type_option]').val(id.replace('#',''));
+         });
+         
+         $('select[name=type]').change(function(){
+             
+             if($(this).val() == "radio" || $(this).val() == "checkbox" || $(this).val() == "select")
+             {
+                  $('.taps').show();
+             }
+             else{
+                  $('.taps').hide();
+             }
+         });
+         
+         $('.add_option').click(function(e){
+             e.preventDefault();
+             $('.option_list').append('<div class="w-xxxx-12 opt_'+($('.option_list').children().length+1)+'" >\
+                            <div class="w-xxxx-6"><?php echo $adminForm->get('option_value[]'); ?></'+'div>\
+                            <div class="w-xxxx-6"><?php echo $adminForm->get('option_label[]'); ?>\
+                            <a href="javascript:void(0);" onclick="$(\'.opt_'+($('.option_list').children().length+1)+'\').remove();">[X]</'+'a>\
+                            </'+'div>\
+                            </'+'div>');
+         });
+         
+        <?php  
+        $count_option = 1;
+        if(!empty($data['data'])): 
+            foreach($data['data'] as $k=> $v):
+            
+                if($count_option > 2): ?>
+                    $('.add_option').click();
+                <?php endif; ?>
+                    
+                $('.opt_<?= $count_option ?>').find('input[name="option_value[]"]').val('<?=$k?>');
+                $('.opt_<?= $count_option ?>').find('input[name="option_label[]"]').val('<?=utf8_decode($v)?>');
+        
+        <?php 
+                $count_option++;
+            endforeach;
+        
+        endif;
+        
+         if(!empty($data['type'])):
+        ?>
+                $('select[name=type]').change();
+         <?php endif; ?>
+        
+        <?php if(!empty($data['source'])):?>
+            $('a[href="#class_attr"]').click();
+        <?php endif; ?>
+});
+</script>

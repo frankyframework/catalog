@@ -1,0 +1,96 @@
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?> </div>
+        <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin"><?php echo $title_grid; ?> de <?=$producto_actual['name']?></h1>
+        <div >
+            
+                <lable>
+                    <span>Selecciona el atributo para configuracion</span>
+                    <select name="attr_configurable">
+                    <?php foreach($attrs as $attr_id => $attr_label): ?>
+                    <option value="<?=$attr_id?>"><?=$attr_label?></option>
+                    <?php endforeach?>
+                    </select>
+                </label>
+            
+        </div>
+        <div  class="w-xxxx-12 cont_productos_configurables">
+            
+        </div>
+ 
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="_wrapp_form_serch">
+                <?php echo $MyFiltrosForm->openTag(); ?>
+                <?php echo $MyFiltrosForm->getAllRow(); ?>
+                <?php echo $MyFiltrosForm->endTag(); ?>
+                
+            </div>
+        </div>
+        <h1 class="titulo_seccion_admin">Configurar con los siguientes productos</h1>
+        <div  class="w-xxxx-12 cont_gral_admin <?php echo $class_grid; ?>">
+            <div >
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-12 contenedor_titulo_columnas">
+                        <?php $i = 1; ?>
+                        <?php foreach($titulo_columnas_grid as $k =>$v): ?>
+                        <div class="<?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>"><?php echo makeHTMLOrder( $k, $v);  ?></div>
+                        <?php endforeach; ?>
+                        <div class="w-xxxx-1">
+                              <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                                  Configurar
+                              <?php endif; ?>
+                        </div>
+                      
+                    </div>
+                    <div class="contenedor_columnas_info"  >
+                    <div class="w-xxxx-12 contenedor_columnas"  >
+                        <?php $i = 1; ?>
+                        <?php foreach($value_columnas_grid as $k): ?>
+                        <div class="{{_data.thisClass}}   <?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>">{{_data.<?php echo $k;  ?>}}</div>
+                        <?php endforeach; ?>
+                        <div class='w-xxxx-2 {{_data.thisClass}}'>
+                            <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                            <input type="checkbox" name="configurable[]" value="{{_data.id}}" />
+                            <?php endif; ?>
+                        </div>
+                       
+                    </div>
+                    </div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="no_hay_datos" ><?php echo $error_grid; ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <?php echo render("admin/widget.paginar.phtml"); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script >
+
+$(".contenedor_columnas_info").htmlDataDum(<?php echo json_encode($lista_admin_data); ?>,".no_hay_datos");
+
+$(window).load(function(){
+    $("input[name='configurable[]']").change(function(){
+
+        if($(this).is(':checked'))
+        {
+      
+            ajax_products_agregarProductoConfigurable('<?=$id?>',$(this).attr('value'),$('select[name=attr_configurable]').val())
+        }
+        else{
+            ajax_products_quitarProductoConfigurable('<?=$id?>',$(this).attr('value'),$('select[name=attr_configurable]').val())
+        }
+      
+    });
+
+
+    $("select[name='attr_configurable']").change(function(){
+            ajax_products_setAttrConfigurable('<?=$id?>',$('select[name=attr_configurable]').val())
+    });
+    
+});
+ajax_products_cargarProductosConfigurables('<?=$id?>');
+</script>

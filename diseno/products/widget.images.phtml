@@ -1,0 +1,80 @@
+<?php
+$_img = getCoreConfig('catalog/product/placeholder');
+$principal = "";
+if($_img != "" && file_exists(PROJECT_DIR.$_img))
+{
+    $principal =  makeHTMLImg(imageResize($_img,700,700, true),"","",$data_detalle['name'],"id='img_zoom'");;
+}
+?>
+
+<div>
+<div class="slider slider-for">
+<?php
+if(!empty($data_detalle['images']))
+{
+    foreach($data_detalle["images"] as $foto)
+    {
+        if($foto['principal'])
+        {
+            if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img']))
+            {
+                    echo makeHTMLImg(imageResize($MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'],700,700, true),"","",$data_detalle['name'],"id='img_zoom'");
+            }
+            else
+            {
+                echo $principal;
+            }
+        }
+
+    }
+}
+else{
+    echo $principal;
+}
+?>
+</div>
+
+
+<?php
+if(!empty($data_detalle['images'])   && count($data_detalle['images']) > 1)
+{
+    ?>
+    <div class="slider slider-nav">
+    <?php
+    foreach($data_detalle["images"] as $foto)
+    {
+        //  echo $MyConfigure->getServerUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'];
+        if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img']))
+        { ?>
+            <div>
+            <a href="javascript:void(0);" onclick="setImgZoom('<?=imageResize($MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'],700,700, true)?>')">
+            <?=makeHTMLImg(imageResize($MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'],100,100, true),"","",$data_detalle['name'],'');?>
+            </a>
+            </div>
+        <?php
+        }
+    }
+    ?>
+    </div>
+    <?php
+}
+?>
+
+</div>
+
+<script>
+  $(document).ready(function(){
+          $('.slider-nav').slick({
+            slidesToShow: 4,
+            slidesToScroll: 4,
+            //asNavFor: '.slider-for',
+            dots: false,
+            centerMode: true,
+            focusOnSelect: true
+          });
+  });
+  var setImgZoom = function(img)
+  {
+      $('#img_zoom').attr('src',img);
+  }
+</script>

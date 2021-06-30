@@ -1,0 +1,11 @@
+<div class="_card_widget_catalog_product_result">
+    <?php if(getCoreConfig('catalog/wishlist/enabled')== 1): ?>
+        <?=render(PROJECT_DIR.'/modulos/wishlist/diseno/widget.wishlist.phtml',['id' =>$data['id_wishlist'],'seccion' => 'catalog_products'])?>
+    <?php endif; ?>
+    <a href="<?= $data['link']; ?>" class="_img_widget_catalog_product_result"><?php echo makeHTMLImg($data['thumb_resize'],"","",$data['name'],"class='image_100'",1); ?></a>
+    <h2 class="_h2_widget_catalog_product_result"><a href="<?= $data['link']; ?>" ><?=$data['name']?></a></h2>
+    <?php if(getCoreConfig('catalog/product/showprice')== 1): ?>
+        <span class="price"><?=getFormatoPrecio($data['price'],false)?></span>
+    <?php endif; ?>
+    <a class="_btn _widget_catalog_view_more" href="<?= $data['link']; ?>">Ver detalles</a>
+</div>

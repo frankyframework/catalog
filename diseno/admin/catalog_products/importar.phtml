@@ -1,0 +1,111 @@
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?> </div>
+        <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin"><?=_catalog('importar catalogo'); ?></h1>
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="_wrapp_form_serch">
+            <a href="/admin/catalog-products/template_export.php" class="_btn_new" target="_blank">Exportar</a>
+                <a href="/admin/catalog-products/template_import.php" class="_btn_new" target="_blank">Descargar template</a>
+                <?php  if(!empty($data_productos)): ?>
+                <a href="#" class="_btn_new play_importacion" data-action="play">Iniciar importacion</a>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <div  class="w-xxxx-12 cont_gral_admin importar">
+        <?php  
+        if(empty($data_productos)):
+
+
+            echo $adminForm->openTag();
+            echo $adminForm->getAllRow();
+            echo $adminForm->endTag();
+
+            ?>
+
+            <div class="w-xxxx-12">
+                <h4>Reglas importantes</h4>
+
+                <ul>
+                    <li>Formato de atributo categoria: 
+                       <pre> {id_categoria:[id_subcategoria_1,id_subtagoria_2... id_subcategoria_n]}</pre>
+                    </li>
+                    <li>Formato de atributo customizado tipo checkbox: 
+                       <pre>["valor_1","valor_2"... "valor_n"]</pre>
+                    </li>
+                    <li>Llenar new_images solo para sumar nuevas imagenes: 
+                       <pre>imagen1,imagen2,....</pre>
+                       Alojar imagenes a importar en:
+                       <pre>
+                       public/upload/[modulo_cliente]/catalog/importar/images/
+                       </pre>
+                    </li>
+                    
+                </ul>
+                
+            </div>
+            <script >
+                $(document).ready(function()
+                {
+                $( "#frmimport" ).validate();
+                });
+
+
+                </script>
+            <?php
+        else:
+        ?>
+
+            <div >
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-12 contenedor_titulo_columnas">
+                        <?php $i = 1; ?>
+                        <?php foreach($titulo_columnas_grid as $k =>$v): ?>
+                        <div class="<?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>"><?php echo $v;  ?></div>
+                        <?php endforeach; ?>
+                        <div class="w-xxxx-1">
+                             Operacion
+                        </div>
+                        <div class="w-xxxx-1">
+                           Estado
+                        </div>
+                       
+                    </div>
+                    <div class="contenedor_columnas_info"  >
+                    <div class="w-xxxx-12 contenedor_columnas"  >
+                        <?php $i = 1; ?>
+                        <?php foreach($value_columnas_grid as $k): ?>
+                        <div class="{{_data.thisClass}}   <?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>">{{_data.<?php echo $k;  ?>}}</div>
+                        <?php endforeach; ?>
+                        <div class='w-xxxx-1 {{_data.thisClass}} operacion_{{_data.id}}'></div>
+                        <div class='w-xxxx-1 {{_data.thisClass}} status_pending status_{{_data.id}}' data-sku="{{_data.sku}}"  data-id="{{_data.id}}">Pendiente</div>
+                    </div>
+                    </div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="no_hay_datos" >No se encontraron registros para cargar</div>
+                </div>
+                
+            </div>
+
+
+            <script >
+            $(".contenedor_columnas_info").htmlDataDum(<?php echo json_encode($data_productos); ?>,".no_hay_datos");
+
+            $('.play_importacion').click(function(e){
+                e.preventDefault();
+                var id = $('.status_pending').eq(1).attr('data-id');
+                if(id.length > 0)
+                {
+                    ajax_catalog_importar_producto(id);
+                }
+            });
+            </script>
+
+        <?php
+        endif;
+        ?>
+        </div>
+       
+    </div>
+</div>

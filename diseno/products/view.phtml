@@ -1,0 +1,142 @@
+<div class="w-xxxx-12 _product_view">
+    <div class="content">
+    <?=CatalogBreadcrumbs($data_detalle['name']); ?>
+        <div class="w-xxxx-12">
+            <div class="content">
+                <div class="w-xxxx-6 _catalog_gallery">
+                    <?=render("products/widget.images.phtml",['data_detalle' => $data_detalle,'MyConfigure' => $MyConfigure])?>
+                </div>
+                <div class="w-xxxx-6 _product_info">
+                    <div class="w-xxxx-12">
+                        <h1 class="_name"><?=$data_detalle['name']?></h1>
+                        <span class="_sku">SKU: <?=$data_detalle['sku']?></span>
+                    </div>
+                    <div class="w-xxxx-12">
+                        <?php if(isset($custom_attr['custom_imputs'][$configurables['id_attribute']])): ?>
+                        <div class="w-xxxx-12 _cont_configurables">
+
+                                <h2><?=$custom_attr['custom_imputs'][$configurables['id_attribute']]['label']?></h2>
+                               
+                                <?php $option_configurable =  $custom_attr['custom_imputs'][$configurables['id_attribute']]['data']; ?> 
+                               
+                                <div class="_cont_more_info">
+
+                                <?php foreach($option_configurable as $key => $val): ?>
+
+                                    <?php foreach($configurables['configurables'] as $opt): ?>
+                                        <?php if($opt['value'] == $key): ?>
+                                        <div class=" _btn_seleccionable _cont_right <?=($custom_attr['custom_values'][$custom_attr['custom_imputs'][$configurables['id_attribute']]['name']] == $key ? '_Active' : '') ?>">
+                                            <a href="<?= $opt['url']?>" class="configurable" data-value="<?= $key; ?>" ><?= $val; ?></a>
+                                        </div>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endforeach; ?>
+                                </div>                                
+                                
+                        </div>
+
+
+                        <script>
+                            var time_event_search = null;
+                            var goConfigurableProduct = function(url){
+                            $.ajax({
+                                    type: 'GET',
+                                    url: url,
+                                    cache: false,
+                                    beforeSend: function(){
+
+                                        var loader = $('<div>').attr('id',"preloaderfullpageAjaxSearch").css({position: 'fixed',top:0,left:0,right:0, bottom:0,'z-index': 100});
+                                        loader.append($('<div>').attr('style',window.loaderStyle));
+
+                                        $('body').prepend(loader);
+                                        $('body').css({'overflow':'hidden'});
+
+                                    },
+                                    success: function(response){
+                                        $("._body").html(response);
+                                        if($('#preloaderfullpageAjaxSearch'))
+                                        {
+                                            $('#preloaderfullpageAjaxSearch').fadeOut('slow',function(){
+                                                $(this).remove();
+                                                $('body').css({'overflow':'visible'});
+                                            });
+
+                                        }
+                                        catalogCarrucelRelacionados();
+                                        window.history.pushState('', '', url);
+                                    },
+                                    error: function(){
+                                        if($('#preloaderfullpageAjaxSearch'))
+                                        {
+                                        $('#preloaderfullpageAjaxSearch').fadeOut('slow',function(){
+                                            $(this).remove();
+                                            $('body').css({'overflow':'visible'});
+                                        });
+
+                                        }
+                                        _alert("Error de peticion","Error"); }
+                            });
+
+                            };
+                            $('a.configurable').click(function(e){
+
+                                e.preventDefault();
+                                
+                                goConfigurableProduct($(this).attr('href'));
+                                  
+                            });
+                        </script>
+
+
+
+
+                        <?php endif; ?>
+
+                        <div class="_cont_buy">
+                            <?php if($data_detalle["in_stock"] == 1):?>
+                                <?php if($data_detalle["stock_infinito"] == 1): ?>
+                                <span class="_stock">En stock</span>
+                                <?php else: ?>
+                                <span class="_stock">Stock: <?=$data_detalle['stock']?></span>
+                                <?php endif; ?>
+                            <?php else: ?>
+                            <span class="_stock">Sin stock</span>
+                            <?php endif; ?>
+                            <?php if(getCoreConfig('catalog/product/showprice')== 1): ?>
+                            <span class="_price"><?php echo getFormatoPrecio($data_detalle['price'],false); ?></span>
+                            <?php endif ;?>
+                            <div class="_cont_more_info">
+                                <?php echo render('/ecommerce/boton.add.phtml',
+                                array("id_producto" => $data_detalle["id"],
+                                "in_stock" => $data_detalle["in_stock"],
+                                "min_qty" => $data_detalle["min_qty"],
+                                "saleable" => $data_detalle["saleable"],
+                                "stock" => $data_detalle["stock"],
+                                "stock_infinito" => $data_detalle["stock_infinito"],
+                                'MyAccessList' => $MyAccessList,
+                                'contactanosForm' => $contactanosForm)); ?>
+                            </div>
+                            
+                            <?php if(getCoreConfig('catalog/wishlist/enabled')== 1): ?>
+                                <?=render(PROJECT_DIR.'/modulos/wishlist/diseno/widget.wishlist.phtml',['id' =>$data_detalle['id_wishlist'],'seccion' => 'catalog_products'])?>
+                            <?php endif ;?>
+                        </div>
+                    </div>
+                    <div class="w-xxxx-12">
+                        <h2 class="_h2_description">Descripción</h2>
+                        <div class="_description"><?=$data_detalle['description']?></div>
+                    </div>
+                </div>
+                <?php if(isset($lista_relacionados_data) && !empty($lista_relacionados_data)): ?>
+                    <?=render('products/relacionados.phtml',['catalogo_relacionados' =>$lista_relacionados_data])?>
+                <?php endif; ?>
+                <div class="w-xxxx-12">
+                <?=getFrmCalificacion('catalog','catalog_products',$data_detalle['id_ori']); ?>
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+</div>
+<?php echo $productSchema->get(); ?>

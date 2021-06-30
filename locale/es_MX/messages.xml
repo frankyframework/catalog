@@ -1,0 +1,80 @@
+<?xml version='1.0' standalone='yes'?>
+<mensajes>
+    <prefijo>catalog_</prefijo>
+        <mensaje>
+        <llave>category_error_delete</llave>
+        <valor>No se pudo eliminar la categoria intenta mas tarde</valor>
+    </mensaje>
+    <mensaje>
+        <llave>subcategory_error_delete</llave>
+        <valor>No se pudo eliminar la subcategoria intenta mas tarde</valor>
+    </mensaje>
+    <mensaje>
+        <llave>categoria_duplicado</llave>
+        <valor>Ya existe una categoría con este nombre</valor>
+    </mensaje>
+    <mensaje>
+        <llave>subcategoria_duplicado</llave>
+        <valor>Ya existe una subcategoría con este nombre</valor>
+    </mensaje>
+    <mensaje>
+        <llave>products_error_delete</llave>
+        <valor>No se puede desactivar el producto</valor>
+    </mensaje>
+    <mensaje>
+        <llave>empty_category</llave>
+        <valor>Selecciona almenos una categoria</valor>
+    </mensaje>
+     <mensaje>
+        <llave>empty_subcategory</llave>
+        <valor>Selecciona almenos una subcategoria</valor>
+    </mensaje>
+     <mensaje>
+        <llave>price_not_save</llave>
+        <valor>Hubo un error al intentar guardar el precio intente nuevamente</valor>
+    </mensaje>
+    <mensaje>
+        <llave>stock_no_disponible</llave>
+        <valor>Favor de revisar tu compra, el producto %s no cuenta con stock disponible</valor>
+    </mensaje>
+    <mensaje>
+        <llave>produt_no_saleable</llave>
+        <valor>El producto %s no se puede vender</valor>
+    </mensaje>
+    <mensaje>
+        <llave>stock_minimo</llave>
+        <valor>No se puede vender esta cantidad para este producto</valor>
+    </mensaje>
+    <mensaje>
+        <llave>products_error_relacionar</llave>
+        <valor>Error al relacionar este producto</valor>
+    </mensaje>
+
+    <mensaje>
+        <llave>products_error_relacionar_eliminar</llave>
+        <valor>Error al quitar este producto</valor>
+    </mensaje>
+
+    <mensaje>
+        <llave>products_error_configurar</llave>
+        <valor>Error al configurar este producto</valor>
+    </mensaje>
+    <mensaje>
+        <llave>products_error_configurar_eliminar</llave>
+        <valor>Error al quitar este producto</valor>
+    </mensaje>
+    <mensaje>
+        <llave>products_error_change_attr</llave>
+        <valor>Error al cambiar el atributo configurable</valor>
+    </mensaje>    
+    <mensaje>
+        <llave>vitrina_duplicada</llave>
+        <valor>Ya existe un vitrina con este nombre</valor>
+    </mensaje>
+    <mensaje>
+        <llave>vitrina_error_delete</llave>
+        <valor>Error al eliminar la vitrina</valor>
+    </mensaje>
+    
+    
+</mensajes>

@@ -1,0 +1,127 @@
+
+<div class="w-xxxx-12">
+    <div class="content">
+        <h1 class="align_center"></h1>
+        <h3 class="align_center"></h3>
+        <?php echo $adminForm->openTag(); ?>
+        <?php  echo $adminForm->get("callback"); ?>
+
+
+        <?php if(!empty($id)): ?>
+        <?php  echo $adminForm->get("id"); ?>
+          <?php endif; ?>
+        <?php  echo $adminForm->getRow("nombre"); ?>
+         <?php  echo $adminForm->getRow("titulo"); ?>
+        <div class="form-group">
+          <h3>Categorias</h3>
+         
+        <?php if(!empty($categorias)): ?>
+            <ul>
+            <?php foreach($categorias as $cat_id => $cat_label): ?>
+            <li>
+                <label ><input type="checkbox" name="category[]" value="<?=$cat_id;?>" <?=(in_array($cat_id,$data_category) ? 'checked="checked"' : '')?> class="" /><?=$cat_label;?></label>
+                <?php if(!empty($subcategorias[$cat_id])): ?>
+                    <ul <?=(in_array($cat_id,$data_category) ? '' : 'style="display:none;"')?>>
+                    <?php foreach($subcategorias[$cat_id] as $subcat_id => $subcat_label): ?>
+                    <li> <label ><input type="checkbox" name="subcategory[]" value="<?=$subcat_id;?>"  <?=(in_array($subcat_id,$data_subcategory) ? 'checked="checked"' : '')?>  class="" /><?=$subcat_label;?></label><li>
+                    <?php endforeach; ?>
+                    </ul>
+            <?php endif; ?>
+            <li>
+            <?php endforeach; ?>
+            </ul>
+        <?php endif; ?>
+        <label id="category[]-error" class="error" for="category[]" style="display:none;"></label>
+        <label id="subcategory[]-error" class="error" for="subcategory[]" style="display:none;"></label>
+        </div>
+        <div>
+            <a href="#" class="open_relacionar">Catalogo de Productos</a>
+        </div>
+     
+
+        <?php  echo $adminForm->getRow("random"); ?>
+
+        <?php  echo $adminForm->getRow("numero"); ?>
+
+        <?php  echo $adminForm->getRow("guardar"); ?>
+
+        <?php echo $adminForm->endTag(); ?>
+
+    </div>
+
+  
+
+</div>
+
+<div id="relacionar_overlay"  class="overlay w-xxxx-12">
+      
+       <div class="overlay-content">
+       <div class="w-xxxx-6 cont_photo galeria" >
+           <div class="clear">&nbsp;</div>
+       </div>
+       <div class="lightbox_home_error_message">
+        
+        <a href="javascript:void(0)" class="cerrar_x" onclick="cerrarOverlayRelacionar()">&times;</a>
+           <div class="w-xxxx-12 bkg_message_home">
+
+
+               <iframe id="iframe_relacionar" src="" frameborder="0" width="80%"></iframe>
+
+
+            </div>
+       </div>
+   </div>
+</div>
+
+<script >
+$(document).ready(function()
+{
+  $( "#frmvitrina" ).validate();
+  
+  $('input[name="category[]"]').change(function(){
+      if($(this).is(':checked'))
+      {
+        
+        $(this).parents('li').children('ul').show();
+      }
+      else{
+        $(this).parents('li').children('ul').hide().find('input[type=checkbox]').prop('checked',false);
+      }
+  });
+});
+</script>
+
+
+<script>
+var abrirOverlayRelacionar = function(){
+   $("#iframe_relacionar").attr('src','<?=$MyRequest->url(FRM_CATALOG_VITRINA_RELACIONADOS);?>?id=<?=$data['id']?>&amp;callback=<?=$_callback?>').css({'height':($(window).height()*0.8)});
+  $("#relacionar_overlay").css({'height':'100%'}).fadeTo(1000,1);
+  $("body").addClass("no_scroll");
+}
+
+var cerrarOverlayRelacionar = function() {
+
+      $("#relacionar_overlay").fadeTo(1000,0,function(){
+          $(this).css({'height':'0%'})
+      });
+
+      $("#iframe_relacionar").attr('src','');
+
+      $("body").removeClass("no_scroll");
+};
+$('.open_relacionar').click(function(e){
+    e.preventDefault();
+    abrirOverlayRelacionar();
+});
+ $(document).keyup(function(event){
+
+        if(event.which==27)
+        {
+            if($("#relacionar_overlay").is(":visible"))
+            {
+                cerrarOverlayRelacionar();
+            }
+            
+        }
+    });
+</script>

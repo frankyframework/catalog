@@ -1,0 +1,44 @@
+<?php if(!empty($resultados_pagina)): ?>
+<div class="w-xxxx-12">
+    <h2><span><?=$titulo?></span></h2>
+    <div class="w-xxxx-12 cont_widget_catalog_results _vitrinas  carrucel_vitrina_<?=$clave?>">
+    <?php foreach($resultados_pagina as $data): ?>
+        <?=render(PROJECT_DIR.'/modulos/catalog/diseno/products/card.phtml',['data' => $data]);?>
+    <?php endforeach ;?>
+    </div>
+</div>
+<script>
+$(window).load(function(){
+$('.carrucel_vitrina_<?=$clave?>').slick({
+      infinite: true,
+      slidesToShow: 4,
+      slidesToScroll: 4,
+      dots: false,
+      responsive: [
+          {
+            breakpoint: 980,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+              infinite: true
+            }
+          },
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2
+            }
+            },
+          {
+            breakpoint: 767,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+      ]
+    });
+});
+</script>
+<?php endif; ?>

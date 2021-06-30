@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="<?php echo $lang_root; ?>">
+<head>
+   <?php  include(getVista("admin/layout/widget.headers.phtml")); ?>
+</head>
+
+
+
+<body class="<?php echo $MyRequest->getClassBody($lang_root); ?>" <?php echo (!$MyRequest->isAjax() ? 'style="overflow: hidden;"' : ''); ?>>
+ <?php if(!$MyRequest->isAjax()): ?>
+<div id="preloaderfullpage" style="position: fixed;top:0;left:0;right:0; bottom:0;background: #f7f7f7;z-index: 100;">
+    <div id="loader" style="width: 100px;height: 100px;position: absolute;left:50%; top:50%;background: url('<?php echo getImg('SVG/loader.svg'); ?>') no-repeat center 0; margin:-50px 0 0 -50px;">&nbsp;</div>
+</div>
+<?php endif; ?>
+    
+        <main>
+
+        	<div class="w-xxxx-12 page_wrapper">
+
+                    <div class="w-xxxx-12 cont_admin">
+                        
+
+                        
+                            <?php
+                                $centro = $MyFrankyMonster->MyPHPFile();
+                                $render_phtml = render(str_replace(".php",".phtml",$centro));
+                                echo stripJS($render_phtml);
+                            ?>
+                       
+
+                    </div>
+
+        	</div>
+        </main>
+        
+        <?php echo render("widget_link_up.phtml"); ?>
+        <?php echo render("debug.phtml",$MyDebug->Dump()) ?>
+        <?php echo render("admin/layout/css.async.phtml"); ?>
+        <?php echo render("js.phtml",['render_phtml' => $render_phtml,'MyFrankyMonster' => $MyFrankyMonster,'MyConfigure' => $MyConfigure,'Mobile_detect' => $Mobile_detect,'MyMetatag' => $MyMetatag,'lang_root' => $lang_root,"MyRequest" => $MyRequest]); ?>
+        <?php echo render("msg.request.phtml"); ?>
+</body>
+</html>

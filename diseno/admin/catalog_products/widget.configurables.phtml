@@ -1,0 +1,34 @@
+<div >
+<div class="w-xxxx-12">
+    <div class="w-xxxx-12 contenedor_titulo_columnas">
+        <?php $i = 1; ?>
+        <?php foreach($titulo_columnas_grid as $k =>$v): ?>
+        <div class="<?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>"><?php echo $v;  ?></div>
+        <?php endforeach; ?>
+        <div class="w-xxxx-1">
+             
+                  Configurable
+             
+        </div>
+
+    </div>
+    <div class="contenedor_columnas_info_configurables"  >
+    <div class="w-xxxx-12 contenedor_columnas"  >
+        <?php $i = 1; ?>
+        <?php foreach($value_columnas_grid as $k): ?>
+        <div class="{{_data.thisClass}}   <?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>">{{_data.<?php echo $k;  ?>}}</div>
+        <?php endforeach; ?>
+        <div class='w-xxxx-2 {{_data.thisClass}}'>
+            
+            <input type="checkbox" name="configurable[]" value="{{_data.id}}" />
+            
+        </div>
+
+    </div>
+    </div>
+</div>
+<div class="w-xxxx-12">
+    <div class="no_hay_datos_relacionados" >Aun no configuras ningun producto</div>
+</div>
+
+</div>

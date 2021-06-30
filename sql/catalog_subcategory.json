@@ -1,0 +1,107 @@
+{
+    "schema" :
+    {
+        "attributes":[
+            {
+                "name":"id",
+                "type":"int",
+                "length":11,
+                "null":0,
+                "auto_increment":1
+            },
+            {
+                "name":"id_category",
+                "type":"int",
+                "length":11,
+                "null":0
+            },
+            {
+                "name":"name",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+            
+            {
+                "name":"description",
+                "type":"text",
+                "null":1
+            },
+            {
+                "name":"image",
+                "type":"varchar",
+                "length":255,
+                "null":1
+            },
+            {
+                "name":"visible_in_search",
+                "type":"int",
+                "length":1,
+                "null":0,
+                "default":1
+            },
+            {
+                "name":"users",
+                "type":"text",
+                "null":1
+                
+            },
+           
+            {
+                "name":"meta_title",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+            {
+                "name":"meta_description",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+            {
+                "name":"meta_keywords",
+                "type":"text",
+                "null":1
+            },
+            {
+                "name":"url_key",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            },
+           
+            {
+                "name":"status",
+                "type":"int",
+                "length":1,
+                "null":0
+            },
+            {
+                "name":"orden",
+                "type":"int",
+                "length":1,
+                "null":0
+            },
+           
+            {
+                "name":"createdAt",
+                "type":"datetime",
+                "null":0
+                
+            },
+            {
+                "name":"updateAt",
+                "type":"datetime",
+                "null":1
+            }
+
+        ],
+        "config":{
+            "primary":"id",
+            "engine":"MyISAM"
+        }
+    }
+    ,
+    "data":[]
+}

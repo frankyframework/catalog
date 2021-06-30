@@ -1,0 +1,203 @@
+<?php
+$data = $MyRequest->getRequest();
+if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_CATEGORY)
+{
+  
+  $categoria      = $MyRequest->getUrlParam('friendly');
+  $subcategoria   = $MyRequest->getRequest('subcategoria');
+  $BuscadorLateralForm->setAtributo('action',$MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $categoria]));
+
+}
+else if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_SUBCATEGORY)
+{
+   
+  $categoria      = $MyRequest->getUrlParam('categoria');
+  $subcategoria      = $MyRequest->getUrlParam('friendly');
+  $BuscadorLateralForm->setAtributo('action',$MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['categoria' => $categoria,'friendly' => $subcategoria]));
+}
+else{
+  $categoria      = $MyRequest->getRequest('categoria');
+  $subcategoria      = $MyRequest->getRequest('subcategoria');
+
+  if(!empty($categoria)):
+    $data['categoria[]'] = (is_array($categoria) ? $categoria: [$categoria]);
+  endif;
+
+  if(!empty($subcategoria)):
+    $data['subcategoria[]'] = (is_array($subcategoria) ? $subcategoria: [$subcategoria]);
+  endif;
+}
+
+
+
+if(!empty($categoria) && !is_array($categoria))
+{
+  $categoria = [$categoria];
+}
+
+$precio	= $MyRequest->getRequest('precio');
+$precio_rango = catalog_getPriceMaxMinProduct();
+if(!empty($precio))
+{
+    $precio = explode("-", $precio);
+    if(is_array($precio))
+    {
+        $precio[0] = intval(preg_replace('/[^0-9]+/', '',  $precio[0]), 10);
+        $precio[1] = intval(preg_replace('/[^0-9]+/', '', $precio[1]), 10);
+    }
+}
+
+
+
+
+
+
+?>
+<?php echo $BuscadorLateralForm->openTag(); ?>
+<?php $BuscadorLateralForm->setData($data); ?>
+    <?php  echo $BuscadorLateralForm->get("q"); ?>
+     <div class="btn_filters"></div>
+    <div class="cont_filter">
+
+    <ul>
+        <li>
+          <label for="amount"><span class="title_filter">Precio:</span></label>
+            <?php  echo $BuscadorLateralForm->get("precio"); ?>
+          <span class="w-xxxx-12 w-xxx-12 w-xx-12 w-x-12" id="slider-range"></span>
+        </li>
+
+
+       <?php
+          $cat_in_search = [];
+          $cat_id_in_search = [];
+
+          if(!empty($categorias)): 
+            foreach($categorias as $k => $cat):
+              if(!empty($categoria) && in_array($k,$categoria)):
+                $cat_in_search[] = $cat;
+              endif; 
+            endforeach;
+          endif;
+
+          if(!empty($_categorias)): 
+            foreach($_categorias as $k => $_cat):
+              if(in_array($_cat,$cat_in_search)):
+                $cat_id_in_search[] = $k;
+              endif; 
+            endforeach;
+          endif; ?>
+          <li class="area_categoria">
+          <?php if(!in_array($MyFrankyMonster->MySeccion(),[CATALOG_SEARCH_CATEGORY,CATALOG_SEARCH_SUBCATEGORY])): ?>
+          <span class="title_filter">Categorías</span>
+          
+         
+         
+          <?php  echo $BuscadorLateralForm->get("categoria[]"); ?>
+          </li>
+          <?php endif; ?>
+          <?php if(!empty($categoria) && !in_array($MyFrankyMonster->MySeccion(),[CATALOG_SEARCH_SUBCATEGORY])) :?>
+              <li class="area_subcategoria">
+                <span class="title_filter">Subcategorías</span>
+                <?php if(!empty($cat_id_in_search)): ?>
+                  <ul>
+                <?php foreach($cat_id_in_search as $id_cat):?>
+
+                
+                  <?php if(!empty($subcategorias[$id_cat])): ?>
+                    <li class="area_subcategoria"><span class="subtitle_filter"><?=$_categorias[$id_cat]?></span></li>
+               
+                    <?php foreach($subcategorias[$id_cat] as $value => $label):?>
+                      <li><label>
+                        <input type="checkbox" name="subcategoria[]" value="<?=$value?>" <?=(!empty($subcategoria) && in_array($value,$subcategoria) ? 'checked="checked"' : '')?> /><?=$label?>
+                        </label></li>
+                    <?php endforeach;?>
+                  <?php endif;?>
+                
+                  
+                  <?php endforeach;?>
+                </ul>
+                <?php endif; ?>
+              </li>
+          <?php endif; ?>
+        
+
+     
+    </ul>
+    </div>
+ <?php echo $BuscadorLateralForm->endTag(); ?>
+
+ <script>
+   var time_event_search = null;
+   var ejecutaBusqueda = function(){
+      $.ajax({
+                       type: 'GET',
+                       url: $("form[name=buscadorLateral]").attr('action'),
+                       data: $("form[name=buscadorLateral]").serialize(),
+                       cache: false,
+                       beforeSend: function(){
+
+                           var loader = $('<div>').attr('id',"preloaderfullpageAjaxSearch").css({position: 'fixed',top:0,left:0,right:0, bottom:0,'z-index': 100});
+                          loader.append($('<div>').attr('style',window.loaderStyle));
+
+                           $('body').prepend(loader);
+                           $('body').css({'overflow':'hidden'});
+
+                       },
+                       success: function(response){
+                           $("._body").html(response);
+                           if($('#preloaderfullpageAjaxSearch'))
+                           {
+                               $('#preloaderfullpageAjaxSearch').fadeOut('slow',function(){
+                                   $(this).remove();
+                                   $('body').css({'overflow':'visible'});
+                               });
+
+                           }
+                       },
+                       error: function(){
+                         if($('#preloaderfullpageAjaxSearch'))
+                         {
+                           $('#preloaderfullpageAjaxSearch').fadeOut('slow',function(){
+                               $(this).remove();
+                               $('body').css({'overflow':'visible'});
+                           });
+
+                         }
+                         _alert("Error de peticion AJAX","Error"); }
+               });
+
+   };
+     $(document).ready(function(){
+        $("form[name=buscadorLateral]").find("input[type=checkbox]").change(function(){
+          if(time_event_search != null)
+          {
+            clearTimeout(time_event_search);
+          }
+          time_event_search = setTimeout(function(){
+            ejecutaBusqueda();
+          }, 3000);
+          
+        })
+
+        $( "#slider-range" ).slider({
+            range: true,
+            min:  <?=$precio_rango[0]; ?>,
+            max: <?=$precio_rango[1]; ?>,
+            values: [ <?=(isset($precio[0]) ? $precio[0] : $precio_rango[0]); ?>, <?=(isset($precio[1]) ? $precio[1] : $precio_rango[1]); ?> ],
+            stop: function( event, ui ) {
+              if(time_event_search != null)
+              {
+                clearTimeout(time_event_search);
+              }
+              time_event_search = setTimeout(function(){
+                ejecutaBusqueda();
+              }, 3000);
+            },
+            slide: function( event, ui ) {
+              $( "#filtro_precio" ).val(getFormatoPrecio(ui.values[ 0 ]) + " - " + getFormatoPrecio(ui.values[ 1 ]) );
+            }
+          });
+          $( "#filtro_precio" ).val( getFormatoPrecio($( "#slider-range" ).slider( "values", 0 )) +
+            " - " + getFormatoPrecio($( "#slider-range" ).slider( "values", 1 )) );
+     });
+ </script>
