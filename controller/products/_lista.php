@@ -3,6 +3,8 @@ use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
 use Catalog\model\CatalogcategoryModel;
 use Catalog\entity\CatalogcategoryEntity;
+use Catalog\model\CatalogsubcategoryModel;
+use Catalog\entity\CatalogsubcategoryEntity;
 use Franky\Haxor\Tokenizer;
 use Franky\Core\paginacion;
 use Catalog\schema\productSchema;
@@ -42,6 +44,8 @@ $CatalogproductsModel = new CatalogproductsModel();
 $CatalogproductsEntity = new CatalogproductsEntity();
 $CatalogcategoryModel = new CatalogcategoryModel();
 $CatalogcategoryEntity = new CatalogcategoryEntity();
+$CatalogsubcategoryModel = new CatalogsubcategoryModel();
+$CatalogsubcategoryEntity = new CatalogsubcategoryEntity();
 $MyPaginacion = new paginacion();
 $Tokenizer = new Tokenizer();
 
@@ -53,6 +57,13 @@ if(!empty($categoria))
 
   }else {
     $CatalogproductsModel->setCategoriaArray([$categoria]);
+ 
+    $CatalogcategoryEntity->url_key($categoria);
+    $result	 = $CatalogcategoryModel->getData($CatalogcategoryEntity->getArrayCopy());
+    $data           = $CatalogcategoryModel->getRows();
+    $MyMetatag->setTitulo($data['meta_title']);
+    $MyMetatag->setDescripcion($data['meta_description']);
+    $MyMetatag->setKeywords($data['meta_keywords']);
   }
 
 }
@@ -65,6 +76,14 @@ if(!empty($subcategoria))
 
   }else {
     $CatalogproductsModel->setSubcategoriaArray([$subcategoria]);
+
+    $CatalogsubcategoryEntity->url_key($subcategoria);
+    $result	 = $CatalogsubcategoryModel->getData($CatalogsubcategoryEntity->getArrayCopy());
+    $data           = $CatalogsubcategoryModel->getRows();
+    $MyMetatag->setTitulo($data['meta_title']);
+    $MyMetatag->setDescripcion($data['meta_description']);
+    $MyMetatag->setKeywords($data['meta_keywords']);
+
   }
 
 }
