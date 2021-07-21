@@ -99,13 +99,13 @@
             "modulo":"catalog"
         },
         {
-            "php":"admin/wishlist/lista.php",
+            "php":"mi-cuenta/wishlist/lista.php",
             "css":"",
             "js":[],
             "jquery":[],
             "permisos":[1,2,3,4],
             "constante":"ADMIN_CATALOG_WISHLIST",
-            "url":"admin/catalog-wishlist/",
+            "url":"mi-cuenta/catalog-wishlist/",
             "nombre":"Administras whishlists",
             "ajax":["base/ajax.admin.js"],
             "status":1,
@@ -183,13 +183,13 @@
             "modulo":"catalog"
         },
         {
-            "php":"dmin/calificaciones/milista.php",
+            "php":"mi-cuenta/calificaciones/milista.php",
             "css":"",
             "js":[],
             "jquery":[],
             "permisos":[1,2,3,4],
             "constante":"ADMIN_MIS_CALIFICACIONES_CATALOG",
-            "url":"admin/catalog-products/mis-calificaciones/",
+            "url":"mi-cuenta/catalog-products/mis-calificaciones/",
             "nombre":"Mis calificaciones y comentarios",
             "ajax":["base/ajax.admin.js"],
             "status":1,
