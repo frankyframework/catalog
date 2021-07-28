@@ -478,15 +478,11 @@ function getCatalogVitrina($clave)
     if (is_array($uiCommand[3])) {
         if (!in_array('slick',$uiCommand[3])) 
         {
-            $MyMetatag->setJs("/public/jquery/slick/js/slick.min.js");
-            $MyMetatag->setCss("/public/jquery/slick/css/slick-theme.css");
-            $MyMetatag->setCss("/public/jquery/slick/css/slick.css");
+            $MyFrankyMonster->addJquery('slick');
         }     
     }
     else{
-        $MyMetatag->setJs("/public/jquery/slick/js/slick.min.js");
-        $MyMetatag->setCss("/public/jquery/slick/css/slick-theme.css");
-        $MyMetatag->setCss("/public/jquery/slick/css/slick.css");
+        $MyFrankyMonster->addJquery('slick');
     }
       
 

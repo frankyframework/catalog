@@ -21,7 +21,7 @@ if($CatalogproductsModel->getDataSearch($CatalogproductsEntity->getArrayCopy()) 
     	while($registro = $CatalogproductsModel->getRows())
     	{
 
-            $catalogo[] = ["loc" => CATALOG_VIEW_SUBCAT, "vars" =>['friendly' => $registro['url_key']],"priority" => "0.8","changefreq" => "daily"];  
+            $catalogo[] = ["loc" => CATALOG_SEARCH_CATEGORY, "vars" =>['friendly' => $registro['url_key']],"priority" => "0.8","changefreq" => "daily"];  
 
         }
   }
