@@ -31,7 +31,7 @@
         {
             "php":"admin/catalog_category/form.php",
             "css":"",
-            "js":["validaciones.js"],
+            "js":[],
             "jquery":["jquery-validate","tags"],
             "permisos":[1,2],
             "constante":"FRM_CATALOG_CATEGORY",
@@ -45,7 +45,7 @@
         {
             "php":"admin/catalog_subcategory/form.php",
             "css":"",
-            "js":["validaciones.js"],
+            "js":[],
             "jquery":["jquery-validate","tags"],
             "permisos":[1,2],
             "constante":"FRM_CATALOG_SUBCATEGORY",
@@ -73,7 +73,7 @@
         {
             "php":"admin/catalog_products/form.php",
             "css":"",
-            "js":["validaciones.js"],
+            "js":[],
             "jquery":["jquery-validate","tags"],
             "permisos":"",
             "constante":"FRM_CATALOG_PRODUCTS",
@@ -283,7 +283,7 @@
         {
             "php":"admin/custom_attributes/form.php",
             "css":"",
-            "js":["validaciones.js"],
+            "js":[],
             "jquery":["jquery-validate"],
             "permisos":[1,2],
             "constante":"FRM_CATALOG_CUSTOM_ATTRIBUTES",
