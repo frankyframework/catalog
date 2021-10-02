@@ -88,9 +88,10 @@
                 
             </div>
 
-
+            <script type="text/javascript">
+            window.admingrid = <?php echo json_encode($lista_admin_data); ?>;
+            </script>
             <script >
-            $(".contenedor_columnas_info").htmlDataDum(<?php echo json_encode($data_productos); ?>,".no_hay_datos");
 
             $('.play_importacion').click(function(e){
                 e.preventDefault();
