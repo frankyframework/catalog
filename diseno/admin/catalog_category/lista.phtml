@@ -1,0 +1,85 @@
+<div class="w-xxxx-12 w-xxx-12 w-xx-12 w-x-12">
+    <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4">
+        <div id="jstree">
+            
+            <ul>
+                <li id="cat_0" data-jstree='{ "selected" : true }'>Root
+                    <?php  if(!empty($lista_admin_data)):?>
+                    <ul>
+                    <?php foreach($lista_admin_data['cat_0'] as $departamento): ?>
+                    
+                        
+                        <li id="cat_<?=$departamento['id']; ?>"><?=$departamento['name']; ?> (ID:<?=$departamento['id_category']; ?>)
+                            <?php  if(isset($lista_admin_data['cat_'.$departamento['id']])):?>
+                                <ul>
+                                <?php foreach($lista_admin_data['cat_'.$departamento['id']] as $categoria): ?>
+                    
+                        
+                                    <li id="cat_<?=$categoria['id']; ?>"><?=$categoria['name']; ?> (ID:<?=$categoria['id_category']; ?>)
+                                        <?php  if(isset($lista_admin_data['cat_'.$categoria['id']])):?>
+                                            <ul>
+                                            <?php foreach($lista_admin_data['cat_'.$categoria['id']] as $subcategoria): ?>
+                    
+                        
+                                                <li id="cat_<?=$subcategoria['id']; ?>" class="nivel3"><?=$subcategoria['name']; ?> (ID:<?=$subcategoria['id_category']; ?>)</li>
+                                                
+                                            <?php endforeach; ?>
+                                            </ul>
+                                        <?php endif; ?>
+                                    </li>
+                                    
+                                <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
+                        </li>
+                        
+                    <?php endforeach; ?>
+                    </ul>
+                    <?php endif; ?>
+                </li>
+            </ul>
+            
+        </div>
+    </div>
+    <div class="w-xxxx-8 w-xxx-8 w-xx-8 w-x-8" >
+        <div id="actions">
+            <button class="add_category">Nuevo</button>
+            <button class="remove_category">Eliminar</button>
+        </div>
+        <div id="content_form"></div>
+
+    
+    </div>
+</div>
+
+<script>
+	$('#jstree').on('changed.jstree', function (e, data) {
+
+        window.cat_selected = data.instance.get_node(data.selected[0]).id.replace('cat_','');
+        if(window.cat_selected != 0)
+        {
+            ajax_getFrmCategpry(window.cat_selected,'');
+            $('.add_category').show();
+            $('.remove_category').show();
+        }
+        if(window.cat_selected == 0)
+        {
+            $('.remove_category').hide();
+        }
+        if(data.instance.get_node(data.selected[0]).parents.length >=4)
+        {
+            $('.add_category').hide();
+            $('.remove_category').hide();
+        }
+        
+  }).jstree();
+
+    $('.add_category').click(function(){
+        ajax_getFrmCategpry('',window.cat_selected);
+    });
+
+    $('.remove_category').click(function(){
+        EliminarRegistro('DeleteCatalogCategory',window.cat_selected,0,'','EliminarRegistorPanelRemove')
+
+    });
+</script>

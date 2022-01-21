@@ -5,6 +5,7 @@ namespace Catalog\entity;
 class CatalogcategoryEntity
 {
     private $id;
+    private $parent_id;
     private $name;
     private $description;
     private $image;
@@ -31,6 +32,7 @@ class CatalogcategoryEntity
     public function exchangeArray($data)
     {
         $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->parent_id = (isset($data["parent_id"]) ? $data["parent_id"] : null);
         $this->name = (isset($data["name"]) ? $data["name"] : null);
         $this->description = (isset($data["description"]) ? $data["description"] : null);
         $this->image = (isset($data["image"]) ? $data["image"] : null);
@@ -63,13 +65,15 @@ class CatalogcategoryEntity
 
     public function id($id = null){ if($id != null){ $this->id=$id; }else{ return $this->id; } }
 
+    public function parent_id($parent_id = null){ if($parent_id != null){ $this->parent_id=$parent_id; }else{ return $this->parent_id; } }
+
     public function name($name = null){ if($name != null){ $this->name=$name; }else{ return $this->name; } }
 
     public function description($description = null){ if($description != null){ $this->description=$description; }else{ return $this->description; } }
 
     public function image($image = null){ if($image != null){ $this->image=$image; }else{ return $this->image; } }
 
-    public function visible_in_search($visible_in_search = null){ if($visible_in_search != null){ $this->visible_in_search=$visible_in_search; }else{ return $this->visible_in_search; } }
+    public function visible_in_search($visible_in_search = null){ if($visible_in_search !== null){ $this->visible_in_search=$visible_in_search; }else{ return $this->visible_in_search; } }
 
     public function users($users = null){ if($users != null){ $this->users=$users; }else{ return $this->users; } }
 
@@ -81,7 +85,7 @@ class CatalogcategoryEntity
 
     public function url_key($url_key = null){ if($url_key != null){ $this->url_key=$url_key; }else{ return $this->url_key; } }
 
-    public function status($status = null){ if($status != null){ $this->status=$status; }else{ return $this->status; } }
+    public function status($status = null){ if($status !== null){ $this->status=$status; }else{ return $this->status; } }
 
     public function orden($orden = null){ if($orden != null){ $this->orden=$orden; }else{ return $this->orden; } }
 

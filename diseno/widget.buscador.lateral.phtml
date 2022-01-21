@@ -1,39 +1,52 @@
 <?php
 $data = $MyRequest->getRequest();
-if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_CATEGORY)
+if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_DEPARTAMENTO)
 {
   
-  $categoria      = $MyRequest->getUrlParam('friendly');
-  $subcategoria   = $MyRequest->getRequest('subcategoria');
-  $BuscadorLateralForm->setAtributo('action',$MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $categoria]));
+  $_departamento      = $MyRequest->getUrlParam('departamento');
+  $_categoria      = $MyRequest->getRequest('categoria',[]);
+  $_subcategoria      = $MyRequest->getRequest('subcategoria',[]);
+  $BuscadorLateralForm->setAtributo('action',$MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $_departamento]));
+
+}
+
+elseif($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_CATEGORY)
+{
+  
+  $_categoria      = $MyRequest->getUrlParam('categoria');
+  $_departamento   = $MyRequest->getUrlParam('departamento');
+  $_subcategoria      = $MyRequest->getRequest('subcategoria',[]);
+  $BuscadorLateralForm->setAtributo('action',$MyRequest->url(CATALOG_SEARCH_CATEGORY,['categoria' => $_categoria,'departamento' => $_departamento]));
 
 }
 else if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_SUBCATEGORY)
 {
    
-  $categoria      = $MyRequest->getUrlParam('categoria');
-  $subcategoria      = $MyRequest->getUrlParam('friendly');
-  $BuscadorLateralForm->setAtributo('action',$MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['categoria' => $categoria,'friendly' => $subcategoria]));
+  $_categoria      = $MyRequest->getUrlParam('categoria');
+  $_subcategoria      = $MyRequest->getUrlParam('subcategoria');
+  $_departamento      = $MyRequest->getUrlParam('departamento');
+  $BuscadorLateralForm->setAtributo('action',$MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['categoria' => $_categoria,'subcategoria' => $_subcategoria,'departamento' => $_departamento]));
 }
 else{
-  $categoria      = $MyRequest->getRequest('categoria');
-  $subcategoria      = $MyRequest->getRequest('subcategoria');
-
-  if(!empty($categoria)):
-    $data['categoria[]'] = (is_array($categoria) ? $categoria: [$categoria]);
-  endif;
-
-  if(!empty($subcategoria)):
-    $data['subcategoria[]'] = (is_array($subcategoria) ? $subcategoria: [$subcategoria]);
-  endif;
+  $_categoria      = $MyRequest->getRequest('categoria',[]);
+  $_subcategoria      = $MyRequest->getRequest('subcategoria',[]);
+  $_departamento      = $MyRequest->getRequest('departamento',[]);
 }
 
 
-
-if(!empty($categoria) && !is_array($categoria))
+if(!empty($_categoria) && !is_array($_categoria))
 {
-  $categoria = [$categoria];
+  $_categoria = [$_categoria];
 }
+if(!empty($_subcategoria) && !is_array($_subcategoria))
+{
+  $_subcategoria = [$_subcategoria];
+}
+if(!empty($_departamento) && !is_array($_departamento))
+{
+  $_departamento = [$_departamento];
+}
+
 
 $precio	= $MyRequest->getRequest('precio');
 $precio_rango = catalog_getPriceMaxMinProduct();
@@ -67,57 +80,53 @@ if(!empty($precio))
         </li>
 
 
-       <?php
-          $cat_in_search = [];
-          $cat_id_in_search = [];
-
-          if(!empty($categorias)): 
-            foreach($categorias as $k => $cat):
-              if(!empty($categoria) && in_array($k,$categoria)):
-                $cat_in_search[] = $cat;
-              endif; 
-            endforeach;
-          endif;
-
-          if(!empty($_categorias)): 
-            foreach($_categorias as $k => $_cat):
-              if(in_array($_cat,$cat_in_search)):
-                $cat_id_in_search[] = $k;
-              endif; 
-            endforeach;
-          endif; ?>
+        <?php if(!in_array($MyFrankyMonster->MySeccion(), [CATALOG_SEARCH_SUBCATEGORY])): ?>
+                    
           <li class="area_categoria">
-          <?php if(!in_array($MyFrankyMonster->MySeccion(),[CATALOG_SEARCH_CATEGORY,CATALOG_SEARCH_SUBCATEGORY])): ?>
-          <span class="title_filter">Categorías</span>
-          
-         
-         
-          <?php  echo $BuscadorLateralForm->get("categoria[]"); ?>
-          </li>
-          <?php endif; ?>
-          <?php if(!empty($categoria) && !in_array($MyFrankyMonster->MySeccion(),[CATALOG_SEARCH_SUBCATEGORY])) :?>
-              <li class="area_subcategoria">
-                <span class="title_filter">Subcategorías</span>
-                <?php if(!empty($cat_id_in_search)): ?>
-                  <ul>
-                <?php foreach($cat_id_in_search as $id_cat):?>
-
+          <?php  if(!empty($categorias)):?>
+                <ul>
+                <?php foreach($categorias['cat_0'] as $departamento): ?>
                 
-                  <?php if(!empty($subcategorias[$id_cat])): ?>
-                    <li class="area_subcategoria"><span class="subtitle_filter"><?=$_categorias[$id_cat]?></span></li>
-               
-                    <?php foreach($subcategorias[$id_cat] as $value => $label):?>
-                      <li><label>
-                        <input type="checkbox" name="subcategoria[]" value="<?=$value?>" <?=(!empty($subcategoria) && in_array($value,$subcategoria) ? 'checked="checked"' : '')?> /><?=$label?>
-                        </label></li>
-                    <?php endforeach;?>
-                  <?php endif;?>
+                    <?php if(in_array($MyFrankyMonster->MySeccion(), [CATALOG_SEARCH_DEPARTAMENTO,CATALOG_SEARCH_CATEGORY,CATALOG_SEARCH_SUBCATEGORY])  && $departamento['url_key'] != $_departamento[0]) { continue; } ?>
+                    
+                    <li id="cat_<?=$departamento['id']; ?>">
+                      <label>
+                      <?php if(!in_array($MyFrankyMonster->MySeccion(), [CATALOG_SEARCH_DEPARTAMENTO,CATALOG_SEARCH_CATEGORY,CATALOG_SEARCH_SUBCATEGORY]) ): ?>
+                        <input type="checkbox" name="departamento[]" value="<?=$departamento['url_key']; ?>" <?=(in_array($departamento['url_key'],$_departamento) ? "checked=\"checked\"" : "")?> /> 
+                      <?php endif; ?>
+                      <?=$departamento['name']; ?> </label>
+                        <?php  if(isset($categorias['cat_'.$departamento['id']])):?>
+                            <ul>
+                            <?php foreach($categorias['cat_'.$departamento['id']] as $categoria): ?>
                 
-                  
-                  <?php endforeach;?>
+                              <?php if(in_array($MyFrankyMonster->MySeccion(), [CATALOG_SEARCH_CATEGORY,CATALOG_SEARCH_SUBCATEGORY]) && $categoria['url_key'] != $_categoria[0]) { continue; } ?>
+                   
+                                <li id="cat_<?=$categoria['id']; ?>" ><label>
+                                    <?php if(!in_array($MyFrankyMonster->MySeccion(), [CATALOG_SEARCH_CATEGORY,CATALOG_SEARCH_SUBCATEGORY]) ): ?>
+                                    <input type="checkbox" name="categoria[]" value="<?=$categoria['url_key']; ?>" <?=(in_array($categoria['url_key'],$_categoria) ? "checked=\"checked\"" : "")?> /> 
+                                    <?php endif; ?>
+                                    <?=$categoria['name']; ?> </label>
+                                    <?php  if(isset($categorias['cat_'.$categoria['id']])):?>
+                                        <ul>
+                                        <?php foreach($categorias['cat_'.$categoria['id']] as $subcategoria): ?>
+                
+                    
+                                            <li id="cat_<?=$subcategoria['id']; ?>"  ><label><input type="checkbox" name="subcategoria[]" value="<?=$subcategoria['url_key']; ?>" <?=(in_array($subcategoria['url_key'],$_subcategoria) ? "checked=\"checked\"" : "")?> /> <?=$subcategoria['name']; ?></label></li>
+                                            
+                                        <?php endforeach; ?>
+                                        </ul>
+                                    <?php endif; ?>
+                                </li>
+                                
+                            <?php endforeach; ?>
+                            </ul>
+                        <?php endif; ?>
+                    </li>
+                    
+                <?php endforeach; ?>
                 </ul>
-                <?php endif; ?>
-              </li>
+            <?php endif; ?>
+          </li>
           <?php endif; ?>
         
 

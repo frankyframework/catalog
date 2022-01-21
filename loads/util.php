@@ -42,10 +42,7 @@ function getCategoryMenu()
     $CatalogcategoryModel = new Catalog\model\CatalogcategoryModel();
     $CatalogcategoryEntity = new Catalog\entity\CatalogcategoryEntity();
     
-    $CatalogsubcategoryModel = new Catalog\model\CatalogsubcategoryModel();
-    $CatalogsubcategoryEntity = new Catalog\entity\CatalogsubcategoryEntity();
-    
-    
+   
     $CatalogcategoryModel->setTampag(1000);
     $CatalogcategoryModel->setOrdensql("orden ASC");
     $CatalogcategoryEntity->status(1);
@@ -53,48 +50,40 @@ function getCategoryMenu()
     $CatalogcategoryModel->getData($CatalogcategoryEntity->getArrayCopy());
     $total = $CatalogcategoryModel->getTotal();
     
-    $categorias= [];
+
     if($total > 0)
     {
         while($registro = $CatalogcategoryModel->getRows())
         {
-            $categorias[$registro['id']] = $registro;
+            if(empty($registro['parent_id']))
+            {
+                $data['cat_0'][] = $registro;
+            }
+            else{
+                $data['cat_'.$registro['parent_id']][] = $registro;
+            }
+            
         }
     }
-    
-    $CatalogsubcategoryModel->setTampag(1000);
-    $CatalogsubcategoryModel->setOrdensql("catalog_subcategory.orden ASC");
-    $CatalogsubcategoryEntity->status(1);
-    $CatalogsubcategoryEntity->visible_in_search(1);
-    $CatalogsubcategoryModel->getData($CatalogsubcategoryEntity->getArrayCopy());
-    $total = $CatalogsubcategoryModel->getTotal();
-    
-    $subcategorias= [];
-    if($total > 0)
-    {
-        while($registro = $CatalogsubcategoryModel->getRows())
-        {
-            $subcategorias[$registro['id_category']][] = $registro;
-        }
-    }
+
     
     
     $menu = '<li class="_nav_catalog">
         <ul class="_ul_nav_catalog">';
 
-    if(!empty($categorias))
+    if(!empty($data))
     {
-        foreach ($categorias as $id => $data)
+        foreach ($data['cat_0'] as $id => $departamento)
         {
-            $menu .= '<li class="'.$data['url_key'].'"><a href="'. $MyRequest->url(CATALOG_SEARCH_CATEGORY,[ 'friendly' => $data['url_key']]).'">'.$data['name'].'</a>';
-            if(!empty($subcategorias))
+            $menu .= '<li class="'.$departamento['url_key'].'"><a href="'. $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,[ 'departamento' => $departamento['url_key']]).'">'.$departamento['name'].'</a>';
+            if(!empty($data['cat_'.$departamento['id']]))
             {
-                if(isset($subcategorias[$id]) && !empty($subcategorias[$id]))
+                if(isset($data['cat_'.$departamento['id']]) && !empty($data['cat_'.$departamento['id']]))
                 {
-                    $menu .= '<ul class="sub_ul_nav_catalog '.$data['url_key'].'">';
-                    foreach ($subcategorias[$id] as $key => $data_sub)
+                    $menu .= '<ul class="sub_ul_nav_catalog '.$departamento['url_key'].'">';
+                    foreach ($data['cat_'.$departamento['id']] as $key => $categoria)
                     {
-                        $menu .= '<li  class="'.$data_sub['url_key'].'"><a href="'. $MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['categoria'  =>$data['url_key'],  'friendly' => $data_sub['url_key']]).'">'.$data_sub['name'].'</a></li>';
+                        $menu .= '<li  class="'.$categoria['url_key'].'"><a href="'. $MyRequest->url(CATALOG_SEARCH_CATEGORY,['departamento'  =>$departamento['url_key'],  'categoria' => $categoria['url_key']]).'">'.$categoria['name'].'</a></li>';
                     }
                     $menu .= '</ul>';
                 }
@@ -112,7 +101,7 @@ function getCategoryMenu()
 
 
 
-function getCatalogCategorys( $type="interface", $search = [])
+function getCatalogCategorys($search = [])
 {
     $CatalogcategoryModel = new Catalog\model\CatalogcategoryModel();
     $CatalogcategoryModel->setTampag(1000);
@@ -126,78 +115,18 @@ function getCatalogCategorys( $type="interface", $search = [])
 
         while($registro = $CatalogcategoryModel->getRows())
         {
-            $categorias[($type == "interface" ? $registro["url_key"] : $registro['id'])] = $registro["name"];
-	}
+            $parent_id = (empty($registro['parent_id']) ? 0: $registro['parent_id'] );
+            $categorias['cat_'.$parent_id][] = $registro;
+	    }
     }
     return $categorias;
 }
 
-function getImageSubcategorys($id)
-{
-    global $MyConfigure;
-    $CatalogsubcategoryModel = new Catalog\model\CatalogsubcategoryModel();
-    $CatalogsubcategoryEntity = new Catalog\entity\CatalogsubcategoryEntity();
-    $CatalogsubcategoryModel->setTampag(1);
-    $CatalogsubcategoryModel->setOrdensql("catalog_subcategory.name ASC");
-    $CatalogsubcategoryEntity->url_key($id);
-    $CatalogsubcategoryModel->getData($CatalogsubcategoryEntity->getArrayCopy());
-    $total	= $CatalogsubcategoryModel->getTotal();
 
 
-    if($total > 0)
-    {
-        $data = $CatalogsubcategoryModel->getRows();
-        $img = '';
-        if(!empty($data["image"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/category/".$data["image"]))
-        {
-           $img  =  imageResize($MyConfigure->getUploadDir()."/catalog/category/".$data["image"],1920,822, true);
-        }
 
-        return ['img' =>$img,'description' => $data['description']];
 
-    }
-    return '';
-}
 
-function getCatalogSubcategorys($id=null, $type="interface")
-{
-    $CatalogsubcategoryModel = new Catalog\model\CatalogsubcategoryModel();
-    $CatalogsubcategoryEntity = new Catalog\entity\CatalogsubcategoryEntity();
-    $CatalogcategoryEntity = new Catalog\entity\CatalogcategoryEntity();
-    
-    $CatalogsubcategoryModel->setTampag(1000);
-    $CatalogsubcategoryModel->setOrdensql("catalog_subcategory.name ASC");
-    if(!empty($id)):
-        if(is_numeric($id)):
-            $CatalogsubcategoryEntity->id_category($id);
-        else:
-            $CatalogcategoryEntity->url_key($id);
-        endif;
-    endif;
-    $CatalogsubcategoryEntity->status(1);
-    $CatalogsubcategoryModel->setDataCategoria($CatalogcategoryEntity->getArrayCopy());
-    $CatalogsubcategoryModel->getData($CatalogsubcategoryEntity->getArrayCopy());
-    $total	= $CatalogsubcategoryModel->getTotal();
-    $subcategorias = array();
-
-    if($total > 0)
-    {
-
-        while($registro = $CatalogsubcategoryModel->getRows())
-        {
-            if($id != null)
-            {
-                $subcategorias[($type == "interface" ? $registro["url_key"] : $registro['id'])] = $registro["name"];
-            }
-            else
-            {
-                 $subcategorias[$registro["id_category"]][($type == "interface" ? $registro["url_key"] : $registro['id'])] = $registro["name"];
-
-            }
-	}
-    }
-    return $subcategorias;
-}
 
 
 function getFotoCatalogProduct($album,$foto,$token,$principal)
@@ -237,9 +166,8 @@ function catalog_getBuscadorLateral()
     $BuscadorLateralForm =  new \Catalog\Form\BuscadorLateralForm('buscadorLateral');
     $BuscadorLateralForm->setAtributo('action',$MyRequest->url(CATALOG_SEARCH));
     $CatalogcategoryEntity->status(1);
-    $categorias = getCatalogCategorys('interface',$CatalogcategoryEntity->getArrayCopy());
-    $_categorias = getCatalogCategorys('sql',$CatalogcategoryEntity->getArrayCopy());
-    $subcategorias = getCatalogSubcategorys(null,'interface');
+    $categorias = getCatalogCategorys($CatalogcategoryEntity->getArrayCopy());
+    
     $BuscadorLateralForm->setOptionsInput("categoria[]", $categorias);
 
 
@@ -248,9 +176,7 @@ function catalog_getBuscadorLateral()
     'MyFrankyMonster' => $MyFrankyMonster,
     'MyRequest'  => $MyRequest,
     'BuscadorLateralForm' => $BuscadorLateralForm,
-    'categorias' => $categorias,
-    '_categorias' => $_categorias,
-    'subcategorias' => $subcategorias
+    'categorias' => $categorias
     ]);
 }
 
@@ -262,16 +188,19 @@ function catalog_getPriceMaxMinProduct()
     $CatalogproductsModel = new \Catalog\model\CatalogproductsModel;
     $CatalogproductsEntity = new \Catalog\entity\CatalogproductsEntity;
     $CatalogproductsModel->setOrdensql("price ASC");
+ 
     $precio = [0,0];
     if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
     {
             $registro = $CatalogproductsModel->getRows();
+           
             $precio[0] = ($registro['price'] > 0 ? $registro['price'] : 0);
             
     }
     $CatalogproductsModel->setOrdensql("price DESC");
     if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
     { 
+       
             $registro = $CatalogproductsModel->getRows();
             $precio[1] = ($registro['price']> 0 ? $registro['price'] : 0);
 
@@ -513,24 +442,17 @@ function getCatalogVitrina($clave)
         
         $filtro_items = json_decode($vitrina['items'],true);
         $categorias = [];
-        $subcategorias = [];
+       
         if(!empty($filtro_items['category']))
         {
-            foreach ($filtro_items['category'] as $cat => $sub)
+            foreach ($filtro_items['category'] as $cat)
             {
                 $categorias[] = $cat;
-                if(!empty($sub))
-                {
-                    foreach($sub as $_sub)
-                    {
-                        $subcategorias[] = $_sub;
-                    }
-                }
+                
             }
         }
         
         $CatalogproductsModel->setCategoriaArray($categorias);
-        $CatalogproductsModel->setSubCategoriaArray($subcategorias);
         
         
         if(isset($filtro_items['productos'])):
@@ -544,7 +466,7 @@ function getCatalogVitrina($clave)
         
             while($registro = $CatalogproductsModel->getRows())
             {
-                $registro['link'] = $MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $registro['url_key']]);
+                $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro['url_key']]);
 
                 $registro['thumb_resize'] =  "";
                 $img = "";
@@ -606,56 +528,87 @@ function CatalogBreadcrumbs($name =null)
     $html .='<li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH).'" data-transition="back">'.$uiCommand[8].'</a></li>';
 
     $categorias = getCatalogCategorys();
-    $_categorias = array_keys($categorias);
-    if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_CATEGORY)
+    $_categorias = [];
+    $name_categorias = [];
+    foreach($categorias as $parent => $cat)
     {
-        $categoria      = $MyRequest->getUrlParam('friendly');
+        foreach($cat as $key => $_cat)
+        {
+            $name_categorias[$_cat['url_key']] = $_cat['name'];
+            $_categorias[] = $_cat['url_key'];
+        }
+    }
+
+    if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_DEPARTAMENTO)
+    {
+        $departamento      = $MyRequest->getUrlParam('departamento');
         
     
-        if(in_array($categoria, $_categorias))
+        if(in_array($departamento, $_categorias))
         {
         
-            $html .='<li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $categoria]).'" data-transition="back">'.$categorias[$categoria].'</a></li>';
+            $html .='<li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $departamento]).'" data-transition="back">'.$name_categorias[$departamento].'</a></li>';
         }
         else{
             
-            $html .= '<li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $categoria]).'" data-transition="back">'.$name.'</a></li>';
+            $html .= '<li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $departamento]).'" data-transition="back">'.$name.'</a></li>';
+        }
+        
+    }
+    if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_CATEGORY)
+    {
+    
+        $departamento      = $MyRequest->getUrlParam('departamento');
+        $categoria      = $MyRequest->getUrlParam('categoria');
+      
+
+        if(in_array($categoria, $_categorias))
+        {
+            $html .= '
+            <li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $departamento]).'" data-transition="back">'.$name_categorias[$departamento].'</a> </li>
+            <li class="nivel_3"><a href="'.$MyRequest->url(CATALOG_SEARCH_CATEGORY,['departamento' => $departamento,'categoria' => $categoria]).'" data-transition="back">'.$name_categorias[$categoria].'</a> </li>';
+        }
+        else{
+            $html .= '<li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $departamento]).'" data-transition="back">'.$name_categorias[$departamento].'</a> </li>
+            <li class="nivel_3"><a href="'.$MyRequest->url(CATALOG_SEARCH_CATEGORY,['departamento' => $categoria,'categoria' => $categoria]).'" data-transition="back">'.$name.'</a></li>';
         }
         
     }
     if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_SUBCATEGORY)
     {
     
+        $departamento      = $MyRequest->getUrlParam('departamento');
         $categoria      = $MyRequest->getUrlParam('categoria');
-        $subcategorias = getCatalogSubcategorys($categoria);
-        $_subcategorias = array_keys(getCatalogSubcategorys($categoria));
-        $subcategoria      = $MyRequest->getUrlParam('friendly');
+        $subcategoria      = $MyRequest->getUrlParam('subcategoria');
+      
 
-        if(in_array($subcategoria, $_subcategorias))
+        if(in_array($subcategoria, $_categorias))
         {
             $html .= '
-            <li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $categoria]).'" data-transition="back">'.$categorias[$categoria].'</a> </li>
-            <li class="nivel_3"><a href="'.$MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['categoria' => $categoria,'friendly' => $subcategoria]).'" data-transition="back">'.$subcategorias[$subcategoria].'</a> </li>';
+            <li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $departamento]).'" data-transition="back">'.$name_categorias[$departamento].'</a> </li>
+            <li class="nivel_3"><a href="'.$MyRequest->url(CATALOG_SEARCH_CATEGORY,['departamento' => $departamento,'categoria' => $categoria]).'" data-transition="back">'.$name_categorias[$categoria].'</a> </li>
+            <li class="nivel_4"><a href="'.$MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['departamento' => $departamento,'categoria' => $categoria,'subcategoria' => $subcategoria]).'" data-transition="back">'.$name_categorias[$subcategoria].'</a> </li>';
         }
         else{
-            $html .= '<li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $categoria]).'" data-transition="back">'.$categorias[$categoria].'</a> </li>
-            <li class="nivel_3"><a href="'.$MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['categoria' => $categoria,'friendly' => $subcategoria]).'" data-transition="back">'.$name.'</a></li>';
+            $html .= '<li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $departamento]).'" data-transition="back">'.$name_categorias[$departamento].'</a> </li>
+            <li class="nivel_3"><a href="'.$MyRequest->url(CATALOG_SEARCH_CATEGORY,['departamento' => $categoria,'categoria' => $categoria]).'" data-transition="back">'.$name_categorias[$categoria].'</a></li>
+            <li class="nivel_4"><a href="'.$MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['departamento' => $categoria,'categoria' => $categoria,'subcategoria' => $subcategoria]).'" data-transition="back">'.$name.'</a></li>';
         }
         
     }
     if($MyFrankyMonster->MySeccion() == CATALOG_VIEW_SUBCAT)
     {
     
+        $departamento      = $MyRequest->getUrlParam('departamento');
         $categoria      = $MyRequest->getUrlParam('categoria');
-        $subcategorias = getCatalogSubcategorys($categoria);
-        $_subcategorias = array_keys(getCatalogSubcategorys($categoria));
         $subcategoria      = $MyRequest->getUrlParam('subcategoria');
         $friendly      = $MyRequest->getUrlParam('friendly');
 
     
-        $html .= '<li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $categoria]).'" data-transition="back">'.$categorias[$categoria].'</a> </li>
-        <li class="nivel_3"><a href="'.$MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['categoria' => $categoria,'friendly' => $subcategoria]).'" data-transition="back">'.$subcategorias[$subcategoria].'</a> </li>
-        <li class="nivel_3"><a href="'.$MyRequest->url(CATALOG_VIEW_SUBCAT,['categoria' => $categoria,'subcategoria' => $subcategoria,'friendly' => $friendly]).'" data-transition="back">'.$name.'</a></li>';
+        $html .= '<li class="nivel_2"><a href="'.$MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $departamento]).'" data-transition="back">'.$name_categorias[$departamento].'</a> </li>
+        <li class="nivel_3"><a href="'.$MyRequest->url(CATALOG_SEARCH_CATEGORY,['departamento' => $departamento,'categoria' => $categoria]).'" data-transition="back">'.$name_categorias[$categoria].'</a> </li>
+        <li class="nivel_4"><a href="'.$MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['departamento' => $departamento,'categoria' => $categoria,'subcategoria' => $subcategoria]).'" data-transition="back">'.$name_categorias[$subcategoria].'</a> </li>
+        <li class="nivel_5"><a href="'.$MyRequest->url(CATALOG_VIEW_SUBCAT,['departamento' => $departamento,'categoria' => $categoria,'subcategoria' => $subcategoria,'friendly' => $friendly]).'" data-transition="back">'.$name.'</a></li>';
     
         
     }

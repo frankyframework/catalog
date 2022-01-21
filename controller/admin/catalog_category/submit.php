@@ -12,6 +12,8 @@ $CatalogCategoryEntity = new CatalogcategoryEntity($MyRequest->getRequest());
 
 $id       = $Tokenizer->decode($MyRequest->getRequest('id'));
 $callback = $Tokenizer->decode($MyRequest->getRequest('callback'));
+$status = $MyRequest->getRequest('status',0);
+$visible_in_search = $MyRequest->getRequest('visible_in_search',0);
 $CatalogCategoryEntity->users(json_encode($MyRequest->getRequest('users',array())));
 
 if($Tokenizer->decode($MyRequest->getRequest('id')) != false)
@@ -99,11 +101,13 @@ if ($handle->uploaded)
 
 if($error == false)        
 {
+    $CatalogCategoryEntity->status($status);
+    $CatalogCategoryEntity->visible_in_search($visible_in_search);
     if(empty($id))
     {
 
         $CatalogCategoryEntity->createdAt(date('Y-m-d H:i:s'));
-        $CatalogCategoryEntity->status(1);
+       
     }
     else
     {

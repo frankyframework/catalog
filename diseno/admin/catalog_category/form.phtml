@@ -1,19 +1,11 @@
-<div class="content">
-    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
-    <div class="w-xxxx-12">
-        <div class="w-xxxx-5 m-r-xxxx-1 change_float_right">
-            <h2><?=$title_form?></h2>
-            <ul class="_ul_default">
-                <li>Aqui descripcion</li>
-            </ul>
-        </div>
-         <div class="w-xxxx-4 m-l-xxxx-1 change_float_left">
+
         <?php echo $adminForm->openTag(); ?>
-        <?php echo $adminForm->getRow('callback'); ?>
+        <?php echo $adminForm->getRow('parent_id'); ?>
+        <?php echo $adminForm->getRow('status'); ?>
         <?php if(!empty($id)): ?>
         <?php echo $adminForm->getRow('id'); ?>
         <?php endif; ?>
-
+        <?php echo $adminForm->getRow('activar'); ?>
         <?php echo $adminForm->getRow('name'); ?>
         
         <?php echo $adminForm->getRow('description'); ?>
@@ -33,23 +25,5 @@
         <?php echo $adminForm->getRow('meta_keywords'); ?>
         <?php echo $adminForm->getRow('guardar'); ?>
         <?php echo $adminForm->endTag(); ?>
-        </div>
-    </div>
-</div>
-<script >
-$(document).ready(function(){
-         $("#frmcategoria").validate();
-         $('textarea[name=meta_keywords]').tagsInput({width:'auto'});
-});
-$('#image_category').change(function(){
-    if (this.files && this.files[0])
-    {
-        var reader = new FileReader();
-        reader.onload = function (e)
-        {
-            $('#imagen_previa').html('<img style="width: 150px" src="'+e.target.result+'" alt="Preview" />');
-        }
-        reader.readAsDataURL(this.files[0]);
-    }
-});
-</script>
+
+   

@@ -3,7 +3,7 @@
     {
         "attributes":[
             {
-                "name":"id_subcategory",
+                "name":"id_category",
                 "type":"int",
                 "length":11,
                 "null":0
@@ -17,7 +17,7 @@
 
         ],
         "config":{
-            "primary":["id_subcategory","id_product"],
+            "primary":["id_category","id_product"],
             "engine":"MyISAM"
             
         }

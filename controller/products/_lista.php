@@ -20,19 +20,28 @@ $q = $MyRequest->getRequest('q');
 $precio	= $MyRequest->getRequest('precio');
 
 $image_category = '';
-if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_CATEGORY)
+if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_DEPARTAMENTO)
 {
-    $categoria      = $MyRequest->getUrlParam('friendly',$MyRequest->getRequest('categoria'));
+    $departamento      = $MyRequest->getUrlParam('departamento',$MyRequest->getRequest('departamento'));
+    $categoria = $MyRequest->getRequest('categoria');
+    $image_category = getImageCategorys($departamento);   
+}
+elseif($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_CATEGORY)
+{
+    $departamento      = $MyRequest->getUrlParam('departamento',$MyRequest->getRequest('departamento'));
+    $categoria      = $MyRequest->getUrlParam('categoria',$MyRequest->getRequest('categoria'));
     $subcategoria = $MyRequest->getRequest('subcategoria');
     $image_category = getImageCategorys($categoria);   
 }
 elseif($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_SUBCATEGORY)
 {
+    $departamento      = $MyRequest->getUrlParam('departamento',$MyRequest->getRequest('departamento'));
     $categoria      = $MyRequest->getUrlParam('categoria',$MyRequest->getRequest('categoria'));
-    $subcategoria      = $MyRequest->getUrlParam('friendly',$MyRequest->getRequest('subcategoria'));
-    $image_category = getImageSubcategorys($subcategoria);   
+    $subcategoria      = $MyRequest->getUrlParam('subcategoria',$MyRequest->getRequest('subcategoria'));
+    $image_category = getImageCategorys($subcategoria);   
 }
 else{
+    $departamento = $MyRequest->getRequest('departamento');
     $categoria      = $MyRequest->getRequest('categoria');
     $subcategoria = $MyRequest->getRequest('subcategoria');
 }
@@ -44,10 +53,28 @@ $CatalogproductsModel = new CatalogproductsModel();
 $CatalogproductsEntity = new CatalogproductsEntity();
 $CatalogcategoryModel = new CatalogcategoryModel();
 $CatalogcategoryEntity = new CatalogcategoryEntity();
-$CatalogsubcategoryModel = new CatalogsubcategoryModel();
-$CatalogsubcategoryEntity = new CatalogsubcategoryEntity();
 $MyPaginacion = new paginacion();
 $Tokenizer = new Tokenizer();
+
+if(!empty($departamento))
+{
+  if(is_array($departamento))
+  {
+    $CatalogproductsModel->setCategoriaArray($departamento);
+
+  }else {
+    $CatalogproductsModel->setCategoriaArray([$departamento]);
+ 
+    $CatalogcategoryEntity->url_key($departamento);
+    $result	 = $CatalogcategoryModel->getData($CatalogcategoryEntity->getArrayCopy());
+    $data           = $CatalogcategoryModel->getRows();
+    $MyMetatag->setTitulo($data['meta_title']);
+    $MyMetatag->setDescripcion($data['meta_description']);
+    $MyMetatag->setKeywords($data['meta_keywords']);
+  }
+
+}
+
 
 if(!empty($categoria))
 {
@@ -68,18 +95,19 @@ if(!empty($categoria))
 
 }
 
+
 if(!empty($subcategoria))
 {
   if(is_array($subcategoria))
   {
-    $CatalogproductsModel->setSubcategoriaArray($subcategoria);
+    $CatalogproductsModel->setCategoriaArray($subcategoria);
 
   }else {
-    $CatalogproductsModel->setSubcategoriaArray([$subcategoria]);
+    $CatalogproductsModel->setCategoriaArray([$subcategoria]);
 
-    $CatalogsubcategoryEntity->url_key($subcategoria);
-    $result	 = $CatalogsubcategoryModel->getData($CatalogsubcategoryEntity->getArrayCopy());
-    $data           = $CatalogsubcategoryModel->getRows();
+    $CatalogcategoryEntity->url_key($subcategoria);
+    $result	 = $CatalogcategoryModel->getData($CatalogcategoryEntity->getArrayCopy());
+    $data           = $CatalogcategoryModel->getRows();
     $MyMetatag->setTitulo($data['meta_title']);
     $MyMetatag->setDescripcion($data['meta_description']);
     $MyMetatag->setKeywords($data['meta_keywords']);
@@ -140,16 +168,19 @@ if($CatalogproductsModel->getDataSearch($CatalogproductsEntity->getArrayCopy()) 
     	while($registro = $CatalogproductsModel->getRows())
     	{
 
+        if(in_array($MyFrankyMonster->MySeccion(),[CATALOG_SEARCH_DEPARTAMENTO])):
 
-        if(in_array($MyFrankyMonster->MySeccion(),[CATALOG_SEARCH_CATEGORY])):
+          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_CATEGORY,['departamento' => $departamento,'categoria'   => $registro['url_key']]);
+        
+        elseif(in_array($MyFrankyMonster->MySeccion(),[CATALOG_SEARCH_CATEGORY])):
 
-          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['categoria'  =>$categoria, 'friendly' => $registro['url_key']]);
+          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['departamento' => $departamento,'categoria'  =>$categoria,'subcategoria'  => $registro['url_key']]);
         elseif(in_array($MyFrankyMonster->MySeccion(),[CATALOG_SEARCH_SUBCATEGORY])):
 
-            $registro['link'] = $MyRequest->url(CATALOG_VIEW_SUBCAT,['categoria'  =>$categoria,'subcategoria'  =>$subcategoria, 'friendly' => $registro['url_key']]);
+            $registro['link'] = $MyRequest->url(CATALOG_VIEW_SUBCAT,['departamento' => $departamento,'categoria'  =>$categoria,'subcategoria'  =>$subcategoria, 'friendly' => $registro['url_key']]);
 
         else:
-          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $registro['url_key']]);
+          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro['url_key']]);
 
         endif;
           $registro['thumb_resize'] =  "";

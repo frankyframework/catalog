@@ -2,13 +2,16 @@
 use Catalog\Form\ProductsForm;
 use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
+use Catalog\model\CatalogcategoryModel;
+use Catalog\entity\CatalogcategoryEntity;
 use Franky\Haxor\Tokenizer;
 
 $Tokenizer = new Tokenizer();
 
 $CatalogproductsModel  = new CatalogproductsModel();
 $CatalogproductsEntity = new CatalogproductsEntity();
-
+$CatalogCategoryModel = new CatalogcategoryModel();
+$CatalogCategoryEntity = new CatalogcategoryEntity();
 
 
 $id		= $Tokenizer->decode($MyRequest->getRequest('id'));
@@ -68,15 +71,6 @@ if(!empty($id))
         }
     }
    
-    foreach($data["category"] as $cat => $sub)
-    {
-        $data_category[] = $cat;
-        foreach($sub as $_sub)
-        {
-            $data_subcategory[] = $_sub;
-        }
-    }
-    
  
    
     
@@ -84,13 +78,33 @@ if(!empty($id))
 }
 //print_r($data); exit;
 
-$adminForm->setData($data);
-$categorias = getCatalogCategorys('sql',['status' => 1]);
-$subcategorias = getCatalogSubcategorys(null,'sql');
 
+$CatalogCategoryModel->setPage(1);
+$CatalogCategoryModel->setTampag(1000);
+$CatalogCategoryModel->setOrdensql("catalog_category.orden ASC");
+
+$CatalogCategoryEntity->status(1);
+$result	 = $CatalogCategoryModel->getData($CatalogCategoryEntity->getArrayCopy());
+
+$categorias = array();
+$categorys = array();
+if($CatalogCategoryModel->getTotal() > 0)
+{
+	$iRow = 0;	
+
+	while($registro = $CatalogCategoryModel->getRows())
+	{
+                
+        $parent_id = (!empty($registro['parent_id']) ? $registro['parent_id'] : 0);
+        $categorias['cat_'.$parent_id][] = $registro;
+        $categorys[$registro['id']] = $registro['name'];
+    }
+}
+
+$adminForm->setOptionsInput("category[]",$categorys);
+$adminForm->setData($data);
 $adminForm->setAtributoInput("callback","value", urldecode($callback));
-$adminForm->setOptionsInput("category", $categorias);
-$adminForm->setOptionsInput("subcategory", $subcategorias);
+
 
 $title_form = "$title";
 $MySession->SetVar('addProduct',$album);

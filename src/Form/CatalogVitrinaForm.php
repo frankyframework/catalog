@@ -88,24 +88,6 @@ class CatalogVitrinaForm  extends \Franky\Form\Form
            )
         );
 
-        $this->add(array(
-                'name' => 'subcategory[]',
-                'type'  => 'checkbox',
-                'required'  => false,
-            'required'  => true,
-                'atributos' => array(
-                    'class'       => '',
-                ),
-                'options' => array(
-
-                ),
-                'label_atributos' => array(
-                    'class'       => 'desc_form_obligatorio',
-                )
-            )
-        );
-
-       
 
 
 
@@ -113,7 +95,7 @@ class CatalogVitrinaForm  extends \Franky\Form\Form
             'name' => 'random',
             'type'  => 'checkbox',
             'atributos' => array(
-                'class' => ''
+                'class' => 'switch'
             ),
             'options' =>  array("1" => "Aleatorio"),
 

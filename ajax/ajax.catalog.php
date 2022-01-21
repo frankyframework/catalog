@@ -13,51 +13,14 @@ function DeleteCatalogCategory($id,$status)
     if($MyAccessList->MeDasChancePasar(ADMINISTRAR_CATEGORY_CATALOG))
     {
         $CatalogcategoryEntity->id(addslashes($Tokenizer->decode($id)));
-        $CatalogcategoryEntity->status($status);
 
-        if($CatalogcategoryModel->save($CatalogcategoryEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        if($CatalogcategoryModel->eliminar($CatalogcategoryEntity->getArrayCopy()) == REGISTRO_SUCCESS)
         {
 
         }
         else
         {
               $respuesta["message"] = $MyMessageAlert->Message("catalog_category_error_delete");
-              $respuesta["error"] = true;
-        }
-    }
-    else
-    {
-         $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
-         $respuesta["error"] = true;
-    }
-
-    return $respuesta;
-}
-
-
-function DeleteCatalogSubcategory($id,$status)
-{
-    global $MySession;
-    $CatalogsubcategoryModel =  new \Catalog\model\CatalogsubcategoryModel();
-    $CatalogsubcategoryEntity =  new \Catalog\entity\CatalogsubcategoryEntity();
-    $Tokenizer = new \Franky\Haxor\Tokenizer;
-    global $MyAccessList;
-    global $MyMessageAlert;
-
-    $respuesta = null;
-
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_CATEGORY_CATALOG))
-    {
-        $CatalogsubcategoryEntity->id(addslashes($Tokenizer->decode($id)));
-        $CatalogsubcategoryEntity->status($status);
-
-        if($CatalogsubcategoryModel->save($CatalogsubcategoryEntity->getArrayCopy()) == REGISTRO_SUCCESS)
-        {
-
-        }
-        else
-        {
-              $respuesta["message"] = $MyMessageAlert->Message("catalog_subcategory_error_delete");
               $respuesta["error"] = true;
         }
     }
@@ -753,45 +716,6 @@ function catalog_setOrdenCategoria($orden)
 }
 
 
-
-function catalog_setOrdenSubcategoria($orden)
-{
-
-    $CatalogsubcategoryModel =  new \Catalog\model\CatalogsubcategoryModel();
-    $CatalogsubcategoryEntity =  new \Catalog\entity\CatalogsubcategoryEntity();
-    $Tokenizer = new \Franky\Haxor\Tokenizer;
-    global $MyAccessList;
-    global $MyMessageAlert;
-        $respuesta =null;
-        if($MyAccessList->MeDasChancePasar(ADMINISTRAR_CATEGORY_CATALOG))
-        {
-           
-        
-            $orden = explode(",",str_replace("cat_","",$orden));
-
-            
-
-
-           
-            $v = "";
-            foreach($orden as $key => $val)
-            {
-                $v .= ($key)." -> $val,";
-                $CatalogsubcategoryEntity->id($Tokenizer->decode($val));
-                $CatalogsubcategoryEntity->orden($key);
-                $CatalogsubcategoryModel->save($CatalogsubcategoryEntity->getArrayCopy());
-            }
-          //  echo $v;
-        }
-        else
-        {
-             $respuesta[] = array("message" => $MyMessageAlert->Message("sin_privilegios"));
-        }
-	
-	return $respuesta;
-}
-
-
 function ajax_catalog_importar_producto($id)
 {
     global $MySession;
@@ -829,8 +753,8 @@ function ajax_catalog_importar_producto($id)
             $respuesta['data'][$count]['sku'] = $_POST['sku'];
             $respuesta['data'][$count]['id'] = $id;
 
-            $CatalogsubcategoryproductEntity    = new Catalog\entity\CatalogsubcategoryproductEntity();
-            $CatalogsubcategoryproductModel     = new Catalog\model\CatalogsubcategoryproductModel();
+            $CatalogcategoryproductEntity    = new Catalog\entity\CatalogcategoryproductEntity();
+            $CatalogcategoryproductModel     = new Catalog\model\CatalogcategoryproductModel();
             $CatalogproductsModel               = new Catalog\model\CatalogproductsModel();    
             $CatalogproductsEntity              = new Catalog\entity\CatalogproductsEntity($_POST);
             $ObserverManager                    = new \Franky\Core\ObserverManager;
@@ -872,17 +796,16 @@ function ajax_catalog_importar_producto($id)
                 
 
 
-                $CatalogsubcategoryproductEntity->id_product($data['id']);
-                $CatalogsubcategoryproductModel->remove($CatalogsubcategoryproductEntity->getArrayCopy());   
-                $category_subcategory = json_decode($CatalogproductsEntity->category(),true);
+                $CatalogcategoryproductEntity->id_product($data['id']);
+                $CatalogcategoryproductModel->remove($CatalogcategoryproductEntity->getArrayCopy());   
+                $category = json_decode($CatalogproductsEntity->category(),true);
 
-                foreach($category_subcategory as $cat => $subcat)
+                foreach($category as $cat)
                 {
-                    foreach($subcat as $id_sub)
-                    {  
-                        $CatalogsubcategoryproductEntity->id_subcategory($id_sub);
-                        $CatalogsubcategoryproductModel->save($CatalogsubcategoryproductEntity->getArrayCopy());   
-                    }
+               
+                    $CatalogcategoryproductEntity->id_category($cat);
+                    $CatalogcategoryproductModel->save($CatalogcategoryproductEntity->getArrayCopy());   
+                    
                 }
 
             
@@ -1206,11 +1129,56 @@ function ajax_getCatalogCustomAttrFrm($id,$category,$subcategory)
   
     return $respuesta;
 }
+
+
+function ajax_getFrmCategpry($id,$parent)
+{
+    global $_Niveles_usuarios;
+    global $MyConfigure;
+    $respuesta = null;
+    $Tokenizer = new Franky\Haxor\Tokenizer();
+   
+    $id = $Tokenizer->decode($id);
+    $parent = $Tokenizer->decode($parent);
+    $data = ['parent_id' => $parent];
+    if(!empty($id))
+    {
+        $CatalogCategoryModel = new Catalog\model\CatalogcategoryModel();
+        $CatalogCategoryEntity = new Catalog\entity\CatalogcategoryEntity();
+        $CatalogCategoryEntity->id($id);
+        $result	 = $CatalogCategoryModel->getData($CatalogCategoryEntity->getArrayCopy());
+        $data           = $CatalogCategoryModel->getRows();
+        $data['users'] = json_decode($data['users'],true);
+    
+        if(!empty($data["image"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/category/".$data["image"]))
+        {
+            $data['image'] = imageResize($MyConfigure->getUploadDir()."/catalog/category/".$data["image"],150,150, true);
+            
+        }
+
+        $data['id'] = $Tokenizer->token('category', $data['id']);
+    }
+    $adminForm = new Catalog\Form\CatalogCategoryForm("frmcategoria");
+    $adminForm->setOptionsInput("users[]", $_Niveles_usuarios);
+    $adminForm->setData($data);
+     
+    $respuesta['html'] = render(PROJECT_DIR.'/modulos/catalog/diseno/admin/catalog_category/form.phtml',['id' => $id,'adminForm' => $adminForm,'data'=> $data]);
+    
+
+
+
+
+  
+    return $respuesta;
+}
+
+
+
+
 /******************************** EJECUTA *************************/
 
 $MyAjax->register("EliminarCatalogCustomAttribute");
 $MyAjax->register("DeleteCatalogCategory");
-$MyAjax->register("DeleteCatalogSubcategory");
 $MyAjax->register("DeleteCatalogProduct");
 $MyAjax->register("setOrdenImagesProducts");
 $MyAjax->register("eliminarFotoCatalogProduct");
@@ -1226,8 +1194,7 @@ $MyAjax->register("ajax_products_agregarProductoConfigurable");
 $MyAjax->register("ajax_products_quitarProductoConfigurable");
 $MyAjax->register("ajax_products_setAttrConfigurable");
 $MyAjax->register("catalog_setOrdenCategoria");
-$MyAjax->register("catalog_setOrdenSubcategoria");
 $MyAjax->register("ajax_catalog_importar_producto");
 $MyAjax->register("ajax_getCatalogCustomAttrFrm");
-
+$MyAjax->register("ajax_getFrmCategpry");
 ?>

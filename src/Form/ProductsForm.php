@@ -88,22 +88,7 @@ class ProductsForm  extends \Franky\Form\Form
            )
         );
 
-        $this->add(array(
-                'name' => 'subcategory[]',
-                'type'  => 'checkbox',
-                'required'  => true,
-            'required'  => true,
-                'atributos' => array(
-                    'class'       => 'required',
-                ),
-                'options' => array(
-
-                ),
-                'label_atributos' => array(
-                    'class'       => 'desc_form_obligatorio',
-                )
-            )
-        );
+      
 
         $this->add(array(
                 'name' => 'price',
@@ -142,7 +127,7 @@ class ProductsForm  extends \Franky\Form\Form
             'name' => 'incluye_iva',
             'type'  => 'checkbox',
             'atributos' => array(
-                'class' => ''
+                'class' => 'switch'
             ),
             'options' =>  array("1" => "Incluye IVA"),
 
@@ -169,7 +154,7 @@ class ProductsForm  extends \Franky\Form\Form
             'name' => 'in_stock',
             'type'  => 'checkbox',
             'atributos' => array(
-                'class' => ''
+                'class' => 'switch'
             ),
             'options' =>  array("1" => "Producto en stock"),
 
@@ -181,7 +166,7 @@ class ProductsForm  extends \Franky\Form\Form
             'name' => 'saleable',
             'type'  => 'checkbox',
             'atributos' => array(
-                'class' => ''
+                'class' => 'switch'
             ),
             'options' =>  array("1" => "Este producto se puede vender"),
 
@@ -193,7 +178,7 @@ class ProductsForm  extends \Franky\Form\Form
             'name' => 'stock_infinito',
             'type'  => 'checkbox',
             'atributos' => array(
-                'class' => ''
+                'class' => 'switch'
             ),
             'options' =>  array("1" => "Stock infinito"),
 
@@ -222,7 +207,7 @@ class ProductsForm  extends \Franky\Form\Form
             'name' => 'visible_in_search',
                 'type'  => 'checkbox',
                 'atributos' => array(
-                    'class' => '',
+                    'class' => 'switch',
                     'value' => 1
                 ),
                 

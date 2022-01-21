@@ -21,7 +21,7 @@ class CatalogcategoryModel  extends \Franky\Database\Mysql\objectOperations
     function getData($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["id","name","description","image","visible_in_search","users","meta_title","meta_description","meta_keywords","url_key","status","orden","createdAt"];
+        $campos = ["id","parent_id","name","description","image","visible_in_search","users","meta_title","meta_description","meta_keywords","url_key","status","orden","createdAt"];
 
         foreach($data as $k => $v)
         {
@@ -67,6 +67,21 @@ class CatalogcategoryModel  extends \Franky\Database\Mysql\objectOperations
 
             return $this->guardarRegistro($data);
     	}
+
+    }
+
+    public function eliminar($data)
+    {
+        $data = $this->optimizeEntity($data);
+
+
+        foreach($data as $k => $v)
+        {
+            $this->where()->addAnd("catalog_category.".$k,$v,'=');
+        }
+        
+        return $this->eliminarRegistro();
+    	
 
     }
 

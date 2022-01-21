@@ -13,11 +13,6 @@ $menucatalog = array(
      "etiqueta" => "Categorías"
     ),
     array(
-     "permiso" =>   ADMINISTRAR_CATEGORY_CATALOG,
-     "url" => $MyRequest->url(ADMIN_CATALOG_SUBCATEGORY),
-     "etiqueta" => "Subcategorias"
-    ),
-    array(
      "permiso" =>   ADMINISTRAR_PRODUCTS_CATALOG,
      "url" => $MyRequest->url(LISTA_CATALOG_VITRINA),
      "etiqueta" => "Vitrinas"

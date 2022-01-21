@@ -2,14 +2,14 @@
 use Franky\Core\validaciones;
 use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
-use Catalog\entity\CatalogsubcategoryproductEntity;
-use Catalog\model\CatalogsubcategoryproductModel;
+use Catalog\entity\CatalogcategoryproductEntity;
+use Catalog\model\CatalogcategoryproductModel;
 use Franky\Haxor\Tokenizer;
 use Franky\Core\ObserverManager;
 
 $Tokenizer = new Tokenizer();
-$CatalogsubcategoryproductEntity    = new CatalogsubcategoryproductEntity();
-$CatalogsubcategoryproductModel     = new CatalogsubcategoryproductModel();
+$CatalogcategoryproductEntity    = new CatalogcategoryproductEntity();
+$CatalogcategoryproductModel     = new CatalogcategoryproductModel();
 $CatalogproductsModel               = new CatalogproductsModel();
 $CatalogproductsEntity              = new CatalogproductsEntity($MyRequest->getRequest());
 
@@ -19,7 +19,6 @@ $callback = $Tokenizer->decode($MyRequest->getRequest('callback'));
 $CatalogproductsEntity->id($Tokenizer->decode($MyRequest->getRequest('id')));
 $id = $CatalogproductsEntity->id();
 $category  = $MyRequest->getRequest('category');
-$subcategory  = $MyRequest->getRequest('subcategory');
 $description  = $MyRequest->getRequest('description','',true);
 $principal  = $MyRequest->getRequest('principal');
 $stock  = $MyRequest->getRequest('stock');
@@ -81,35 +80,14 @@ if(empty($category))
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("catalog_empty_category"));
     $error = true;
 }
-if(empty($subcategory))
-{
-    $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("catalog_empty_subcategory"));
-    $error = true;
-}
 
 
 
 
 if(!$error)
 {
-    $subcategorias = getCatalogSubcategorys(null,'sql');
-    $category_subcategory = [];
-    foreach($subcategorias as $cat => $subcat)
-    {
-        if(in_array($cat,$category))
-        {
-            $category_subcategory[$cat] = array(); 
-            foreach($subcat as $id_sub => $label)
-            {
-                if(in_array($id_sub,$subcategory))
-                {
-                    $category_subcategory[$cat][] = $id_sub; 
-                }
-            }
-        }
-        
-    }
-    $CatalogproductsEntity->category(json_encode($category_subcategory));
+   
+    $CatalogproductsEntity->category(json_encode($category));
 
     
     if(isset($_SESSION['album_'.$album]) && !empty($_SESSION['album_'.$album]))
@@ -169,15 +147,14 @@ if(!$error)
         $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_PRODUCTS));
        
        
-        $CatalogsubcategoryproductEntity->id_product($id);
-        $CatalogsubcategoryproductModel->remove($CatalogsubcategoryproductEntity->getArrayCopy());     
-        foreach($category_subcategory as $cat => $subcat)
+        $CatalogcategoryproductEntity->id_product($id);
+        $CatalogcategoryproductModel->remove($CatalogcategoryproductEntity->getArrayCopy());     
+        foreach($category as $cat )
         {
-            foreach($subcat as $id_sub)
-            {  
-                $CatalogsubcategoryproductEntity->id_subcategory($id_sub);
-                $CatalogsubcategoryproductModel->save($CatalogsubcategoryproductEntity->getArrayCopy());   
-            }
+           
+                $CatalogcategoryproductEntity->id_category($cat);
+                $CatalogcategoryproductModel->save($CatalogcategoryproductEntity->getArrayCopy());   
+            
         }
 
         saveDataCustomAttribute($id,'catalog_products');

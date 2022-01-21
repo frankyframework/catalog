@@ -39,25 +39,25 @@ if(!empty($id))
 
     $data["items"] = json_decode($data["items"],true);
    
-    foreach($data['items']["category"] as $cat => $sub)
-    {
-        $data_category[] = $cat;
-        foreach($sub as $_sub)
-        {
-            $data_subcategory[] = $_sub;
-        }
-    }
+    
+    $data['category'] =  $data["items"]["category"];
+       
+    
     
 }
-//print_r($data); exit;
 
 
-$categorias = getCatalogCategorys('sql');
-$subcategorias = getCatalogSubcategorys(null,'sql');
+$categorias = getCatalogCategorys();
+$_categorias = [];
+foreach($categorias as $parent => $categoria){
+    foreach($categoria as $cat)
+    {
+        $_categorias[$cat['id']] = $cat['name']; 
+    }
+   
+}
 
-
-$adminForm->setOptionsInput("category", $categorias);
-$adminForm->setOptionsInput("subcategory", $subcategorias);
+$adminForm->setOptionsInput("category[]", $_categorias);
 
 $adminForm->setData($data);
 $adminForm->setAtributoInput("callback","value", urldecode($callback));

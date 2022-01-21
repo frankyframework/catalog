@@ -15,22 +15,49 @@
         <div class="form-group">
           <h3>Categorias</h3>
          
-        <?php if(!empty($categorias)): ?>
+          <div id="jstree">
+            
             <ul>
-            <?php foreach($categorias as $cat_id => $cat_label): ?>
-            <li>
-                <label ><input type="checkbox" name="category[]" value="<?=$cat_id;?>" <?=(in_array($cat_id,$data_category) ? 'checked="checked"' : '')?> class="" /><?=$cat_label;?></label>
-                <?php if(!empty($subcategorias[$cat_id])): ?>
-                    <ul <?=(in_array($cat_id,$data_category) ? '' : 'style="display:none;"')?>>
-                    <?php foreach($subcategorias[$cat_id] as $subcat_id => $subcat_label): ?>
-                    <li> <label ><input type="checkbox" name="subcategory[]" value="<?=$subcat_id;?>"  <?=(in_array($subcat_id,$data_subcategory) ? 'checked="checked"' : '')?>  class="" /><?=$subcat_label;?></label><li>
+                <li id="cat_0" >Root
+                    <?php  if(!empty($categorias)):?>
+                    <ul>
+                    <?php foreach($categorias['cat_0'] as $departamento): ?>
+                    
+                        
+                        <li id="cat_<?=$departamento['id']; ?>"  <?=(in_array($departamento['id'], $data['category']) ? "data-jstree='{ \"selected\" : true }'": '')?>> <?=$departamento['name']; ?> (ID:<?=$departamento['id']; ?>)
+                            <?php  if(isset($categorias['cat_'.$departamento['id']])):?>
+                                <ul>
+                                <?php foreach($categorias['cat_'.$departamento['id']] as $categoria): ?>
+                    
+                        
+                                    <li id="cat_<?=$categoria['id']; ?>" <?=(in_array($categoria['id'], $data['category']) ? "data-jstree='{ \"selected\" : true }'": '')?>> <?=$categoria['name']; ?> (ID:<?=$categoria['id']; ?>)
+                                        <?php  if(isset($categorias['cat_'.$categoria['id']])):?>
+                                            <ul>
+                                            <?php foreach($categorias['cat_'.$categoria['id']] as $subcategoria): ?>
+                    
+                        
+                                                <li id="cat_<?=$subcategoria['id']; ?>" <?=(in_array($subcategoria['id'], $data['category']) ? "data-jstree='{ \"selected\" : true }'": '')?> > <?=$subcategoria['name']; ?> (ID:<?=$subcategoria['id']; ?>)</li>
+                                                
+                                            <?php endforeach; ?>
+                                            </ul>
+                                        <?php endif; ?>
+                                    </li>
+                                    
+                                <?php endforeach; ?>
+                                </ul>
+                            <?php endif; ?>
+                        </li>
+                        
                     <?php endforeach; ?>
                     </ul>
-            <?php endif; ?>
-            <li>
-            <?php endforeach; ?>
+                    <?php endif; ?>
+                </li>
             </ul>
-        <?php endif; ?>
+            
+        </div>
+        <div style="overflow:hidden;width:1px; height:1px;">
+        <?php  echo $adminForm->getRow("category[]"); ?>
+        </div>
         <label id="category[]-error" class="error" for="category[]" style="display:none;"></label>
         <label id="subcategory[]-error" class="error" for="subcategory[]" style="display:none;"></label>
         </div>
@@ -124,4 +151,24 @@ $('.open_relacionar').click(function(e){
             
         }
     });
+
+
+    $('#jstree').on('changed.jstree', function (e, data) {
+    var i, j, r = [];
+    $('input[name="category[]"]').prop('checked',false);
+    for(i = 0, j = data.selected.length; i < j; i++) {
+      
+      $('input[name="category[]"][value="'+data.instance.get_node(data.selected[i]).id.replace('cat_','')+'"]').prop('checked',true);
+      for(k = 0, l = +data.instance.get_node(data.selected[i]).parents.length; k < l; k++) {
+        $('input[name="category[]"][value="'+data.instance.get_node(data.selected[i]).parents[k].replace('cat_','')+'"]').prop('checked',true);
+      }
+    }
+    
+  }).jstree({
+    'checkbox': {
+        three_state: false,
+        cascade: 'up'
+    },
+  "plugins" : [ "checkbox" ]
+});
 </script>

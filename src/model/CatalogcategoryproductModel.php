@@ -1,23 +1,23 @@
 <?php
 namespace Catalog\model;
 
-class CatalogsubcategoryproductModel  extends \Franky\Database\Mysql\objectOperations
+class CatalogcategoryproductModel  extends \Franky\Database\Mysql\objectOperations
 {
 
     public function __construct()
     {
       parent::__construct();
-      $this->from()->addTable('catalog_subcategory_product');
+      $this->from()->addTable('catalog_category_product');
     }
 
     function getData($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["id_subcategory","id_product"];
+        $campos = ["id_category","id_product"];
 
         foreach($data as $k => $v)
         {
-            $this->where()->addAnd("catalog_subcategory_product.".$k,$v,'=');
+            $this->where()->addAnd("catalog_category_product.".$k,$v,'=');
         }
 
         return $this->getColeccion($campos);
@@ -60,7 +60,7 @@ class CatalogsubcategoryproductModel  extends \Franky\Database\Mysql\objectOpera
     	{
             foreach($data as $k => $v)
             {
-                $this->where()->addAnd("catalog_subcategory_product.".$k,$v,'=');
+                $this->where()->addAnd("catalog_category_product.".$k,$v,'=');
             }
 
             return $this->eliminarRegistro();

@@ -18,12 +18,18 @@ $CatalogproductsEntity = new CatalogproductsEntity();
 $CatalogproductrelatedModel =  new CatalogproductrelatedModel();
 $CatalogproductrelatedEntity =  new CatalogproductrelatedEntity();
 
-$categorys = getCatalogCategorys('sql');
-$subcategorys = getCatalogSubcategorys(null,'sql');
+$categorys = getCatalogCategorys();
+
+$vars = ['subcategoria','categoria','departamento'];//inverso para url de detalle
+$friendly	= $MyRequest->getUrlParam('friendly');
+$n = 0;
+while(empty($friendly))
+{
+    $friendly = $MyRequest->getUrlParam($vars[$n]);
+    $n++;
+}
 
 
-$friendly		= $MyRequest->getUrlParam('friendly');
-$categoria		= $MyRequest->getUrlParam('categoria');
 
 $CatalogproductsEntity->url_key($friendly);
 $CatalogproductsEntity->status(1);
@@ -72,7 +78,7 @@ if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REG
   $offerSchema->setPriceCurrency('MXN');
   $offerSchema->setPrice($data_detalle['price']);
   $productSchema->setName($data_detalle['name']);
-  $productSchema->setUrl($MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $friendly],true));
+  $productSchema->setUrl($MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $friendly],true));
   $productSchema->setImage($MyRequest->link($data_detalle['thumb_resize'] ,false,true));
   $productSchema->setOffers(json_decode($offerSchema->get(false),true));
   $productSchema->setSku($data_detalle['sku']);
@@ -83,13 +89,14 @@ if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REG
   $MyMetatag->setTitulo($data_detalle['meta_title']);
   $MyMetatag->setDescripcion($data_detalle['meta_description']);
   $MyMetatag->setKeywords($data_detalle['meta_keywords']);
-  $MyMetatag->setCode('<link rel="canonical" href="'. $MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $friendly],true).'" />');
+  $MyMetatag->setCode('<link rel="canonical" href="'. $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $friendly],true).'" />');
 
 }
 else{
+    
     $MyRequest->redirect($MyRequest->url(CATALOG_SEARCH),"301");
 }
-$data_detalle['link'] = $MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $data_detalle['url_key']]);
+$data_detalle['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $data_detalle['url_key']]);
   
 $data_detalle['id_ori'] =$data_detalle['id'];
 $data_detalle['id_wishlist'] = $Tokenizer->token('wishlist',$data_detalle["id"]);
@@ -121,7 +128,7 @@ if($CatalogproductrelatedModel->getData($CatalogproductrelatedEntity->getArrayCo
     while($registro = $CatalogproductrelatedModel->getRows())
     {
         
-        $registro['link'] = $MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $registro['url_key']]);
+        $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro['url_key']]);
         
         $registro['thumb_resize'] =  "";
         $img = "";

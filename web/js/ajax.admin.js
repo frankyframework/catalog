@@ -565,3 +565,62 @@ function ajax_getCatalogCustomAttrFrmHTML(response)
 
     return true;
 }
+
+
+
+function ajax_getFrmCategpry(id,parent)
+{
+    var var_query = {
+          "function": "ajax_getFrmCategpry",
+          "vars_ajax":[id,parent]
+        };
+    
+    pasarelaAjax('GET', var_query, "ajax_getFrmCategpryHTML", '');
+}
+
+
+
+function ajax_getFrmCategpryHTML(response)
+{
+    var respuesta = null;
+    if (response != "null")
+    {
+        respuesta = JSON.parse(response);
+
+
+        $('#content_form').html(respuesta.html);
+
+        $("#frmcategoria").validate();
+        $('textarea[name=meta_keywords]').tagsInput({width:'auto'});
+
+        $('#image_category').change(function(){
+            if (this.files && this.files[0])
+            {
+                var reader = new FileReader();
+                reader.onload = function (e)
+                {
+                    $('#imagen_previa').html('<img style="width: 150px" src="'+e.target.result+'" alt="Preview" />');
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+     
+        $("checkbox.switch").change(function()
+        {
+                if($(this).is(":checked"))
+                {
+                    $(this).addClass('switchOn');
+                }
+                else
+                {
+                    $(this).removeClass('switchOn');
+                }
+        });
+        $(".switch").trigger('change');
+        
+       
+    }
+
+    return true;
+}

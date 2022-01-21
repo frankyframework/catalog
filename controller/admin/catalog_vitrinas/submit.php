@@ -2,13 +2,13 @@
 use Franky\Core\validaciones;
 use Catalog\model\CatalogvitrinaModel;
 use Catalog\entity\CatalogvitrinaEntity;
-use Catalog\entity\CatalogsubcategoryproductEntity;
-use Catalog\model\CatalogsubcategoryproductModel;
+use Catalog\entity\CatalogcategoryproductEntity;
+use Catalog\model\CatalogcategoryproductModel;
 use Franky\Haxor\Tokenizer;
 
 $Tokenizer = new Tokenizer();
-$CatalogsubcategoryproductEntity    = new CatalogsubcategoryproductEntity();
-$CatalogsubcategoryproductModel     = new CatalogsubcategoryproductModel();
+$CatalogcategoryproductEntity    = new CatalogcategoryproductEntity();
+$CatalogcategoryproductModel     = new CatalogcategoryproductModel();
 $CatalogvitrinaModel               = new CatalogvitrinaModel();
 $CatalogvitrinaEntity              = new CatalogvitrinaEntity($MyRequest->getRequest());
 
@@ -17,7 +17,6 @@ $callback = $Tokenizer->decode($MyRequest->getRequest('callback'));
 $CatalogvitrinaEntity->id($Tokenizer->decode($MyRequest->getRequest('id')));
 $id = $CatalogvitrinaEntity->id();
 $category  = $MyRequest->getRequest('category');
-$subcategory  = $MyRequest->getRequest('subcategory');
 
 $random  = $MyRequest->getRequest('random');
 $error = false;
@@ -58,29 +57,16 @@ if($CatalogvitrinaModel->existeClave($CatalogvitrinaEntity->clave(),$Catalogvitr
 
 if(!$error)
 {
-    $subcategorias = getCatalogSubcategorys(null,'sql');
-    $category_subcategory = [];
-    foreach($subcategorias as $cat => $subcat)
-    {
-        if(in_array($cat,$category))
-        {
-            $category_subcategory['category'][$cat] = array(); 
-            foreach($subcat as $id_sub => $label)
-            {
-                if(in_array($id_sub,$subcategory))
-                {
-                    $category_subcategory['category'][$cat][] = $id_sub; 
-                }
-            }
-        }
-        
-    }
+    
     if($MySession->GetVar('vitrina'))
     {
-        $category_subcategory['productos'] = $MySession->GetVar('vitrina');
+        $items['productos'] = $MySession->GetVar('vitrina');
+    }
+    else{
+        $items['category'] = $category;
     }
     
-    $CatalogvitrinaEntity->items(json_encode($category_subcategory));
+    $CatalogvitrinaEntity->items(json_encode($items));
 
 
     if(empty($id))

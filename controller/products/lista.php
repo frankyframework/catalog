@@ -1,11 +1,36 @@
 <?php
-$categorias = array_keys(getCatalogCategorys());
-if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_CATEGORY)
+$categorias = getCatalogCategorys();
+$_categorias = [];
+foreach($categorias as $parent => $cat)
 {
-    $categoria      = $MyRequest->getUrlParam('friendly');
+    foreach($cat as $key => $_cat)
+    {
+        $_categorias[] = $_cat['url_key'];
+    }
+}
+
+if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_DEPARTAMENTO)
+{
+    $departamento      = $MyRequest->getUrlParam('departamento');
     
   
-    if(in_array($categoria, $categorias))
+    if(in_array($departamento, $_categorias))
+    {
+       
+        include(PROJECT_DIR.'/modulos/catalog/controller/products/_lista.php');
+    }
+    else{
+         
+        include(PROJECT_DIR.'/modulos/catalog/controller/products/view.php');
+    }
+    
+}
+if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_CATEGORY)
+{
+    $categoria      = $MyRequest->getUrlParam('categoria');
+    
+ 
+    if(in_array($categoria, $_categorias))
     {
        
         include(PROJECT_DIR.'/modulos/catalog/controller/products/_lista.php');
@@ -20,10 +45,9 @@ if($MyFrankyMonster->MySeccion() == CATALOG_SEARCH_SUBCATEGORY)
 {
    
     $categoria      = $MyRequest->getUrlParam('categoria');
-    $subcategorias = array_keys(getCatalogSubcategorys($categoria));
-    $subcategoria      = $MyRequest->getUrlParam('friendly');
+    $subcategoria      = $MyRequest->getUrlParam('subcategoria');
 
-    if(in_array($subcategoria, $subcategorias))
+    if(in_array($subcategoria, $_categorias))
     {
         include(PROJECT_DIR.'/modulos/catalog/controller/products/_lista.php');
     }

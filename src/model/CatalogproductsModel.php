@@ -7,7 +7,6 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     private $busca;
     private $precio;
     private $categoria_array;
-    private $subcategoria_array;
     private $excludeId;
     private $search_ids;
     public function __construct()
@@ -32,11 +31,6 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     public function setCategoriaArray($data)
     {
         $this->categoria_array = $data;
-    }
-
-    public function setSubcategoriaArray($data)
-    {
-        $this->subcategoria_array = $data;
     }
     
     public function setsearchIds($data)
@@ -141,29 +135,11 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
             }
               $this->where()->concat(')');
           }
-          if(!empty($this->subcategoria_array)){
-            if(is_array($this->subcategoria_array))
-            {
-              $this->where()->concat("AND (");
-              foreach($this->subcategoria_array as $id)
-              {
-                if(is_numeric($id))
-                {
-                    $this->where()->addOr("catalog_subcategory.id",$id,'=');
-                }
-                else{
-                    $this->where()->addOr("catalog_subcategory.url_key",$id,'=');
-                }
-                   
-              }
-                $this->where()->concat(')');
-            }
-            }
+         
             
            
-          $this->from()->addInner('catalog_subcategory_product','catalog_subcategory_product.id_product','catalog_products.id');
-          $this->from()->addInner('catalog_subcategory','catalog_subcategory_product.id_subcategory','catalog_subcategory.id');
-          $this->from()->addInner('catalog_category','catalog_subcategory.id_category','catalog_category.id');
+          $this->from()->addInner('catalog_category_product','catalog_category_product.id_product','catalog_products.id');
+          $this->from()->addInner('catalog_category','catalog_category_product.id_category','catalog_category.id');
           $this->setGrupo('catalog_products.id');
         }
 
@@ -209,29 +185,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
                 $this->where()->addAnd("catalog_products.visible_in_search",1,'=');
                 $this->where()->concat(')');
             }
-          if(!empty($this->subcategoria_array)){
-            if(is_array($this->subcategoria_array))
-            {
-              $this->where()->concat("AND (");
-              $this->where()->concat("(");
-              foreach($this->subcategoria_array as $id)
-              {
-                if(is_numeric($id))
-                {
-                    $this->where()->addOr("catalog_subcategory.id",$id,'=');
-                }
-                else{
-                    $this->where()->addOr("catalog_subcategory.url_key",$id,'=');
-                }
-                   
-              }
-              $this->where()->concat(')');
-              $this->where()->addAnd("catalog_products.status",1,'=');
-              $this->where()->addAnd("catalog_products.visible_in_search",1,'=');
-                $this->where()->concat(')');
-            }
-            }
-            
+
             if(!empty($this->search_ids))
             {
                 if(is_array($this->search_ids))
@@ -262,9 +216,8 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
 
             
             
-            $this->from()->addInner('catalog_subcategory_product','catalog_subcategory_product.id_product','catalog_products.id');
-            $this->from()->addInner('catalog_subcategory','catalog_subcategory_product.id_subcategory','catalog_subcategory.id');
-            $this->from()->addInner('catalog_category','catalog_subcategory.id_category','catalog_category.id');
+            $this->from()->addInner('catalog_category_product','catalog_category_product.id_product','catalog_products.id');
+            $this->from()->addInner('catalog_category','catalog_category_product.id_category','catalog_category.id');
             $this->setGrupo('catalog_products.id');
         }
         else{

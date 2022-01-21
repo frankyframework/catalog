@@ -20,6 +20,11 @@ class CatalogCategoryForm extends \Franky\Form\Form
                 'type'  => 'hidden',
             )
         );
+        $this->add(array(
+            'name' => 'parent_id',
+            'type'  => 'hidden',
+        )
+    );
 
         $this->add(array(
                     'name' => 'callback',
@@ -65,13 +70,25 @@ class CatalogCategoryForm extends \Franky\Form\Form
                 'name' => 'visible_in_search',
                 'type'  => 'checkbox',
                 'atributos' => array(
-                    'class' => ''
+                    'class' => 'switch'
                  ),
                 'options' =>  array("1" => "Esta categoria es visible en busquedas"),
 
 
             )
         );
+
+        $this->add(array(
+            'name' => 'status',
+            'type'  => 'checkbox',
+            'atributos' => array(
+                'class' => 'switch'
+             ),
+            'options' =>  array("1" => "Activar"),
+
+
+        )
+    );
         $this->add(array(
                 'label' => 'Restringir acceso a:',
                 'name' => 'users[]',
