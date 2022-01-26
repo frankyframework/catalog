@@ -22,12 +22,14 @@ header("Content-disposition: attachment; filename=template_productos.xls");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Contácto</title>
+<title>Catalogo</title>
 </head>
 
 <body>
    <table width="100%" border="1" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
       <tr>
+         <th width="" ><strong>Tipo</strong></th>
+         <th width="" ><strong>Set de atributos</strong></th>
          <th width="" ><strong>Nombre</strong></th>
          <th width="" ><strong>SKU</strong></th>
          <th width="" ><strong>Categorias (JSON)</strong></th>

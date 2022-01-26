@@ -975,7 +975,7 @@ function EliminarCatalogCustomAttribute($id,$status)
     return $respuesta;
 }
 
-function ajax_getCatalogCustomAttrFrm($id,$category,$subcategory)
+function ajax_getCatalogCustomAttrFrm($id,$set)
 {
     
     $respuesta = null;
@@ -994,38 +994,27 @@ function ajax_getCatalogCustomAttrFrm($id,$category,$subcategory)
         $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
 
         $data = $CatalogproductsModel->getRows();
-        $category = json_decode($category,true);
-        $subcategory = json_decode($subcategory,true);
-
-        if(!empty($category) && !empty($subcategory))
+       
+        if(!empty($set))
         {
+            $CatalogsetattributesModel = new \Catalog\model\CatalogsetattributesModel;
+            $CatalogsetattributesEntity = new \Catalog\entity\CatalogsetattributesEntity;
+
+            $CatalogsetattributesEntity->id($set);
+            $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
+        
+            $sets_data = $CatalogsetattributesModel->getRows();
+            $attr_use=json_decode($sets_data['attributes']);
             foreach($custom_attr['custom_imputs'] as $key => $data_attrs)
             {
                 $pass = false;
 
-               // print_r($category);
-              //  print_r($data_attrs['extra']);
-                if(!empty($category) && !empty($data_attrs['extra']))
+
+                if(!empty($attr_use))
                 {
-                    foreach($category as $cat)
+                    if(in_array($key,$attr_use))
                     {
-                        foreach($data_attrs['extra'] as $_cat => $_subs)
-                        {
-                            foreach($subcategory as $sub)
-                            {
-                                foreach($_subs as $_sub)
-                                {
-                                    
-                                    if($sub == $_sub)
-                                    {
-                                        $pass = true;
-                                    }
-                                }
-                            }
-
-                        }
-
-                       
+                        $pass = true;
                     }
                 }
 
@@ -1173,7 +1162,40 @@ function ajax_getFrmCategpry($id,$parent)
 }
 
 
+function EliminarCatalogSetAttribute($id,$status)
+{
+    global $MySession;
+    $CatalogsetattributesModel =  new \Catalog\model\CatalogsetattributesModel();
+    $CatalogsetattributesEntity =  new \Catalog\entity\CatalogsetattributesEntity();
+    $Tokenizer = new \Franky\Haxor\Tokenizer;
+    global $MyAccessList;
+    global $MyMessageAlert;
 
+    $respuesta = null;
+
+    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_CATALOG_CUSTOM_ATTRIBUTES))
+    {
+        $CatalogsetattributesEntity->id(addslashes($Tokenizer->decode($id)));
+        $CatalogsetattributesEntity->status($status);
+
+        if($CatalogsetattributesModel->save($CatalogsetattributesEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+
+        }
+        else
+        {
+              $respuesta["message"] = $MyMessageAlert->Message("custom_attribute_error_delete");
+              $respuesta["error"] = true;
+        }
+    }
+    else
+    {
+         $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
+         $respuesta["error"] = true;
+    }
+
+    return $respuesta;
+}
 
 /******************************** EJECUTA *************************/
 
@@ -1197,4 +1219,5 @@ $MyAjax->register("catalog_setOrdenCategoria");
 $MyAjax->register("ajax_catalog_importar_producto");
 $MyAjax->register("ajax_getCatalogCustomAttrFrm");
 $MyAjax->register("ajax_getFrmCategpry");
+$MyAjax->register("EliminarCatalogSetAttribute");
 ?>

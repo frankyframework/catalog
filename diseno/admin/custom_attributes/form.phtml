@@ -58,29 +58,7 @@
         
         <?php echo $adminForm->getRow('required'); ?>
 
-        <div class="form-group">
-          <h3>Categorias</h3>
-         
-        <?php if(!empty($categorias)): ?>
-            <ul>
-            <?php foreach($categorias as $cat_id => $cat_label): ?>
-            <li>
-                <label ><input type="checkbox" name="category[]" value="<?=$cat_id;?>" <?=(in_array($cat_id,$data_category) ? 'checked="checked"' : '')?> class="required" /><?=$cat_label;?></label>
-                <?php if(!empty($subcategorias[$cat_id])): ?>
-                    <ul <?=(in_array($cat_id,$data_category) ? '' : 'style="display:none;"')?>>
-                    <?php foreach($subcategorias[$cat_id] as $subcat_id => $subcat_label): ?>
-                    <li> <label ><input type="checkbox" name="subcategory[]" value="<?=$subcat_id;?>"  <?=(in_array($subcat_id,$data_subcategory) ? 'checked="checked"' : '')?>  class="required" /><?=$subcat_label;?></label><li>
-                    <?php endforeach; ?>
-                    </ul>
-            <?php endif; ?>
-            <li>
-            <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
-        <label id="category[]-error" class="error" for="category[]" style="display:none;"></label>
-        <label id="subcategory[]-error" class="error" for="subcategory[]" style="display:none;"></label>
-        </div>
-
+  
         <?php echo $adminForm->getRow('guardar'); ?>
         <?php echo $adminForm->endTag(); ?>
         </div>

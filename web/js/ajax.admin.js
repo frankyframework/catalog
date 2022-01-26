@@ -499,28 +499,13 @@ function ajax_catalog_importar_productoHTML(response)
 
 function ajax_getCatalogCustomAttrFrm(id)
 {
-    var categoria = [];
-    //Recorremos todos los input checkbox con name = Colores y que se encuentren "checked"
-    $("input[name='category[]']:checked").each(function ()
-    {
-    //Mediante la función push agregamos al arreglo los values de los checkbox
-    categoria.push(($(this).attr("value")));
-    });
-
-    var subcategoria = [];
-    //Recorremos todos los input checkbox con name = Colores y que se encuentren "checked"
-    $("input[name='subcategory[]']:checked").each(function ()
-    {
-    //Mediante la función push agregamos al arreglo los values de los checkbox
-    subcategoria.push(($(this).attr("value")));
-    });
-
+    
     var var_query = {
           "function": "ajax_getCatalogCustomAttrFrm",
-          "vars_ajax":[id,JSON.stringify(categoria),JSON.stringify(subcategoria)]
+          "vars_ajax":[id,$("select[name=set_attribute]").val()]
         };
     
-    pasarelaAjax('POST', var_query, "ajax_getCatalogCustomAttrFrmHTML",[],null);
+    pasarelaAjax('POST', var_query, "ajax_getCatalogCustomAttrFrmHTML",[]);
 }
 
 

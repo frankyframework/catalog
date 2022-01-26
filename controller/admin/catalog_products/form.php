@@ -100,7 +100,9 @@ if($CatalogCategoryModel->getTotal() > 0)
         $categorys[$registro['id']] = $registro['name'];
     }
 }
+$set_attribute = getAttributesSet();
 
+$adminForm->setOptionsInput("set_attribute",$set_attribute);
 $adminForm->setOptionsInput("category[]",$categorys);
 $adminForm->setData($data);
 $adminForm->setAtributoInput("callback","value", urldecode($callback));

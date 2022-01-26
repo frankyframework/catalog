@@ -45,7 +45,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     function getData($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["id","name","sku","category","visible_in_search","description","images","videos","url_key","meta_title","meta_keyword","meta_description","price","stock","iva","incluye_iva","createdAt","updateAt","status",
+        $campos = ["id","parent_id","type","set_attribute","name","sku","category","visible_in_search","description","images","videos","url_key","meta_title","meta_keyword","meta_description","price","stock","iva","incluye_iva","createdAt","updateAt","status",
         "in_stock","saleable","min_qty","stock_infinito","envio_requerido"];
 
         foreach($data as $k => $v)
@@ -78,7 +78,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     function getDataSearch($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["catalog_products.id","catalog_products.name","sku","category",
+        $campos = ["catalog_products.id","catalog_products.parent_id","catalog_products.type","catalog_products.set_attribute","catalog_products.name","sku","category",
         "catalog_products.visible_in_search","catalog_products.description",
         "images","videos","catalog_products.url_key","catalog_products.meta_title",
         "catalog_products.meta_keyword","catalog_products.meta_description",
@@ -95,13 +95,13 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
         {
 
             $this->where()->concat("AND (MATCH(catalog_products.name) "
-                . "AGAINST('$busca' in boolean mode) "
+                . "AGAINST('".$this->busca."' in boolean mode) "
                 . "or "
                 . "MATCH(catalog_products.meta_keyword) "
-                . "AGAINST('$busca' in boolean mode) ");
+                . "AGAINST('".$this->busca."' in boolean mode) ");
            
-                $this->where()->addOr('catalog_products.name',"%$this->busca%",'like');
-                $this->where()->addOr('catalog_products.meta_keyword',"%$this->busca%",'like');
+                $this->where()->addOr('catalog_products.name',"%".$this->busca."%",'like');
+                $this->where()->addOr('catalog_products.meta_keyword',"%".$this->busca."%",'like');
         
                 $this->where()->concat(')');
 
@@ -156,7 +156,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     {
         
         $data = $this->optimizeEntity($data);
-        $campos = ["catalog_products.id","catalog_products.name","sku","category",
+        $campos = ["catalog_products.id","catalog_products.parent_id","catalog_products.type","catalog_products.set_attribute","catalog_products.name","sku","category",
         "catalog_products.visible_in_search","catalog_products.description",
         "images","videos","catalog_products.url_key","catalog_products.meta_title",
         "catalog_products.meta_keyword","catalog_products.meta_description",

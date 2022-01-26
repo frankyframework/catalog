@@ -279,6 +279,35 @@
             "status":1,
             "editable":0,
             "modulo":"catalog"
+        },
+        {
+            "php":"admin/set_custom_attributes/lista.php",
+            "css":"",
+            "js":[],
+            "jquery":[],
+            "permisos":[1,2],
+            "constante":"ADMIN_CATALOG_SET_CUSTOM_ATTRIBUTES",
+            "url":"admin/catalog-set-custom-attributes/",
+            "nombre":"Set de Atributos",
+            "ajax":["base/ajax.admin.js"],
+            "status":1,
+            "editable":0,
+            "modulo":"catalog"
+        },
+        {
+            "php":"admin/set_custom_attributes/form.php",
+            "css":"",
+            "js":[],
+            "jquery":["jquery-validate","jstree"],
+            "permisos":[1,2],
+            "constante":"ADMIN_FRM_CATALOG_SET_CUSTOM_ATTRIBUTES",
+            "url":"admin/catalog-set-custom-attributes/frm/",
+            "nombre":"Administrar Set de  Atributos",
+            "ajax":["base/ajax.admin.js"],
+            "status":1,
+            "editable":0,
+            "modulo":"catalog"
         }
+
     ]
 }

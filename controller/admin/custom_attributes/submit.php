@@ -13,8 +13,6 @@ $id       = $Tokenizer->decode($MyRequest->getRequest('id'));
 $callback = $Tokenizer->decode($MyRequest->getRequest('callback'));
 $required = $MyRequest->getRequest('required',0);
 $type_option = $MyRequest->getRequest('type_option');
-$category  = $MyRequest->getRequest('category');
-$subcategory  = $MyRequest->getRequest('subcategory');
 
 $CustomattributesEntity->required($required);
 
@@ -45,11 +43,6 @@ if($CustomattributesModel->existe($nombre,$entity,$id) == REGISTRO_SUCCESS)
 if(!$MyAccessList->MeDasChancePasar(ADMINISTRAR_CATALOG_CUSTOM_ATTRIBUTES))
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
-    $error = true;
-}
-if(empty($category))
-{
-    $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("catalog_empty_category"));
     $error = true;
 }
 
@@ -83,28 +76,7 @@ if($error == false)
 {
 
 
-    $subcategorias = getCatalogSubcategorys(null,'sql');
-    $category_subcategory = [];
-    foreach($subcategorias as $cat => $subcat)
-    {
-        if(in_array($cat,$category))
-        {
-            $category_subcategory[$cat] = array(); 
-            foreach($subcat as $id_sub => $label)
-            {
-                if(in_array($id_sub,$subcategory))
-                {
-                    $category_subcategory[$cat][] = $id_sub; 
-                }
-            }
-        }
-        
-    }
-    $CustomattributesEntity->extra(json_encode($category_subcategory));
-
-    
-
-
+   
     if(empty($id))
     {
         

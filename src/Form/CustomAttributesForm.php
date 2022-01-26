@@ -157,42 +157,7 @@ class CustomAttributesForm extends \Franky\Form\Form
         );
 
 
-        $this->add(array(
-            'name' => 'category[]',
-            'type'  => 'checkbox',
-            'required'  => true,
-           'required'  => true,
-            'atributos' => array(
-                'class'       => 'required',
-
-             ),
-            'options' => array(
-
-            ),
-            'label_atributos' => array(
-                'class'       => 'desc_form_obligatorio',
-             )
-        )
-     );
-
-     $this->add(array(
-             'name' => 'subcategory[]',
-             'type'  => 'checkbox',
-             'required'  => true,
-         'required'  => true,
-             'atributos' => array(
-                 'class'       => 'required',
-             ),
-             'options' => array(
-
-             ),
-             'label_atributos' => array(
-                 'class'       => 'desc_form_obligatorio',
-             )
-         )
-     );
-
-     
+      
          $this->add(array(
                 'name' => 'guardar',
                 'type'  => 'submit',

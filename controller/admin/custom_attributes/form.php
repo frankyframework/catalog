@@ -12,9 +12,6 @@ $data          = $MyFlashMessage->getResponse();
 $type_option = "options_attr";
 $adminForm = new CustomAttributesForm("frmattributes");
 
-$data_category = [];
-$data_subcategory = [];
-
 if(!empty($id))
 {
     $CustomattributesModel = new CustomattributesModel();
@@ -26,18 +23,7 @@ if(!empty($id))
     $data['required'] = json_decode($data['required'],true);
     $data["extra"] = json_decode($data["extra"],true);
     
-    if(!empty($data["extra"]))
-    {
-        foreach($data["extra"] as $cat => $sub)
-        {
-            $data_category[] = $cat;
-            foreach($sub as $_sub)
-            {
-                $data_subcategory[] = $_sub;
-            }
-        }
-    }
-
+  
     $data['id'] = $Tokenizer->token('custom_attributes', $data['id']);
     $type_option = "class_attr";
     if(empty($data['source']))
@@ -50,10 +36,7 @@ if(!empty($id))
 
 $adminForm->setData($data);
 $categorias = getCatalogCategorys('sql',['status' => 1]);
-$subcategorias = getCatalogSubcategorys(null,'sql');
 $adminForm->setAtributoInput("callback","value", urldecode($callback));
-$adminForm->setOptionsInput("category", $categorias);
-$adminForm->setOptionsInput("subcategory", $subcategorias);
 $adminForm->setAtributoInput("type_option","value", $type_option);
 
 $title_form = "Atributos personalizados";

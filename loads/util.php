@@ -124,6 +124,27 @@ function getCatalogCategorys($search = [])
 
 
 
+function getAttributesSet()
+{
+    $CatalogsetattributesModel = new Catalog\model\CatalogsetattributesModel();
+    $CatalogsetattributesEntity = new Catalog\entity\CatalogsetattributesEntity();
+    $CatalogsetattributesModel->setTampag(1000);
+    $CatalogsetattributesModel->setOrdensql("name ASC");
+    $CatalogsetattributesEntity->status(1);
+    $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
+    $total			= $CatalogsetattributesModel->getTotal();
+    $data = array();
+
+    if($total > 0)
+    {
+
+        while($registro = $CatalogsetattributesModel->getRows())
+        {
+            $data[$registro['id']] = $registro['name'];
+	    }
+    }
+    return $data;
+}
 
 
 

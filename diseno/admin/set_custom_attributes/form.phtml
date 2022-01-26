@@ -1,0 +1,85 @@
+<div class="w-xxxx-12">
+    <div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?> </div>
+        <h1 class="align_center"></h1>
+        <h3 class="align_center"></h3>
+        <?php echo $adminForm->openTag(); ?>
+        <?php  echo $adminForm->get("callback"); ?>
+
+
+        <?php if(!empty($id)): ?>
+        <?php  echo $adminForm->get("id"); ?>
+          <?php endif; ?>
+        <?php  echo $adminForm->getRow("name"); ?>
+        <?php  echo $adminForm->getRow("description"); ?>
+        <div class="form-group">
+          <h3>Atributos</h3>
+         
+          <div id="jstree">
+            
+            <ul>
+                <li id="cat_0" >Catalogo
+                    <?php  if(!empty($_custom_attribtues)):?>
+                    <ul>
+                    <?php foreach($_custom_attribtues as $key => $attr): ?>
+                    
+                        
+                        <li id="cat_<?=$key; ?>"   <?=(in_array($key, $data["attributes"] ) ? "data-jstree='{ \"selected\" : true }'": '')?>> <?=$attr; ?>
+                        </li>
+                        
+                    <?php endforeach; ?>
+                    </ul>
+                    <?php endif; ?>
+                </li>
+            </ul>
+            
+        </div>
+        <div style="overflow:hidden;width:1px; height:1px;">
+        <?php  echo $adminForm->getRow("attributes[]"); ?>
+        </div>
+        <label id="attributes[]-error" class="error" for="category[]" style="display:none;"></label>
+        
+        </div>
+     
+
+    
+        
+        <?php  echo $adminForm->getRow("guardar"); ?>
+
+        <?php echo $adminForm->endTag(); ?>
+
+    </div>
+
+  
+
+</div>
+
+
+
+<script >
+$(document).ready(function()
+{
+  $( "#frmsetatributos" ).validate();
+  
+});
+
+$('#jstree').on('changed.jstree', function (e, data) {
+    var i, j, r = [];
+    $('input[name="attributes[]"]').prop('checked',false);
+    for(i = 0, j = data.selected.length; i < j; i++) {
+     
+      $('input[name="attributes[]"][value="'+data.instance.get_node(data.selected[i]).id.replace('cat_','')+'"]').prop('checked',true);
+      
+    }
+    
+  }).jstree({
+    'checkbox': {
+        three_state: false,
+        cascade: 'up'
+    },
+  "plugins" : [ "checkbox" ]
+});
+
+
+
+</script>

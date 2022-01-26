@@ -5,6 +5,9 @@ namespace Catalog\entity;
 class CatalogproductsEntity
 {
     private $id;
+    private $parent_id;
+    private $set_attribute;
+    private $type;
     private $name;
     private $sku;
     private $category;
@@ -41,6 +44,9 @@ class CatalogproductsEntity
     public function exchangeArray($data)
     {
         $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->parent_id = (isset($data["parent_id"]) ? $data["parent_id"] : null);
+        $this->set_attribute = (isset($data["set_attribute"]) ? $data["set_attribute"] : null);
+        $this->type = (isset($data["type"]) ? $data["type"] : null);
         $this->name = (isset($data["name"]) ? $data["name"] : null);
         $this->sku = (isset($data["sku"]) ? $data["sku"] : null);
         $this->category = (isset($data["category"]) ? $data["category"] : null);
@@ -82,6 +88,12 @@ class CatalogproductsEntity
     
 
     public function id($id = null){ if($id !== null){ $this->id=$id; }else{ return $this->id; } }
+
+    public function parent_id($parent_id = null){ if($parent_id !== null){ $this->parent_id=$parent_id; }else{ return $this->parent_id; } }
+    
+    public function set_attribute($set_attribute = null){ if($set_attribute !== null){ $this->set_attribute=$set_attribute; }else{ return $this->set_attribute; } }
+    
+    public function type($type = null){ if($type !== null){ $this->type=$type; }else{ return $this->type; } }
 
     public function name($name = null){ if($name !== null){ $this->name=$name; }else{ return $this->name; } }
 

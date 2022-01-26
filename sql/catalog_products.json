@@ -10,6 +10,25 @@
                 "auto_increment":1
             },
             {
+                "name":"parent_id",
+                "type":"int",
+                "length":11,
+                "null":1
+            },
+            {
+                "name":"set_attribute",
+                "type":"int",
+                "length":11,
+                "null":1
+            },
+            {
+                "name":"type",
+                "type":"varchar",
+                "length":255,
+                "null":0,
+                "default":"simple"
+            },
+            {
                 "name":"name",
                 "type":"varchar",
                 "length":255,

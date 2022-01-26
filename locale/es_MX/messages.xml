@@ -75,6 +75,9 @@
         <llave>vitrina_error_delete</llave>
         <valor>Error al eliminar la vitrina</valor>
     </mensaje>
-    
+    <mensaje>
+        <llave>set_empty_attributes</llave>
+        <valor>Selecciona almenos un atributo</valor>
+    </mensaje>
     
 </mensajes>

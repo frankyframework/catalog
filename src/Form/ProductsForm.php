@@ -24,7 +24,34 @@ class ProductsForm  extends \Franky\Form\Form
             )
         );
 
-
+        $this->add(array(
+            'name' => 'type',
+            'label' => 'Tipo de producto',
+            'type'  => 'select',
+            'required'  => false,
+            'options' => array('simple'=>"Simple","configurable" => "Configurable"),
+            'atributos' => array(
+                'class'       => 'required'
+             ),
+            'label_atributos' => array(
+                'class'       => 'desc_form_no_obligatorio'
+                )
+        )
+        );
+        $this->add(array(
+            'name' => 'set_attribute',
+            'label' => 'Set de atributos',
+            'type'  => 'select',
+            'required'  => false,
+            'options' => array(),
+            'atributos' => array(
+                'class'       => 'required'
+             ),
+            'label_atributos' => array(
+                'class'       => 'desc_form_no_obligatorio'
+                )
+        )
+        );
         $this->add(array(
                 'name' => 'name',
                 'label' => 'Nombre',

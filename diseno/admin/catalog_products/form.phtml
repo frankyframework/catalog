@@ -8,7 +8,10 @@
 
         <?php if(!empty($id)): ?>
         <?php  echo $adminForm->get("id"); ?>
-          <?php endif; ?>
+        <?php else: ?>
+          <?php  echo $adminForm->getRow("type"); ?>
+        <?php endif; ?>
+        <?php  echo $adminForm->getRow("set_attribute"); ?>
         <?php  echo $adminForm->getRow("name"); ?>
         <?php  echo $adminForm->getRow("sku"); ?>
         <div class="form-group">
@@ -131,7 +134,7 @@ $(document).ready(function()
   $('input[name=videos]').tagsInput({width:'auto'});
 
 
-  $('input[name="subcategory[]"]').change(function(){
+  $('select[name="set_attribute"]').change(function(){
       ajax_getCatalogCustomAttrFrm('<?= $id ?>');
   });
   ajax_getCatalogCustomAttrFrm('<?= $id ?>');
