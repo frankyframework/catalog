@@ -46,6 +46,11 @@
                 "null":0
             },
             {
+                "name":"configurable",
+                "type":"text",
+                "null":1
+            },
+            {
                 "name":"description",
                 "type":"text",
                 "null":1

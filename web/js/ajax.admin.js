@@ -277,16 +277,13 @@ function ajax_products_cargarProductosConfigurablesHTML(response,id){
             }
         }
         else{
-             $("input[type=checkbox]").prop('checked',false);
+            $('.cont_gral_admin').find("input[type=checkbox]").prop('checked',false);
             $('.cont_productos_configurables').html(respuesta.html);
            
             $(".contenedor_columnas_info_configurables").htmlDataDum(respuesta.lista_admin_data_configurables,".no_hay_datos_configurables");
             for(var x = 0; x<respuesta.lista_admin_data_configurables.length;x++)
             {
                 $('[value='+respuesta.lista_admin_data_configurables[x].id+']').prop('checked',true);
-
-
-                $('select[name=attr_configurable]').val(respuesta.lista_admin_data_configurables[x].id_attribute)
                     
             }
             
@@ -294,10 +291,10 @@ function ajax_products_cargarProductosConfigurablesHTML(response,id){
 
                 if($(this).is(':checked'))
                 {
-                    ajax_products_agregarProductoConfigurable(id,$(this).attr('value'),$('select[name=attr_configurable]').val())
+                    ajax_products_agregarProductoConfigurable(id,$(this).attr('value'))
                 }
                 else{
-                    ajax_products_quitarProductoConfigurable(id,$(this).attr('value'),$('select[name=attr_configurable]').val())
+                    ajax_products_quitarProductoConfigurable(id,$(this).attr('value'))
                 }
       
             });
@@ -307,12 +304,12 @@ function ajax_products_cargarProductosConfigurablesHTML(response,id){
     
 }
 
-function ajax_products_agregarProductoConfigurable(id_parent,id,attr)
+function ajax_products_agregarProductoConfigurable(id_parent,id)
 {
     
     var var_query = {
           "function": "ajax_products_agregarProductoConfigurable",
-          "vars_ajax":[id_parent,id,attr]
+          "vars_ajax":[id_parent,id]
         };
     
     pasarelaAjax('GET', var_query, "ajax_products_agregarProductoConfigurableHTML", var_query.vars_ajax);
@@ -340,20 +337,28 @@ function ajax_products_agregarProductoConfigurableHTML(response,id_parent)
 
 
 
-function ajax_products_quitarProductoConfigurable(id_parent,id,attr)
+function ajax_products_quitarProductoConfigurable(id_parent,id)
 {
     var var_query = {
           "function": "ajax_products_quitarProductoConfigurable",
-          "vars_ajax":[id_parent,id,attr]
+          "vars_ajax":[id_parent,id]
         };
     
     pasarelaAjax('GET', var_query, "ajax_products_agregarProductoConfigurableHTML",var_query.vars_ajax );
 }
 
 
-function ajax_products_setAttrConfigurable(id_parent,attr)
+function ajax_products_setAttrConfigurable(id_parent)
 {
     
+    attr = "";
+    $("input[name='attr_configurable[]']").each(function(index,val){
+        if($(this).is(':checked'))
+        {
+            attr += $(this).val()+',';
+        }
+
+    });
     var var_query = {
           "function": "ajax_products_setAttrConfigurable",
           "vars_ajax":[id_parent,attr]

@@ -84,6 +84,7 @@ if($CatalogproductsModel->getTotal() > 0)
                 "callback" => $Tokenizer->token('catalog_products',$MyRequest->getURI()),
                 "nuevo_estado"  => ($registro["status"] == 1 ?"desactivar" : "activar"),
                 "images"     => $img,
+                "type"     => ($registro['type'] == 'configurable' ? '<a href="'.$MyRequest->link(ADMIN_CATALOG_PRODUCTS_CONFIGURABLES."?id=".$Tokenizer->token('catalog_products',$registro["id"])).'&amp;callback='.$Tokenizer->token('catalog_products',$MyRequest->getURI()).'">'.$registro['type'].'</a>' : $registro['type'])
         ));
 
 
@@ -98,10 +99,10 @@ $deleteFunction = "DeleteCatalogProduct";
 
 $frm_constante_link = FRM_CATALOG_PRODUCTS;
 
-$titulo_columnas_grid = array("_id" => "ID","images" => "Thumb", "name" =>  "Nombre","sku" => "SKU");
-$value_columnas_grid = array("_id" ,"images", "name","sku");
+$titulo_columnas_grid = array("_id" => "ID","images" => "Thumb", "name" =>  "Nombre","sku" => "SKU","type" => "Tipo");
+$value_columnas_grid = array("_id" ,"images", "name","sku","type");
 
-$css_columnas_grid = array("_id" => "w-xxxx-1" ,"images" => "w-xxxx-2" , "name" => "w-xxxx-4", "sku" => "w-xxxx-1");
+$css_columnas_grid = array("_id" => "w-xxxx-1" ,"images" => "w-xxxx-2" , "name" => "w-xxxx-3", "sku" => "w-xxxx-1", "type" => "w-xxxx-1");
 
 
 $permisos_grid = ADMINISTRAR_PRODUCTS_CATALOG;

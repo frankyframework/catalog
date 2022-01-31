@@ -43,6 +43,7 @@ $CatalogproductsModel->setTampag($MyPaginacion->getTampageDefault());
 $CatalogproductsModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
 $CatalogproductsModel->setBusca($busca_b);
 $CatalogproductsEntity->status(1);
+$CatalogproductsEntity->visible_in_search(1);
 $result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
 $MyPaginacion->setTotal($CatalogproductsModel->getTotal());
 $lista_admin_data = array();

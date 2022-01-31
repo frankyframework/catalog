@@ -6,7 +6,8 @@ use Catalog\entity\CatalogproductsEntity;
 use Franky\Haxor\Tokenizer;
 use Base\model\CustomattributesModel;
 use Base\entity\CustomattributesEntity;
-
+use Catalog\model\CatalogsetattributesModel;
+use Catalog\entity\CatalogsetattributesEntity;
 
 $CatalogproductsModel = new CatalogproductsModel();
 $CatalogproductsEntity = new CatalogproductsEntity();
@@ -22,6 +23,20 @@ if(empty($Tokenizer->decode($id)))
 {
     $MyRequest->redirect($Tokenizer->decode($callback));
 }
+
+
+
+$CatalogproductsModel->setExcludeId('');
+$CatalogproductsEntity->id($Tokenizer->decode($id));
+$CatalogproductsModel->setBusca("");
+if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+{
+    $producto_actual = $CatalogproductsModel->getRows();
+    $producto_actual['configurable'] = json_decode($producto_actual['configurable'],true);
+}
+
+$CatalogproductsEntity->exchangeArray([]);
+
 $MyPaginacion->setPage($MyRequest->getRequest('page',1));
 $MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"catalog_products.createdAt"));
 $MyPaginacion->setOrden($MyRequest->getRequest('order',"DESC"));
@@ -44,6 +59,10 @@ $CatalogproductsModel->setPage($MyPaginacion->getPage());
 $CatalogproductsModel->setTampag($MyPaginacion->getTampageDefault());
 $CatalogproductsModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
 $CatalogproductsModel->setBusca($busca_b);
+
+
+$CatalogproductsEntity->set_attribute($producto_actual['set_attribute']);
+$CatalogproductsEntity->type('simple');
 $result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
 $MyPaginacion->setTotal($CatalogproductsModel->getTotal());
 $lista_admin_data = array();
@@ -96,14 +115,17 @@ if($CatalogproductsModel->getTotal() > 0)
 
 
 
-$CatalogproductsModel->setExcludeId('');
-$CatalogproductsEntity->exchangeArray([]);
-$CatalogproductsEntity->id($Tokenizer->decode($id));
-$CatalogproductsModel->setBusca("");
-if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
-{
-    $producto_actual = $CatalogproductsModel->getRows();
-}
+$CatalogsetattributesModel = new CatalogsetattributesModel;
+$CatalogsetattributesEntity = new CatalogsetattributesEntity;
+
+$CatalogsetattributesEntity->id($producto_actual['set_attribute']);
+$CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
+
+$set = $CatalogsetattributesModel->getRows();
+
+
+$set["attributes"] = json_decode($set["attributes"],true);
+
 
 
 
@@ -116,6 +138,7 @@ $CustomattributesEntity->status(1);
 $CustomattributesModel->setPage(1);
 $CustomattributesModel->setTampag(100);
 $CustomattributesModel->setOrdensql('id ASC');
+$CustomattributesEntity->required(1);
 
 $result	 = $CustomattributesModel->getData($CustomattributesEntity->getArrayCopy());
 
@@ -126,7 +149,7 @@ if($CustomattributesModel->getTotal() > 0)
 
 	while($registro = $CustomattributesModel->getRows())
 	{
-        if(in_Array($registro['type'],['select','radio'])):
+        if(in_array($registro['type'],['select','radio']) && in_array($registro['id'],$set["attributes"])):
             $attrs[$registro['id']] = $registro['label'];
         endif;
     }

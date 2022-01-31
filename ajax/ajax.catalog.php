@@ -504,7 +504,7 @@ function DeleteCatalogVitrina($id,$status)
 }
 
 
-function ajax_products_agregarProductoConfigurable($id_parent,$id,$attr){
+function ajax_products_agregarProductoConfigurable($id_parent,$id){
     
     global $MyAccessList;
     global $MyMessageAlert;
@@ -512,15 +512,15 @@ function ajax_products_agregarProductoConfigurable($id_parent,$id,$attr){
     
     if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
     {
-        $CatalogproductconfigurablesModel =  new \Catalog\model\CatalogproductconfigurablesModel();
-        $CatalogproductconfigurablesEntity =  new \Catalog\entity\CatalogproductconfigurablesEntity();
+        $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
+        $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
         $Tokenizer = new \Franky\Haxor\Tokenizer;
-        $CatalogproductconfigurablesEntity->id_parent($Tokenizer->decode($id_parent));
-        $CatalogproductconfigurablesEntity->id_product($Tokenizer->decode($id));
-        $CatalogproductconfigurablesEntity->id_attribute($attr);
+        $CatalogproductsEntity->parent_id($Tokenizer->decode($id_parent));
+        $CatalogproductsEntity->visible_in_search(0);
+        $CatalogproductsEntity->id($Tokenizer->decode($id));
         
         
-        if($CatalogproductconfigurablesModel->save($CatalogproductconfigurablesEntity->getArrayCopy()) != REGISTRO_SUCCESS)
+        if($CatalogproductsModel->save($CatalogproductsEntity->getArrayCopy()) != REGISTRO_SUCCESS)
         {
             $respuesta["error"] = true;
             $respuesta["message"] = $MyMessageAlert->Message("catalog_products_error_configurar");
@@ -537,7 +537,7 @@ function ajax_products_agregarProductoConfigurable($id_parent,$id,$attr){
 
 
 
-function ajax_products_quitarProductoConfigurable($id_parent,$id,$attr){
+function ajax_products_quitarProductoConfigurable($id_parent,$id){
     
     global $MyAccessList;
     global $MyMessageAlert;
@@ -545,14 +545,14 @@ function ajax_products_quitarProductoConfigurable($id_parent,$id,$attr){
     
     if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
     {
-        $CatalogproductconfigurablesModel =  new \Catalog\model\CatalogproductconfigurablesModel();
-        $CatalogproductconfigurablesEntity =  new \Catalog\entity\CatalogproductconfigurablesEntity();
+        $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
+        $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
         $Tokenizer = new \Franky\Haxor\Tokenizer;
-        $CatalogproductconfigurablesEntity->id_parent($Tokenizer->decode($id_parent));
-        $CatalogproductconfigurablesEntity->id_product($Tokenizer->decode($id));
-        $CatalogproductconfigurablesEntity->id_attribute($attr);
+        $CatalogproductsEntity->parent_id(0);
+        $CatalogproductsEntity->id($Tokenizer->decode($id));
+        $CatalogproductsEntity->visible_in_search(1);
         
-        if($CatalogproductconfigurablesModel->eliminar($CatalogproductconfigurablesEntity->getArrayCopy()) != REGISTRO_SUCCESS)
+        if($CatalogproductsModel->save($CatalogproductsEntity->getArrayCopy()) != REGISTRO_SUCCESS)
         {
             $respuesta["error"] = true;
             $respuesta["message"] = $MyMessageAlert->Message("catalog_products_error_configurar_eliminar");
@@ -575,16 +575,16 @@ function ajax_products_cargarProductosConfigurables($id)
     
     if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
     {
-        $CatalogproductconfigurablesModel =  new \Catalog\model\CatalogproductconfigurablesModel();
-        $CatalogproductconfigurablesEntity =  new \Catalog\entity\CatalogproductconfigurablesEntity();
+        $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
+        $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
         $Tokenizer = new \Franky\Haxor\Tokenizer;
-        $CatalogproductconfigurablesEntity->id_parent($Tokenizer->decode($id));
-        $CatalogproductconfigurablesModel->setTampag(10000);
+        $CatalogproductsEntity->parent_id($Tokenizer->decode($id));
+        $CatalogproductsModel->setTampag(10000);
         $lista_admin_data =[];
-        if($CatalogproductconfigurablesModel->getData($CatalogproductconfigurablesEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
         {
             $iRow = 0;
-            while($registro = $CatalogproductconfigurablesModel->getRows())
+            while($registro = $CatalogproductsModel->getRows())
             {
                 $thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
 
@@ -614,8 +614,8 @@ function ajax_products_cargarProductosConfigurables($id)
 
                 $lista_admin_data[$iRow] = array_merge($registro,array(
                         "thisClass"     => $thisClass,
-                        "id" => $Tokenizer->token('catalog_products',$registro["id_product"]),
-                        "_id" => $registro["id_product"],
+                        "id" => $Tokenizer->token('catalog_products',$registro["id"]),
+                        "_id" => $registro["id"],
                         "images"     => $img,
                 ));
 
@@ -649,7 +649,7 @@ function ajax_products_cargarProductosConfigurables($id)
 }
 
 
-function ajax_products_setAttrConfigurable($id_parent,$attr){
+function ajax_products_setAttrConfigurable($id,$attr){
     
     global $MyAccessList;
     global $MyMessageAlert;
@@ -657,12 +657,15 @@ function ajax_products_setAttrConfigurable($id_parent,$attr){
     
     if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
     {
-        $CatalogproductconfigurablesModel =  new \Catalog\model\CatalogproductconfigurablesModel();
-        $CatalogproductconfigurablesEntity =  new \Catalog\entity\CatalogproductconfigurablesEntity();
+        $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
+        $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
         $Tokenizer = new \Franky\Haxor\Tokenizer;
      
+        $CatalogproductsEntity->id($Tokenizer->decode($id));
+        $CatalogproductsEntity->configurable(json_encode(explode(",",$attr)));
 
-        if($CatalogproductconfigurablesModel->setAttr($Tokenizer->decode($id_parent),$attr) != REGISTRO_SUCCESS)
+
+        if($CatalogproductsModel->save($CatalogproductsEntity->getArrayCopy()) != REGISTRO_SUCCESS)
         {
             $respuesta["error"] = true;
             $respuesta["message"] = $MyMessageAlert->Message("catalog_products_error_change_attr");

@@ -46,7 +46,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     {
         $data = $this->optimizeEntity($data);
         $campos = ["id","parent_id","type","set_attribute","name","sku","category","visible_in_search","description","images","videos","url_key","meta_title","meta_keyword","meta_description","price","stock","iva","incluye_iva","createdAt","updateAt","status",
-        "in_stock","saleable","min_qty","stock_infinito","envio_requerido"];
+        "in_stock","saleable","min_qty","stock_infinito","envio_requerido","configurable"];
 
         foreach($data as $k => $v)
         {
@@ -84,7 +84,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
         "catalog_products.meta_keyword","catalog_products.meta_description",
         "price","stock","iva","incluye_iva","catalog_products.createdAt",
         "catalog_products.updateAt","catalog_products.status",
-        "in_stock","saleable","min_qty","stock_infinito","envio_requerido"];
+        "in_stock","saleable","min_qty","stock_infinito","envio_requerido","configurable"];
 
         foreach($data as $k => $v)
         {
@@ -162,7 +162,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
         "catalog_products.meta_keyword","catalog_products.meta_description",
         "price","stock","iva","incluye_iva","catalog_products.createdAt",
         "catalog_products.updateAt","catalog_products.status",
-        "in_stock","saleable","min_qty","stock_infinito","envio_requerido"];
+        "in_stock","saleable","min_qty","stock_infinito","envio_requerido","configurable"];
 
    
         if(!empty($this->categoria_array)){

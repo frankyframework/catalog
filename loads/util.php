@@ -443,6 +443,7 @@ function getCatalogVitrina($clave)
     $CatalogproductsEntity = new \Catalog\entity\CatalogproductsEntity();
     $Tokenizer = new \Franky\Haxor\Tokenizer;
     $CatalogproductsEntity->status(1);
+    $CatalogproductsEntity->visible_in_search(1);
     $CatalogvitrinaEntity->status(1);
     $CatalogvitrinaEntity->clave($clave);
     $result	 = $CatalogvitrinaModel->getData($CatalogvitrinaEntity->getArrayCopy());

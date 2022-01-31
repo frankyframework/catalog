@@ -4,15 +4,17 @@
         <h1 class="titulo_seccion_admin"><?php echo $title_grid; ?> de <?=$producto_actual['name']?></h1>
         <div >
             
-                <lable>
+                
                     <span>Selecciona el atributo para configuracion</span>
-                    <select name="attr_configurable">
+                    <ul>
+                        <?php if(!empty($attrs)): ?>
                     <?php foreach($attrs as $attr_id => $attr_label): ?>
-                    <option value="<?=$attr_id?>"><?=$attr_label?></option>
+                        <li><lable><input name="attr_configurable[]" type="checkbox" value="<?=$attr_id?>" <?=(in_array($attr_id,$producto_actual['configurable']) ? "checked='checked'" : "")?> /><?=$attr_label?> </label></li>
                     <?php endforeach?>
-                    </select>
-                </label>
-            
+                    <?php endif; ?>
+                    </ul>
+               
+        
         </div>
         <div  class="w-xxxx-12 cont_productos_configurables">
             
@@ -78,19 +80,19 @@ $(window).load(function(){
         if($(this).is(':checked'))
         {
       
-            ajax_products_agregarProductoConfigurable('<?=$id?>',$(this).attr('value'),$('select[name=attr_configurable]').val())
+            ajax_products_agregarProductoConfigurable('<?=$id?>',$(this).attr('value'))
         }
         else{
-            ajax_products_quitarProductoConfigurable('<?=$id?>',$(this).attr('value'),$('select[name=attr_configurable]').val())
+            ajax_products_quitarProductoConfigurable('<?=$id?>',$(this).attr('value'))
         }
       
     });
 
 
-    $("select[name='attr_configurable']").change(function(){
-            ajax_products_setAttrConfigurable('<?=$id?>',$('select[name=attr_configurable]').val())
+    $("input[name='attr_configurable[]']").change(function(){
+            ajax_products_setAttrConfigurable('<?=$id?>')
     });
-    
+    ajax_products_cargarProductosConfigurables('<?=$id?>');
 });
-ajax_products_cargarProductosConfigurables('<?=$id?>');
+
 </script>
