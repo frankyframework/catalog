@@ -596,7 +596,7 @@ function ajax_getFrmCategpryHTML(response)
         });
 
      
-        $("checkbox.switch").change(function()
+        $("input.switch").change(function()
         {
                 if($(this).is(":checked"))
                 {
@@ -607,7 +607,7 @@ function ajax_getFrmCategpryHTML(response)
                     $(this).removeClass('switchOn');
                 }
         });
-        $(".switch").trigger('change');
+        $("input.switch").trigger('change');
         
        
     }
