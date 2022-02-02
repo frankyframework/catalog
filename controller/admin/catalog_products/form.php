@@ -106,6 +106,11 @@ $adminForm->setOptionsInput("set_attribute",$set_attribute);
 $adminForm->setOptionsInput("category[]",$categorys);
 $adminForm->setData($data);
 $adminForm->setAtributoInput("callback","value", urldecode($callback));
+if(!empty($data['parent_id']))
+{
+    $adminForm->setAtributoInput("visible_in_search","disabled", 'true');
+
+}
 
 
 $title_form = "$title";

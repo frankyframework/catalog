@@ -73,7 +73,34 @@ if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REG
 
     $custom_attr = getDataCustomAttribute($data_detalle['id'],'catalog_products');
 
-    $configurables = getDataConfigurables($data_detalle['id']);
+    if($data_detalle['type'] == "configurable")
+    {
+        $configurables = getDataConfigurables($data_detalle['id']);
+        $default_product = true;
+        $token = "";
+        foreach($configurables['config'] as $key => $val)
+        {
+            $token .= $custom_attr['custom_values'][$val['name']];
+        }
+        
+       
+        foreach($configurables['config'] as $key => $val)
+        {
+            foreach($configurables['productos'] as $_key => $opt):
+                $tokens[$_key] .= $opt[$val['name']];
+
+                if($token == $tokens[$_key])
+                {
+                    $MyRequest->redirect($opt['url'],"302");           
+                }
+            endforeach;
+        }
+       
+    }
+    if(!empty($data_detalle['parent_id']) )
+    {
+        $configurables = getDataConfigurables($data_detalle['parent_id']);
+    }
   
   $offerSchema->setPriceCurrency('MXN');
   $offerSchema->setPrice($data_detalle['price']);

@@ -651,93 +651,56 @@ function CatalogBreadcrumbs($name =null)
 function getDataConfigurables($id_product)
 {
     global $MyRequest;
-    $CatalogproductconfigurablesModel =  new \Catalog\model\CatalogproductconfigurablesModel();
-    $CatalogproductconfigurablesEntity =  new \Catalog\entity\CatalogproductconfigurablesEntity();
+    $CatalogproductsModel = new Catalog\model\CatalogproductsModel;
+    $CatalogproductsEntity = new Catalog\entity\CatalogproductsEntity;
 
 
-    $CatalogproductconfigurablesEntity->id_product($id_product);
-  
-    
-    if($CatalogproductconfigurablesModel->getData($CatalogproductconfigurablesEntity->getArrayCopy()) == REGISTRO_SUCCESS)
-    {
-      
-        while($registro = $CatalogproductconfigurablesModel->getRows())
-        {
-            $id_product = $registro['id_parent'];
-        }
-    }
-
-    $CatalogproductconfigurablesEntity->exchangeArray([]);
-    $CatalogproductconfigurablesEntity->id_parent($id_product);
-    $CatalogproductconfigurablesModel->setTampag(10000);
-    $lista_configurables =[];
-
-    if($CatalogproductconfigurablesModel->getData($CatalogproductconfigurablesEntity->getArrayCopy()) == REGISTRO_SUCCESS)
-    {
- 
-        $lista_configurables[] =$id_product;
-        while($registro = $CatalogproductconfigurablesModel->getRows())
-        {
-            $lista_configurables[] = $registro['id_product'];
-            $id_attr = $registro['id_attribute'];
-        }
-
-        //print_r($lista_configurables); 
-    }
-
-    if(!empty($lista_configurables))
-    {
-        $CustomattributesvaluesModel = new \Base\model\CustomattributesvaluesModel();
-        $CustomattributesvaluesEntity = new \Base\entity\CustomattributesvaluesEntity();
-
- 
-        $CustomattributesvaluesModel->setTampag(100);
-        $CustomattributesvaluesModel->setIds($lista_configurables);
-        $CustomattributesvaluesEntity->id_attribute($id_attr);
-        $CustomattributesvaluesModel->getData($CustomattributesvaluesEntity->getArrayCopy());
-        $lista_configurables_values= [];
-     
-        if($CustomattributesvaluesModel->getTotal() > 0)
-        {
-            
-
-            while($registro = $CustomattributesvaluesModel->getRows())
-            {
-
-                $lista_configurables_values[$registro['id_ref']] = $registro['value'];
-
-            }
-
-           // print_r($lista_configurables_values); 
-        }
-    }
 
     $configurables = [];
-    if(!empty($lista_configurables))
+    $CatalogproductsEntity->id($id_product);
+
+    if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
     {
-        $CatalogproductsModel = new Catalog\model\CatalogproductsModel;
-        $CatalogproductsEntity = new Catalog\entity\CatalogproductsEntity;
+       
+        $registro = $CatalogproductsModel->getRows();
+        
+        $attrs = json_decode($registro['configurable'],true);
+ 
+    }
 
 
-        $CatalogproductsModel->setPage(1);
-        $CatalogproductsModel->setTampag(100);
+    $CatalogproductsModel->setPage(1);
+    $CatalogproductsModel->setTampag(100);
 
-
-        $CatalogproductsEntity->status(1);
-        $CatalogproductsModel->setsearchIds($lista_configurables);
-  
-        if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+    $CatalogproductsEntity->exchangeArray([]);
+    $CatalogproductsEntity->status(1);
+    $CatalogproductsEntity->parent_id($id_product);
+    
+    if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+    {
+       $i = 0;
+        while($registro = $CatalogproductsModel->getRows())
         {
-            $configurables['id_attribute'] = $id_attr;
-            while($registro = $CatalogproductsModel->getRows())
-            {
-                    $configurables['configurables'][] = ['url' => $MyRequest->url(CATALOG_SEARCH_CATEGORY,['friendly' => $registro['url_key']]),'url_key' => $registro['url_key'], 'value' => $lista_configurables_values[$registro['id']]];
-
-            }
-
-               
+            $custom_attr = getDataCustomAttribute($registro['id'],'catalog_products');
             
+            foreach($attrs as $key => $input_id)
+            {
+                foreach($custom_attr['custom_imputs'] as $_key => $attr)
+                {
+                    if($attr['id'] == $input_id)
+                    {
+                        $configurables['config'][$key] = ['name' => $attr['name'],'label' => $attr['label']];
+                        $configurables['productos'][$i][$attr['name']] =$custom_attr['custom_values'][$attr['name']];
+                    }
+                }
+            }
+        
+        
+                $configurables['productos'][$i]['url_key'] = $registro['url_key'];
+                $configurables['productos'][$i]['url'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro['url_key']]);
+            $i++;
         }
+ 
     }
     
  

@@ -12,22 +12,20 @@
                         <span class="_sku">SKU: <?=$data_detalle['sku']?></span>
                     </div>
                     <div class="w-xxxx-12">
-                        <?php if(isset($custom_attr['custom_imputs'][$configurables['id_attribute']])): ?>
+                        <?php if(!empty($configurables)): ?>
                         <div class="w-xxxx-12 _cont_configurables">
 
-                                <h2><?=$custom_attr['custom_imputs'][$configurables['id_attribute']]['label']?></h2>
-                               
-                                <?php $option_configurable =  $custom_attr['custom_imputs'][$configurables['id_attribute']]['data']; ?> 
                                
                                 <div class="_cont_more_info">
-
-                                <?php foreach($option_configurable as $key => $val): ?>
-
-                                    <?php foreach($configurables['configurables'] as $opt): ?>
-                                        <?php if($opt['value'] == $key): ?>
-                                        <div class=" _btn_seleccionable _cont_right <?=($custom_attr['custom_values'][$custom_attr['custom_imputs'][$configurables['id_attribute']]['name']] == $key ? '_Active' : '') ?>">
-                                            <a href="<?= $opt['url']?>" class="configurable" data-value="<?= $key; ?>" ><?= $val; ?></a>
-                                        </div>
+                                <?php $c_usados = []; ?>
+                                <?php foreach($configurables['config'] as $key => $val): ?>
+                                    <h3><?=$val['label']?></h3>
+                                    <?php foreach($configurables['productos'] as $_key => $opt): ?>
+                                        <?php if(!in_array($opt[$val['name']],$c_usados[$val['name']])): ?>
+                                            <div class=" _btn_seleccionable _cont_right ">
+                                            <label> <input type="radio" name="<?=$val['name']?>" value="<?= $opt[$val['name']]?>" class="configurable"  <?=($custom_attr['custom_values'][$val['name']] == $opt[$val['name']] ? "checked='checked'" : "")?>/><?= $opt[$val['name']]?></label>
+                                            </div>
+                                            <?php $c_usados[$val['name']][] = $opt[$val['name']]; ?>
                                         <?php endif; ?>
                                     <?php endforeach; ?>
                                 <?php endforeach; ?>
@@ -38,6 +36,21 @@
 
                         <script>
                             var time_event_search = null;
+                           
+                            <?php 
+                            $config_configurables = [];
+                            foreach($configurables['productos'] as $c):
+                                $token = "";
+                                foreach($configurables['config'] as $key => $val):
+
+                                    $token .= $c[$val['name']];
+                                
+                                    
+                                endforeach;    
+                                $config_configurables[$token] = $c['url'];
+                            endforeach;
+                            ?>
+                            var productos_configurables = <?=json_encode($config_configurables)?>;
                             var goConfigurableProduct = function(url){
                             $.ajax({
                                     type: 'GET',
@@ -78,13 +91,24 @@
                             });
 
                             };
-                            $('a.configurable').click(function(e){
+                            $('input.configurable').change(function(e){
 
                                 e.preventDefault();
-                                
-                                goConfigurableProduct($(this).attr('href'));
+                                var token_link = "";
+                                <?php foreach($configurables['config'] as $key => $val): ?>
+                                    token_link += $('input[name=<?=$val['name']?>]:checked').val();
+                                <?php endforeach; ?>
+                                if(!productos_configurables[token_link])
+                                {
+                                    $(e.target).prop( "checked", false );
+                                    _alert("<?=_("Lo sentimos este producto no esta disponible por el momento")?>")
+                                   
+                                }
+
+                                goConfigurableProduct(productos_configurables[token_link]);
                                   
                             });
+
                         </script>
 
 
