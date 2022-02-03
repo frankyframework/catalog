@@ -90,6 +90,8 @@ header("Content-disposition: attachment; filename=template_productos.xls");
       <tr>
          <th width="" ><strong>Tipo</strong></th>
          <th width="" ><strong>Set de atributos</strong></th>
+         <th width="" ><strong>ID Atributos configurables</strong></th>
+         <th width="" ><strong>ID Padre</strong></th>
          <th width="" ><strong>Nombre</strong></th>
          <th width="" ><strong>SKU</strong></th>
          <th width="" ><strong>Categorias (JSON)</strong></th>
@@ -143,6 +145,8 @@ header("Content-disposition: attachment; filename=template_productos.xls");
 <tr>
          <td><?=$data['type']?></td>
          <td><?=$data['set_attribute']?></td>
+         <td><?=$data['configurable']?></td>
+         <td><?=$data['parent_id']?></td>
          <td><?=$data['name']?></td>
          <td><?=$data['sku']?></td>
          <td><?=$data['category']?></td>
