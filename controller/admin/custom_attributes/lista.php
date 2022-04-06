@@ -53,12 +53,12 @@ if($CustomattributesModel->getTotal() > 0)
 
 
 $MyFrankyMonster->setPHPFile(getVista("admin/template/grid.phtml"));
-$title_grid = "Atributos presonalizados";
+$title_grid = _catalog("Atributos presonalizados");
 $class_grid = "cont_custom_attributes";
-$error_grid = "No hay atributos registrados";
+$error_grid = _catalog("No hay atributos registrados");
 $deleteFunction = "EliminarCatalogCustomAttribute";
 $frm_constante_link = FRM_CATALOG_CUSTOM_ATTRIBUTES;
-$titulo_columnas_grid = array("createdAt" => "Fecha","name" => "Nombre","entity" => "Entidad");
+$titulo_columnas_grid = array("createdAt" => _catalog("Fecha"),"name" => _catalog("Nombre"),"entity" => _catalog("Entidad"));
 $value_columnas_grid = array("createdAt", "name","entity" );
 
 $css_columnas_grid = array("createdAt" => "w-xxxx-4" ,"name" => "w-xxxx-3" ,"entity" => "w-xxxx-3" );

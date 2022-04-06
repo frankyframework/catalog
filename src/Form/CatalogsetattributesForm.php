@@ -30,7 +30,7 @@ class CatalogsetattributesForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'name',
-                'label' => 'Nombre:',
+                'label' => _catalog('Nombre'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -46,7 +46,7 @@ class CatalogsetattributesForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'description',
-                'label' => 'Descripcion:',
+                'label' => _catalog('Descripcion'),
                 'type'  => 'textarea',
                 'required'  => false,
                 'atributos' => array(
@@ -86,7 +86,7 @@ class CatalogsetattributesForm extends \Franky\Form\Form
             'atributos' => array(
                 'class' => 'switch'
              ),
-            'options' =>  array("1" => "Activar"),
+            'options' =>  array("1" => _catalog("Activar")),
 
 
             )
@@ -100,7 +100,7 @@ class CatalogsetattributesForm extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => 'btn btn-primary btn-big float_right',
-                    'value' => "Guardar"
+                    'value' => _catalog("Guardar")
                  )
 
             )

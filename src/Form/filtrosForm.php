@@ -7,7 +7,7 @@ class filtrosForm extends \Base\Form\filtrosForm
     {
         $this->add(array(
             'name' => 'id_category',
-            'label' => 'Categoria:',
+            'label' => _catalog('Categoria'),
             'type'  => 'select',
             'required'  => true,
         'required'  => true,

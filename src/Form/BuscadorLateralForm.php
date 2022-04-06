@@ -29,7 +29,7 @@ class BuscadorLateralForm  extends \Franky\Form\Form
 
        $this->add(array(
                'name' => 'categoria[]',
-               'label' => _('Categoría'),
+               'label' => _catalog('Categoría'),
                'type'  => 'checkbox',
                'required'  => false,
                'atributos' => array(

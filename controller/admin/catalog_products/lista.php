@@ -92,14 +92,14 @@ if($CatalogproductsModel->getTotal() > 0)
     }
 }
 //$MyFrankyMonster->setPHPFile(getVista("admin/template/grid.phtml"));
-$title_grid = "Productos";
+$title_grid = _catalog("Productos");
 $class_grid = "products";
-$error_grid = "No hay productos registrados";
+$error_grid = _catalog("No hay productos registrados");
 $deleteFunction = "DeleteCatalogProduct";
 
 $frm_constante_link = FRM_CATALOG_PRODUCTS;
 
-$titulo_columnas_grid = array("_id" => "ID","images" => "Thumb", "name" =>  "Nombre","sku" => "SKU","type" => "Tipo");
+$titulo_columnas_grid = array("_id" => _catalog("ID"),"images" => _catalog("Thumb"), "name" =>  _catalog("Nombre"),"sku" => _catalog("SKU"),"type" => _catalog("Tipo"));
 $value_columnas_grid = array("_id" ,"images", "name","sku","type");
 
 $css_columnas_grid = array("_id" => "w-xxxx-1" ,"images" => "w-xxxx-2" , "name" => "w-xxxx-3", "sku" => "w-xxxx-1", "type" => "w-xxxx-1");

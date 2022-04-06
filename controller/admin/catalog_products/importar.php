@@ -55,7 +55,7 @@ if ($handle->uploaded)
                     }
 
                 }
-                $titulo_columnas_grid = array("name" =>  "Nombre","sku" => "SKU");
+                $titulo_columnas_grid = array("name" =>  _catalog("Nombre"),"sku" => _catalog("SKU"));
                 $value_columnas_grid = array("name","sku");
 
                 $css_columnas_grid = array("name" => "w-xxxx-4", "sku" => "w-xxxx-4");

@@ -22,7 +22,7 @@ class CatalogImportForm extends \Franky\Form\Form
         );
         $this->add(array(
             'name' => 'archivo',
-            'label' => _('Archivo de catalogo'),
+            'label' => _catalog('Archivo de catalogo'),
             'type'  => 'file',
             'atributos' => array(
              'class' => 'required'
@@ -35,7 +35,7 @@ class CatalogImportForm extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => 'btn btn-primary btn-big float_right',
-                    'value' => "Guardar"
+                    'value' => _catalog("Guardar")
                  )
 
             )

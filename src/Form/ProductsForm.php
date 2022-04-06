@@ -26,10 +26,10 @@ class ProductsForm  extends \Franky\Form\Form
 
         $this->add(array(
             'name' => 'type',
-            'label' => 'Tipo de producto',
+            'label' => _catalog('Tipo de producto'),
             'type'  => 'select',
             'required'  => false,
-            'options' => array('simple'=>"Simple","configurable" => "Configurable"),
+            'options' => array('simple'=>_catalog("Simple"),"configurable" => _catalog("Configurable")),
             'atributos' => array(
                 'class'       => 'required'
              ),
@@ -40,7 +40,7 @@ class ProductsForm  extends \Franky\Form\Form
         );
         $this->add(array(
             'name' => 'set_attribute',
-            'label' => 'Set de atributos',
+            'label' => _catalog('Set de atributos'),
             'type'  => 'select',
             'required'  => false,
             'options' => array(),
@@ -54,7 +54,7 @@ class ProductsForm  extends \Franky\Form\Form
         );
         $this->add(array(
                 'name' => 'name',
-                'label' => 'Nombre',
+                'label' => _catalog('Nombre'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -68,7 +68,7 @@ class ProductsForm  extends \Franky\Form\Form
         );
         $this->add(array(
             'name' => 'sku',
-            'label' => 'SKU',
+            'label' => _catalog('SKU'),
             'type'  => 'text',
             'required'  => true,
             'atributos' => array(
@@ -82,7 +82,7 @@ class ProductsForm  extends \Franky\Form\Form
     );
         $this->add(array(
                 'name' => 'description',
-                'label' => 'Descripción',
+                'label' => _catalog('Descripción'),
                 'type'  => 'textarea',
                 'required'  => false,
                 'atributos' => array(
@@ -119,7 +119,7 @@ class ProductsForm  extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'price',
-                'label' => _('Precio'),
+                'label' => _catalog('Precio'),
                 'type'  => 'text',
                 'required'  => false,
                 'atributos' => array(
@@ -136,7 +136,7 @@ class ProductsForm  extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'iva',
-                'label' => _('IVA'),
+                'label' => _catalog('IVA'),
                 'type'  => 'text',
                 'required'  => false,
                 'atributos' => array(
@@ -156,7 +156,7 @@ class ProductsForm  extends \Franky\Form\Form
             'atributos' => array(
                 'class' => 'switch'
             ),
-            'options' =>  array("1" => "Incluye IVA"),
+            'options' =>  array("1" => _catalog("Incluye IVA")),
 
 
             )
@@ -164,7 +164,7 @@ class ProductsForm  extends \Franky\Form\Form
 
         $this->add(array(
             'name' => 'stock',
-            'label' => 'Stock',
+            'label' => _catalog('Stock'),
             'type'  => 'text',
             'required'  => false,
             'atributos' => array(
@@ -183,7 +183,7 @@ class ProductsForm  extends \Franky\Form\Form
             'atributos' => array(
                 'class' => 'switch'
             ),
-            'options' =>  array("1" => "Producto en stock"),
+            'options' =>  array("1" => _catalog("Producto en stock")),
 
 
             )
@@ -195,7 +195,7 @@ class ProductsForm  extends \Franky\Form\Form
             'atributos' => array(
                 'class' => 'switch'
             ),
-            'options' =>  array("1" => "Este producto se puede vender"),
+            'options' =>  array("1" => _catalog("Este producto se puede vender")),
 
 
             )
@@ -207,7 +207,7 @@ class ProductsForm  extends \Franky\Form\Form
             'atributos' => array(
                 'class' => 'switch'
             ),
-            'options' =>  array("1" => "Stock infinito"),
+            'options' =>  array("1" => _catalog("Stock infinito")),
 
 
             )
@@ -215,7 +215,7 @@ class ProductsForm  extends \Franky\Form\Form
 
         $this->add(array(
             'name' => 'min_qty',
-            'label' => 'Minimo para vender',
+            'label' => _catalog('Minimo para vender'),
             'type'  => 'text',
             'required'  => false,
             
@@ -238,12 +238,12 @@ class ProductsForm  extends \Franky\Form\Form
                     'value' => 1
                 ),
                 
-                'options' =>  array("1" => "Este item es visible en busquedas"),
+                'options' =>  array("1" => _catalog("Este item es visible en busquedas")),
             )
         );
         $this->add(array(
                 'name' => 'videos',
-                'label' => '¿Tienes videos? Coloca la url',
+                'label' => _catalog('¿Tienes videos? Coloca la url'),
                 'type'  => 'text',
                 'required'  => false,
                 'atributos' => array(
@@ -260,7 +260,7 @@ class ProductsForm  extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'images[]',
-                'label' => 'Imagenes',
+                'label' => _catalog('Imagenes'),
                 'type'  => 'file',
                 'required'  => false,
                 'atributos' => array(
@@ -279,7 +279,7 @@ class ProductsForm  extends \Franky\Form\Form
 
         $this->add(array(
             'name' => 'url_key',
-            'label' => 'URL KEY',
+            'label' => _catalog('URL KEY'),
             'type'  => 'text',
             'required'  => false,
             'atributos' => array(
@@ -294,7 +294,7 @@ class ProductsForm  extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'meta_title',
-                'label' => 'Meta titulo',
+                'label' => _catalog('Meta titulo'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -310,7 +310,7 @@ class ProductsForm  extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'meta_description',
-                'label' => 'Meta descripcion',
+                'label' => _catalog('Meta descripcion'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -325,7 +325,7 @@ class ProductsForm  extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'meta_keyword',
-                'label' => 'Meta Keywords',
+                'label' => _catalog('Meta Keywords'),
                 'type'  => 'textarea',
                 'required'  => false,
                 'atributos' => array(
@@ -342,7 +342,7 @@ class ProductsForm  extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => '_btn _btn-primary',
-                    'value' => "Guardar"
+                    'value' => _catalog("Guardar")
                 )
 
             )

@@ -18,7 +18,7 @@ class BuscadorPrincipalForm  extends \Franky\Form\Form
 
       $this->add(array(
               'name' => 'q',
-              'label' => 'Buscar',
+              'label' => _catalog('Buscar'),
               'type'  => 'text',
               'required'  => false,
               'atributos' => array(

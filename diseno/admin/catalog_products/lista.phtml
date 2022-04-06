@@ -23,16 +23,16 @@
                         <?php endforeach; ?>
                         <div class="w-xxxx-1">
                               <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
-                                  Eliminar
+                                  <?=_catalog('Eliminar')?>
                               <?php endif; ?>
                         </div>
                         <div class="w-xxxx-1">
                             <?php if(!empty($frm_constante_link)): ?>
-                              Editar
+                                <?=_catalog('Editar')?>
                             <?php endif; ?>
                             </div>
                         <div class="w-xxxx-1">
-                            Relacionar
+                        <?=_catalog('Relacionar')?>
                             </div>
                            
                     </div>

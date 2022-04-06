@@ -35,7 +35,7 @@ class CatalogCategoryForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'name',
-                'label' => 'Nombre:',
+                'label' => _catalog('Nombre'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -51,7 +51,7 @@ class CatalogCategoryForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'description',
-                'label' => 'Descripcion:',
+                'label' => _catalog('Descripcion'),
                 'type'  => 'textarea',
                 'required'  => false,
                 'atributos' => array(
@@ -72,7 +72,7 @@ class CatalogCategoryForm extends \Franky\Form\Form
                 'atributos' => array(
                     'class' => 'switch'
                  ),
-                'options' =>  array("1" => "Esta categoria es visible en busquedas"),
+                'options' =>  array("1" => _catalog("Esta categoria es visible en busquedas")),
 
 
             )
@@ -84,13 +84,13 @@ class CatalogCategoryForm extends \Franky\Form\Form
             'atributos' => array(
                 'class' => 'switch'
              ),
-            'options' =>  array("1" => "Activar"),
+            'options' =>  array("1" => _catalog("Activar")),
 
 
         )
     );
         $this->add(array(
-                'label' => 'Restringir acceso a:',
+                'label' => _catalog('Restringir acceso a'),
                 'name' => 'users[]',
                 'type'  => 'checkbox',
                 'options' => array(
@@ -102,7 +102,7 @@ class CatalogCategoryForm extends \Franky\Form\Form
 
         $this->add(array(
             'name' => 'image',
-            'label' => _('Imagen de categoria'),
+            'label' => _catalog('Imagen de categoria'),
             'type'  => 'file',
             'atributos' => array(
                 'id' => "image_category"
@@ -112,7 +112,7 @@ class CatalogCategoryForm extends \Franky\Form\Form
 
         $this->add(array(
             'name' => 'url_key',
-            'label' => 'URL KEY:',
+            'label' => _catalog('URL KEY'),
             'type'  => 'text',
             'required'  => false,
             'atributos' => array(
@@ -127,7 +127,7 @@ class CatalogCategoryForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'meta_title',
-                'label' => 'Meta titulo:',
+                'label' => _catalog('Meta titulo'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -143,7 +143,7 @@ class CatalogCategoryForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'meta_description',
-                'label' => 'Meta descripcion:',
+                'label' => _catalog('Meta descripcion'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -158,7 +158,7 @@ class CatalogCategoryForm extends \Franky\Form\Form
 
         $this->add(array(
             'name' => 'meta_keywords',
-            'label' => 'Meta Keywords:',
+            'label' => _catalog('Meta Keywords'),
             'type'  => 'textarea',
             'required'  => false,
             'atributos' => array(
@@ -176,7 +176,7 @@ class CatalogCategoryForm extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => 'btn btn-primary btn-big float_right',
-                    'value' => "Guardar"
+                    'value' => _catalog("Guardar")
                  )
 
             )

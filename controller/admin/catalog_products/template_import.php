@@ -22,36 +22,36 @@ header("Content-disposition: attachment; filename=template_productos.xls");
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Catalogo</title>
+<title><?=_catalog('Catalogo')?></title>
 </head>
 
 <body>
    <table width="100%" border="1" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
       <tr>
-         <th width="" ><strong>Tipo</strong></th>
-         <th width="" ><strong>Set de atributos</strong></th>
-         <th width="" ><strong>ID Atributos configurables</strong></th>
-         <th width="" ><strong>ID Padre</strong></th>
-         <th width="" ><strong>Nombre</strong></th>
-         <th width="" ><strong>SKU</strong></th>
-         <th width="" ><strong>Categorias (JSON)</strong></th>
-         <th width="" ><strong>Descripcion</strong></th>
-         <th width="" ><strong>Visible en resultados (1/0)</strong></th>
-         <th width="" ><strong>Stock</strong></th>
-         <th width="" ><strong>¿En estock?</strong></th>
-         <th width="" ><strong>¿El stock es infinito?</strong></th>
-         <th width="" ><strong>¿Se puede vender (ecommerce)?</strong></th>
-         <th width="" ><strong>QTY minimo para comprar</strong></th>
-         <th width="" ><strong>Precio</strong></th>
-         <th width="" ><strong>IVA (%)</strong></th>
-         <th width="" ><strong>Incluye Iva</strong></th>
-         <th width="" ><strong>¿Requiere envio?</strong></th>
-         <th width="" ><strong>Meta titulo</strong></th>
-         <th width="" ><strong>Meta descripcion</strong></th>
-         <th width="" ><strong>Meta keywords</strong></th>
-         <th width="" ><strong>Url key</strong></th>
-         <th width="" ><strong>¿Esta activo?</strong></th>
-         <th width="" ><strong>Sumar imagenes</strong></th>
+         <th width="" ><strong><?=_catalog('Tipo')?></strong></th>
+         <th width="" ><strong><?=_catalog('Set de atributos')?></strong></th>
+         <th width="" ><strong><?=_catalog('ID Atributos configurables')?></strong></th>
+         <th width="" ><strong><?=_catalog('ID Padre')?></strong></th>
+         <th width="" ><strong><?=_catalog('Nombre')?></strong></th>
+         <th width="" ><strong><?=_catalog('SKU')?></strong></th>
+         <th width="" ><strong><?=_catalog('Categorias (JSON)')?></strong></th>
+         <th width="" ><strong><?=_catalog('Descripcion')?></strong></th>
+         <th width="" ><strong><?=_catalog('Visible en resultados (1/0)')?></strong></th>
+         <th width="" ><strong><?=_catalog('Stock')?></strong></th>
+         <th width="" ><strong><?=_catalog('¿En estock?')?></strong></th>
+         <th width="" ><strong><?=_catalog('¿El stock es infinito?')?></strong></th>
+         <th width="" ><strong><?=_catalog('¿Se puede vender (ecommerce)?')?></strong></th>
+         <th width="" ><strong><?=_catalog('QTY minimo para comprar')?></strong></th>
+         <th width="" ><strong><?=_catalog('Precio')?></strong></th>
+         <th width="" ><strong><?=_catalog('IVA (%)')?></strong></th>
+         <th width="" ><strong><?=_catalog('Incluye Iva')?></strong></th>
+         <th width="" ><strong><?=_catalog('¿Requiere envio?')?></strong></th>
+         <th width="" ><strong><?=_catalog('Meta titulo')?></strong></th>
+         <th width="" ><strong><?=_catalog('Meta descripcion')?></strong></th>
+         <th width="" ><strong><?=_catalog('Meta keywords')?></strong></th>
+         <th width="" ><strong><?=_catalog('Url key')?></strong></th>
+         <th width="" ><strong><?=_catalog('¿Esta activo?')?></strong></th>
+         <th width="" ><strong><?=_catalog('Sumar imagenes')?></strong></th>
       
       <?php
       if(!empty($custom_attr['custom_imputs']))

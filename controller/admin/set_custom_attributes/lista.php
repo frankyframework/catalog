@@ -67,14 +67,14 @@ if($CatalogsetattributesModel->getTotal() > 0)
     }
 }
 $MyFrankyMonster->setPHPFile(getVista("admin/template/grid.phtml"));
-$title_grid = "Set de atributos";
+$title_grid = _catalog("Set de atributos");
 $class_grid = "set_attr_products";
-$error_grid = "No hay sets registrados";
+$error_grid = _catalog("No hay sets registrados");
 $deleteFunction = "EliminarCatalogSetAttribute";
 
 $frm_constante_link = ADMIN_FRM_CATALOG_SET_CUSTOM_ATTRIBUTES;
 
-$titulo_columnas_grid = array("_id" => "ID","name" =>  "Nombre","description" => "Descripcion");
+$titulo_columnas_grid = array("_id" => _catalog("ID"),"name" =>  _catalog("Nombre"),"description" => _catalog("Descripcion"));
 $value_columnas_grid = array("_id" , "name","description");
 
 $css_columnas_grid = array("_id" => "w-xxxx-1", "name" => "w-xxxx-4", "description" => "w-xxxx-4");

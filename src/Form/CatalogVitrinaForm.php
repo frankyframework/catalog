@@ -26,7 +26,7 @@ class CatalogVitrinaForm  extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'nombre',
-                'label' => 'Nombre',
+                'label' => _catalog('Nombre'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -41,7 +41,7 @@ class CatalogVitrinaForm  extends \Franky\Form\Form
         
         $this->add(array(
                 'name' => 'titulo',
-                'label' => 'Titulo',
+                'label' => _catalog('Titulo'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -56,7 +56,7 @@ class CatalogVitrinaForm  extends \Franky\Form\Form
         
         $this->add(array(
             'name' => 'numero',
-            'label' => 'Numero de items',
+            'label' => _catalog('Numero de items'),
             'type'  => 'text',
             'required'  => true,
             'atributos' => array(
@@ -97,7 +97,7 @@ class CatalogVitrinaForm  extends \Franky\Form\Form
             'atributos' => array(
                 'class' => 'switch'
             ),
-            'options' =>  array("1" => "Aleatorio"),
+            'options' =>  array("1" => _catalog("Aleatorio")),
 
 
             )
@@ -110,7 +110,7 @@ class CatalogVitrinaForm  extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => '_btn _btn-primary',
-                    'value' => "Guardar"
+                    'value' => _catalog("Guardar")
                 )
 
             )

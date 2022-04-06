@@ -161,12 +161,12 @@ if($CustomattributesModel->getTotal() > 0)
 
 
 //$MyFrankyMonster->setPHPFile(getVista("admin/template/grid.phtml"));
-$title_grid = "Productos configurables";
+$title_grid = _catalog("Productos configurables");
 $class_grid = "products_configurables";
-$error_grid = "No hay productos registrados";
+$error_grid = _catalog("No hay productos registrados");
 
 
-$titulo_columnas_grid = array("_id" => "ID","images" => "Thumb", "name" =>  "Nombre","sku" => "SKU");
+$titulo_columnas_grid = array("_id" => _catalog("ID"),"images" => _catalog("Thumb"), "name" =>  _catalog("Nombre"),"sku" => _catalog("SKU"));
 $value_columnas_grid = array("_id" ,"images", "name","sku");
 
 $css_columnas_grid = array("_id" => "w-xxxx-2" ,"images" => "w-xxxx-2" , "name" => "w-xxxx-4", "sku" => "w-xxxx-2");

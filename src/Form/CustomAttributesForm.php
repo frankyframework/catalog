@@ -31,7 +31,7 @@ class CustomAttributesForm extends \Franky\Form\Form
        
         $this->add(array(
                 'name' => 'name',
-                'label' => 'Nombre del atributo',
+                'label' => _catalog('Nombre del atributo'),
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
@@ -46,7 +46,7 @@ class CustomAttributesForm extends \Franky\Form\Form
 
         $this->add(array(
             'name' => 'label',
-            'label' => 'Etiqueta del atributo',
+            'label' => _catalog('Etiqueta del atributo'),
             'type'  => 'text',
             'required'  => true,
             'atributos' => array(
@@ -62,7 +62,7 @@ class CustomAttributesForm extends \Franky\Form\Form
         
         $this->add(array(
             'name' => 'type',
-            'label' => 'Tipo de campo',
+            'label' => _catalog('Tipo de campo'),
             'type'  => 'select',
             'required'  => true,
             'atributos' => array(
@@ -83,7 +83,7 @@ class CustomAttributesForm extends \Franky\Form\Form
 
     $this->add(array(
         'name' => 'source',
-        'label' => 'Clase de datos',
+        'label' => _catalog('Clase de datos'),
         'type'  => 'text',
         'required'  => false,
         'atributos' => array(
@@ -101,7 +101,7 @@ class CustomAttributesForm extends \Franky\Form\Form
         
         $this->add(array(
             'name' => 'entity',
-            'label' => 'Entidad de datos',
+            'label' => _catalog('Entidad de datos'),
             'type'  => 'select',
             'required'  => true,
             'options' => array(),
@@ -150,7 +150,7 @@ class CustomAttributesForm extends \Franky\Form\Form
                 'atributos' => array(
                     'class' => ''
                  ),
-                'options' =>  array("1" => "Este campo es requerido"),
+                'options' =>  array("1" => _catalog("Este campo es requerido")),
 
 
             )
@@ -163,7 +163,7 @@ class CustomAttributesForm extends \Franky\Form\Form
                 'type'  => 'submit',
                 'atributos' => array(
                     'class'       => 'btn btn-primary btn-big float_right',
-                    'value' => "Guardar"
+                    'value' => _catalog("Guardar")
                  )
                 
             )

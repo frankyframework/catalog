@@ -60,14 +60,14 @@ if($CatalogvitrinaModel->getTotal() > 0)
     }
 }
 
-$title_grid = "Vitrinas";
+$title_grid = _catalog("Vitrinas");
 $class_grid = "vitrinas";
-$error_grid = "No hay vitrinas registradas";
+$error_grid = _catalog("No hay vitrinas registradas");
 $deleteFunction = "DeleteCatalogVitrina";
 
 $frm_constante_link = FRM_CATALOG_VITRINA;
 
-$titulo_columnas_grid = array("_id" => "ID","titulo" =>  "Titulo","nombre" =>  "Nombre","clave" => "Clave");
+$titulo_columnas_grid = array("_id" => _catalog("ID"),"titulo" =>  _catalog("Titulo"),"nombre" =>  _catalog("Nombre"),"clave" => _catalog("Clave"));
 $value_columnas_grid = array("_id" ,'titulo', "nombre","clave");
 
 $css_columnas_grid = array("_id" => "w-xxxx-1" , "titulo" => "w-xxxx-3","nombre" => "w-xxxx-3", "clave" => "w-xxxx-3");

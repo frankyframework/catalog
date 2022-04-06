@@ -1033,7 +1033,7 @@ function ajax_getCatalogCustomAttrFrm($id,$set)
                     
                     $adminForm->add(array(
                         'name' => $data_attrs['name'],
-                        'label' => $data_attrs['label'],
+                        'label' => _catalog($data_attrs['label']),
                         'type'  => $data_attrs['type'],
                         'required'  => $data_attrs['required'],
                         'atributos' => array(
@@ -1051,7 +1051,7 @@ function ajax_getCatalogCustomAttrFrm($id,$set)
                     
                     $adminForm->add(array(
                         'name' => $data_attrs['name'],
-                        'label' => $data_attrs['label'],
+                        'label' => _catalog($data_attrs['label']),
                         'type'  => 'file',
                         'required'  => $data_attrs['required'],
                         'atributos' => array(
@@ -1069,7 +1069,7 @@ function ajax_getCatalogCustomAttrFrm($id,$set)
                     
                     $adminForm->add(array(
                         'name' => $data_attrs['name'],
-                        'label' => $data_attrs['label'],
+                        'label' => _catalog($data_attrs['label']),
                         'type'  => $data_attrs['type'],
                         'required'  => $data_attrs['required'],
                         'atributos' => array(
@@ -1086,7 +1086,7 @@ function ajax_getCatalogCustomAttrFrm($id,$set)
                 {
                     $adminForm->add(array(
                         'name' => $data_attrs['name'],
-                        'label' => $data_attrs['label'],
+                        'label' => _catalog($data_attrs['label']),
                         'type'  => $data_attrs['type'],
                         'required'  => $data_attrs['required'],
                         'atributos' => array(
