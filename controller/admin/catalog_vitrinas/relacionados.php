@@ -11,7 +11,7 @@ $CatalogproductsEntity = new CatalogproductsEntity();
 $Tokenizer = new Tokenizer();
 
 $MyPaginacion = new paginacion();
-
+$store	= $MyRequest->getRequest('store');
 $id	= $MyRequest->getRequest('id');
 $callback	= $Tokenizer->decode($MyRequest->getRequest('callback'));
 
@@ -39,6 +39,7 @@ $CatalogproductsModel->setPage($MyPaginacion->getPage());
 $CatalogproductsModel->setTampag($MyPaginacion->getTampageDefault());
 $CatalogproductsModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
 $CatalogproductsEntity->status(1);
+$CatalogproductsEntity->store($store);
 $CatalogproductsEntity->visible_in_search(1);
 $result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy(),$busca_b);
 $MyPaginacion->setTotal($CatalogproductsModel->getTotal());

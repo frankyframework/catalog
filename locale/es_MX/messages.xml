@@ -79,5 +79,12 @@
         <llave>set_empty_attributes</llave>
         <valor>Selecciona almenos un atributo</valor>
     </mensaje>
-    
+    <mensaje>
+        <llave>store_exist</llave>
+        <valor>Ya existe una tienda con estas caracteristicas</valor>
+    </mensaje>
+    <mensaje>
+        <llave>store_error_delete</llave>
+        <valor>Error al eliminar la tienda</valor>
+    </mensaje>
 </mensajes>

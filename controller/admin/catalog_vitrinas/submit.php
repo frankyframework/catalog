@@ -49,7 +49,7 @@ if(!$MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
     $error = true;
 }
 
-if($CatalogvitrinaModel->existeClave($CatalogvitrinaEntity->clave(),$CatalogvitrinaEntity->id()) == REGISTRO_SUCCESS)
+if($CatalogvitrinaModel->existeClave($CatalogvitrinaEntity->clave(),$CatalogvitrinaEntity->store(),$CatalogvitrinaEntity->id()) == REGISTRO_SUCCESS)
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("catalog_vitrina_duplicada"));
     $error = true;

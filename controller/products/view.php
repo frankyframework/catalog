@@ -33,7 +33,7 @@ while(empty($friendly))
 
 $CatalogproductsEntity->url_key($friendly);
 $CatalogproductsEntity->status(1);
-
+$CatalogproductsEntity->store(DATA_STORE_CONFIG['id']);
 if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
 {
 
@@ -147,6 +147,7 @@ $CatalogproductrelatedEntity->id_parent($data_detalle['id_ori']);
 $CatalogproductrelatedModel->setTampag(10000);
 $CatalogproductrelatedModel->setOrdensql('RAND()');
 $CatalogproductsEntity->status(1);
+$CatalogproductsEntity->store(DATA_STORE_CONFIG['id']);
 $CatalogproductrelatedModel->setDataProduct($CatalogproductsEntity->getArrayCopy());
 $lista_relacionados_data =[];
 if($CatalogproductrelatedModel->getData($CatalogproductrelatedEntity->getArrayCopy()) == REGISTRO_SUCCESS)

@@ -24,6 +24,27 @@ class filtrosForm extends \Base\Form\filtrosForm
         );  
     }
 
+    public function addStore()
+    {
+        $this->add(array(
+            'name' => 'store_b',
+            'label' => _catalog('Tienda'),
+            'type'  => 'select',
+            'required'  => true,
+        'required'  => true,
+            'atributos' => array(
+                'class'       => 'required'
+            ),
+            'options' => array(
+
+            ),
+            'label_atributos' => array(
+                'class'       => 'desc_form_obligatorio'
+            )
+            )
+        );  
+    }
+
 
 }
 ?>

@@ -5,7 +5,7 @@
     <a href="<?= $data['link']; ?>" class="_img_widget_catalog_product_result"><?php echo makeHTMLImg($data['thumb_resize'],"","",$data['name'],"class='image_100'",1); ?></a>
     <h2 class="_h2_widget_catalog_product_result"><a href="<?= $data['link']; ?>" ><?=$data['name']?></a></h2>
     <?php if(getCoreConfig('catalog/product/showprice')== 1): ?>
-        <span class="price"><?=getFormatoPrecio($data['price'],false)?></span>
+        <span class="price"><?=getFormatoPrecio($data['price'],false,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura'])?></span>
     <?php endif; ?>
     <a class="_btn _widget_catalog_view_more" href="<?= $data['link']; ?>">Ver detalles</a>
 </div>

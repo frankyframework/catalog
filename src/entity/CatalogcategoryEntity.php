@@ -6,6 +6,7 @@ class CatalogcategoryEntity
 {
     private $id;
     private $parent_id;
+    private $store;
     private $name;
     private $description;
     private $image;
@@ -46,6 +47,7 @@ class CatalogcategoryEntity
         $this->orden = (isset($data["orden"]) ? $data["orden"] : null);
         $this->createdAt = (isset($data["createdAt"]) ? $data["createdAt"] : null);
         $this->updateAt = (isset($data["updateAt"]) ? $data["updateAt"] : null);
+        $this->store = (isset($data["store"]) ? $data["store"] : null);
 
     }
 
@@ -92,5 +94,7 @@ class CatalogcategoryEntity
     public function createdAt($createdAt = null){ if($createdAt != null){ $this->createdAt=$createdAt; }else{ return $this->createdAt; } }
 
     public function updateAt($updateAt = null){ if($updateAt != null){ $this->updateAt=$updateAt; }else{ return $this->updateAt; } }
+
+    public function store($store = null){ if($store != null){ $this->store=$store; }else{ return $this->store; } }
 }
 ?>

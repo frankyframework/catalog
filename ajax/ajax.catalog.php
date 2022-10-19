@@ -733,7 +733,7 @@ function ajax_catalog_importar_producto($id)
     if ( $xls = SimpleXLS::parse($file_xls) ) {
       
         $atributos_xls = [
-            "type","set_attribute","configurable","parent_id","name","sku","category","description","visible_in_search","stock","in_stock","stock_infinito","saleable","min_qty","price",
+            "type","store","set_attribute","configurable","parent_id","name","sku","category","description","visible_in_search","stock","in_stock","stock_infinito","saleable","min_qty","price",
             "iva","incluye_iva","envio_requerido","meta_title","meta_description","meta_keyword","url_key","status","new_images"
         ];
 
@@ -1123,7 +1123,7 @@ function ajax_getCatalogCustomAttrFrm($id,$set)
 }
 
 
-function ajax_getFrmCategpry($id,$parent)
+function ajax_getFrmCategpry($id,$parent,$store)
 {
     global $_Niveles_usuarios;
     global $MyConfigure;
@@ -1132,7 +1132,7 @@ function ajax_getFrmCategpry($id,$parent)
    
     $id = $Tokenizer->decode($id);
     $parent = $Tokenizer->decode($parent);
-    $data = ['parent_id' => $parent];
+    $data = ['parent_id' => $parent,'store' => $store];
     if(!empty($id))
     {
         $CatalogCategoryModel = new Catalog\model\CatalogcategoryModel();
@@ -1200,6 +1200,43 @@ function EliminarCatalogSetAttribute($id,$status)
     return $respuesta;
 }
 
+
+function EliminarTienda($id,$status)
+{
+    global $MySession;
+    $CatalogStoresModel = new \Catalog\model\CatalogStoresModel;
+    $CatalogStoresEntity = new \Catalog\entity\CatalogStoresEntity;
+    $Tokenizer = new \Franky\Haxor\Tokenizer;
+    global $MyAccessList;
+    global $MyMessageAlert;
+
+    $respuesta = null;
+
+    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_STORES_CATALOG))
+    {
+        $CatalogStoresEntity->id(addslashes($Tokenizer->decode($id)));
+        $CatalogStoresEntity->status($status);
+
+        if($CatalogStoresModel->save($CatalogStoresEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+
+        }
+        else
+        {
+              $respuesta["message"] = $MyMessageAlert->Message("catalog_store_error_delete");
+              $respuesta["error"] = true;
+        }
+    }
+    else
+    {
+         $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
+         $respuesta["error"] = true;
+    }
+
+    return $respuesta;
+}
+
+
 /******************************** EJECUTA *************************/
 
 $MyAjax->register("EliminarCatalogCustomAttribute");
@@ -1223,4 +1260,5 @@ $MyAjax->register("ajax_catalog_importar_producto");
 $MyAjax->register("ajax_getCatalogCustomAttrFrm");
 $MyAjax->register("ajax_getFrmCategpry");
 $MyAjax->register("EliminarCatalogSetAttribute");
+$MyAjax->register("EliminarTienda");
 ?>

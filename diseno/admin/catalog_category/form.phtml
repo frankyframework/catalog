@@ -1,6 +1,7 @@
 
         <?php echo $adminForm->openTag(); ?>
-        <?php echo $adminForm->getRow('parent_id'); ?>
+        <?php echo $adminForm->get('parent_id'); ?>
+        <?php echo $adminForm->getRow('store'); ?>
         <?php echo $adminForm->getRow('status'); ?>
         <?php if(!empty($id)): ?>
         <?php echo $adminForm->getRow('id'); ?>

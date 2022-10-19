@@ -1,4 +1,11 @@
+<div class="w-xxxx-12 w-xxx-12 w-xx-12 w-x-12 _wrapp_form_serch">
+                <?php echo $MyFiltrosForm->openTag(); ?>
+                <?php echo $MyFiltrosForm->getAllRow(); ?>
+                <?php echo $MyFiltrosForm->endTag(); ?>
+              
+            </div>
 <div class="w-xxxx-12 w-xxx-12 w-xx-12 w-x-12">
+            
     <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4 ">
         <div id="jstree">
             
@@ -58,7 +65,7 @@
         window.cat_selected = data.instance.get_node(data.selected[0]).id.replace('cat_','');
         if(window.cat_selected != 0)
         {
-            ajax_getFrmCategpry(window.cat_selected,'');
+            ajax_getFrmCategpry(window.cat_selected,'','<?=$store_b?>');
             $('.add_category').show();
             $('.remove_category').show();
         }
@@ -75,7 +82,7 @@
   }).jstree();
 
     $('.add_category').click(function(){
-        ajax_getFrmCategpry('',window.cat_selected);
+        ajax_getFrmCategpry('',window.cat_selected,'<?=$store_b?>');
     });
 
     $('.remove_category').click(function(){

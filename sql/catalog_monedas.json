@@ -1,0 +1,50 @@
+{
+    "schema" :
+    {
+        "attributes":[
+            {
+                "name":"id",
+                "type":"int",
+                "length":11,
+                "null":0,
+                "auto_increment":1
+            },
+            {
+                "name":"nombre",
+                "type":"varchar",
+                "length":11,
+                "null":1
+            },
+            {
+                "name":"simbolo",
+                "type":"varchas",
+                "length":11,
+                "null":1
+            },
+            {
+                "name":"abreviatura",
+                "type":"varchar",
+                "length":255,
+                "null":0
+            }
+
+        ],
+        "config":{
+            "primary":"id",
+            "engine":"MyISAM"
+        }
+    }
+    ,
+    "data":[
+        {
+            "nombre":"Pesos Mexicanos",
+            "simbolo":"$",
+            "abreviatura":"MXN"
+        },
+        {
+            "nombre":"Dolares",
+            "simbolo":"$",
+            "abreviatura":"USD"
+        }
+    ]
+}

@@ -10,61 +10,37 @@
                 "auto_increment":1
             },
             {
-                "name":"store",
-                "type":"int",
+                "name":"idioma",
+                "type":"varchar",
                 "length":11,
-                "null":1
+                "null":0
+            },
+            {
+                "name":"url",
+                "type":"varchar",
+                "length":255,
+                "null":0
             },
             {
                 "name":"nombre",
                 "type":"varchar",
-                "length":255,
+                "length":11,
                 "null":0
             },
             {
-                "name":"titulo",
-                "type":"varchar",
-                "length":255,
-                "null":0
-            },
-            {
-                "name":"clave",
-                "type":"varchar",
-                "length":255,
-                "null":0
-            },
-          
-           
-            {
-                "name":"random",
-                "type":"int",
-                "length":1,
-                "null":1,
-                "default":0
-            },
-            {
-                "name":"numero",
+                "name":"moneda",
                 "type":"int",
                 "length":11,
-                "null":0,
-                "default":0
+                "null":0
             },
-            {
-                "name":"items",
-                "type":"text",
-                "null":1
-                
-            },
-           
-          
-            
+       
             {
                 "name":"status",
                 "type":"int",
                 "length":1,
                 "null":0
             },
-           
+            
             {
                 "name":"createdAt",
                 "type":"datetime",

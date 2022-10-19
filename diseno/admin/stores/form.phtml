@@ -1,0 +1,39 @@
+<div class="w-xxxx-12">
+    <div class="content">
+        <h1 class="align_center"></h1>
+        <h3 class="align_center"></h3>
+        <?php echo $adminForm->openTag(); ?>
+        <?php  echo $adminForm->get("callback"); ?>
+
+
+        <?php if(!empty($id)): ?>
+        <?php  echo $adminForm->get("id"); ?>
+        
+          <?php  endif; ?>
+        <?php  echo $adminForm->getRow("nombre"); ?>
+        <?php  echo $adminForm->getRow("url"); ?>
+
+       
+
+        <?php  echo $adminForm->getRow("idioma"); ?>
+        <?php  echo $adminForm->getRow("moneda"); ?>
+
+        
+        <?php  echo $adminForm->getRow("guardar"); ?>
+
+        <?php echo $adminForm->endTag(); ?>
+
+    </div>
+
+  
+
+</div>
+
+
+
+<script >
+$(document).ready(function()
+{
+  $( "#frmstores" ).validate();
+});
+</script>

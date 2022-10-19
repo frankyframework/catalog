@@ -29,6 +29,7 @@ header("Content-disposition: attachment; filename=template_productos.xls");
    <table width="100%" border="1" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
       <tr>
          <th width="" ><strong><?=_catalog('Tipo')?></strong></th>
+         <th width="" ><strong><?=_catalog('Tienda')?></strong></th>
          <th width="" ><strong><?=_catalog('Set de atributos')?></strong></th>
          <th width="" ><strong><?=_catalog('ID Atributos configurables')?></strong></th>
          <th width="" ><strong><?=_catalog('ID Padre')?></strong></th>

@@ -46,6 +46,7 @@ function getCategoryMenu()
     $CatalogcategoryModel->setTampag(1000);
     $CatalogcategoryModel->setOrdensql("orden ASC");
     $CatalogcategoryEntity->status(1);
+    $CatalogcategoryEntity->store(DATA_STORE_CONFIG['id']);
     $CatalogcategoryEntity->visible_in_search(1);
     $CatalogcategoryModel->getData($CatalogcategoryEntity->getArrayCopy());
     $total = $CatalogcategoryModel->getTotal();
@@ -187,6 +188,7 @@ function catalog_getBuscadorLateral()
     $BuscadorLateralForm =  new \Catalog\Form\BuscadorLateralForm('buscadorLateral');
     $BuscadorLateralForm->setAtributo('action',$MyRequest->url(CATALOG_SEARCH));
     $CatalogcategoryEntity->status(1);
+    $CatalogcategoryEntity->store(DATA_STORE_CONFIG['id']);
     $categorias = getCatalogCategorys($CatalogcategoryEntity->getArrayCopy());
     
     $BuscadorLateralForm->setOptionsInput("categoria[]", $categorias);
@@ -211,6 +213,8 @@ function catalog_getPriceMaxMinProduct()
     $CatalogproductsModel->setOrdensql("price ASC");
  
     $precio = [0,0];
+    $CatalogproductsEntity->status(1);
+    $CatalogproductsEntity->store(DATA_STORE_CONFIG['id']);
     if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
     {
             $registro = $CatalogproductsModel->getRows();
@@ -436,7 +440,6 @@ function getCatalogVitrina($clave)
     }
       
 
-
     $CatalogvitrinaModel = new \Catalog\model\CatalogvitrinaModel();
     $CatalogvitrinaEntity = new \Catalog\entity\CatalogvitrinaEntity();
     $CatalogproductsModel = new \Catalog\model\CatalogproductsModel();
@@ -445,6 +448,7 @@ function getCatalogVitrina($clave)
     $CatalogproductsEntity->status(1);
     $CatalogproductsEntity->visible_in_search(1);
     $CatalogvitrinaEntity->status(1);
+    $CatalogvitrinaEntity->store(DATA_STORE_CONFIG['id']);
     $CatalogvitrinaEntity->clave($clave);
     $result	 = $CatalogvitrinaModel->getData($CatalogvitrinaEntity->getArrayCopy());
     
@@ -705,5 +709,49 @@ function getDataConfigurables($id_product)
     
  
     return $configurables;
+}
+
+
+function getCatalogStores()
+{
+    $CatalogStoresModel = new Catalog\model\CatalogStoresModel();
+    $CatalogStoresEntity = new Catalog\entity\CatalogStoresEntity();
+    $CatalogStoresModel->setTampag(1000);
+    $CatalogStoresModel->setOrdensql("id ASC");
+    $CatalogStoresEntity->status(1);
+    $CatalogStoresModel->getData($CatalogStoresEntity->getArrayCopy());
+   
+    $total			= $CatalogStoresModel->getTotal();
+    $stores = array();
+
+    if($total > 0)
+    {
+
+        while($registro = $CatalogStoresModel->getRows())
+        {
+            $stores[$registro['id']] =$registro['nombre'];
+	    }
+    }
+    return $stores;
+}
+
+function getMonedas()
+{
+    $CatalogMonedasModel = new Catalog\model\CatalogMonedasModel();
+    $CatalogMonedasModel->setTampag(1000);
+    $CatalogMonedasModel->setOrdensql("id ASC");
+    $CatalogMonedasModel->getData();
+    $total			= $CatalogMonedasModel->getTotal();
+    $monedas = array();
+
+    if($total > 0)
+    {
+
+        while($registro = $CatalogMonedasModel->getRows())
+        {
+            $monedas[$registro['id']] =$registro['nombre'];
+	    }
+    }
+    return $monedas;
 }
 ?>

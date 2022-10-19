@@ -144,7 +144,7 @@ if(!$error)
         
             $MyFlashMessage->setMsg("success",$MyMessageAlert->Message("editar_generico_success"));
         }
-        $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_PRODUCTS));
+        $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_PRODUCTS)."?store_b=".$CatalogproductsEntity->store());
        
        
         $CatalogcategoryproductEntity->id_product($id);

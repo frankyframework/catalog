@@ -56,6 +56,8 @@ $CatalogcategoryEntity = new CatalogcategoryEntity();
 $MyPaginacion = new paginacion();
 $Tokenizer = new Tokenizer();
 
+
+$CatalogcategoryEntity->store(DATA_STORE_CONFIG['id']);
 if(!empty($departamento))
 {
   if(is_array($departamento))
@@ -156,6 +158,7 @@ $CatalogproductsModel->setOrdensql($MyPaginacion->getCampoOrden()." ".$MyPaginac
 
 $CatalogproductsEntity->status(1);
 $CatalogproductsEntity->visible_in_search(1);
+$CatalogproductsEntity->store(DATA_STORE_CONFIG['id']);
 $CatalogproductsModel->setBusca($q);
 $resultados_pagina = array();
 if($CatalogproductsModel->getDataSearch($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)

@@ -125,7 +125,7 @@ if($error == false)
              $MyFlashMessage->setMsg("success",$MyMessageAlert->Message("editar_generico_success"));
         }
 
-        $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_CATEGORY));
+        $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_CATEGORY)."?store_b=".$CatalogCategoryEntity->store());
 
     }
     elseif($result == REGISTRO_ERROR)

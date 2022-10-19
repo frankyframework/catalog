@@ -203,10 +203,10 @@ if(!empty($precio))
               }, 3000);
             },
             slide: function( event, ui ) {
-              $( "#filtro_precio" ).val(getFormatoPrecio(ui.values[ 0 ]) + " - " + getFormatoPrecio(ui.values[ 1 ]) );
+              $( "#filtro_precio" ).val(getFormatoPrecio(ui.values[ 0 ],true,'<?=DATA_STORE_CONFIG['simbolo']?>','<?=DATA_STORE_CONFIG['abreviatura']?>') + " - " + getFormatoPrecio(ui.values[ 1 ],true,'<?=DATA_STORE_CONFIG['simbolo']?>','<?=DATA_STORE_CONFIG['abreviatura']?>') );
             }
           });
-          $( "#filtro_precio" ).val( getFormatoPrecio($( "#slider-range" ).slider( "values", 0 )) +
-            " - " + getFormatoPrecio($( "#slider-range" ).slider( "values", 1 )) );
+          $( "#filtro_precio" ).val( getFormatoPrecio($( "#slider-range" ).slider( "values", 0 ),true,'<?=DATA_STORE_CONFIG['simbolo']?>','<?=DATA_STORE_CONFIG['abreviatura']?>') +
+            " - " + getFormatoPrecio($( "#slider-range" ).slider( "values", 1 ),true,'<?=DATA_STORE_CONFIG['simbolo']?>','<?=DATA_STORE_CONFIG['abreviatura']?>') );
      });
  </script>

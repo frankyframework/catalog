@@ -16,9 +16,22 @@ $CatalogCategoryEntity = new CatalogcategoryEntity();
 
 $id		= $Tokenizer->decode($MyRequest->getRequest('id'));
 $callback	= $MyRequest->getRequest('callback');
+$store	= $MyRequest->getRequest('store');
 $data = $MyFlashMessage->getResponse();
+
 $galeria_frm = "";
 $album = $MySession->GetVar('addProduct');
+
+$tiendas = getCatalogStores();	
+if(empty($store)){
+        foreach($tiendas as $k => $v)
+        {
+                $store = $k;
+                break;
+        }   
+}
+
+$data['store'] = $store;
 
 if(empty($album))
 {
@@ -84,10 +97,12 @@ $CatalogCategoryModel->setTampag(1000);
 $CatalogCategoryModel->setOrdensql("catalog_category.orden ASC");
 
 $CatalogCategoryEntity->status(1);
+$CatalogCategoryEntity->store($store);
 $result	 = $CatalogCategoryModel->getData($CatalogCategoryEntity->getArrayCopy());
 
 $categorias = array();
 $categorys = array();
+
 if($CatalogCategoryModel->getTotal() > 0)
 {
 	$iRow = 0;	

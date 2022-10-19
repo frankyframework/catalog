@@ -23,6 +23,17 @@ class CatalogVitrinaForm  extends \Franky\Form\Form
             )
         );
 
+        $this->add(array(
+            'name' => 'store',
+           
+            'type'  => 'hidden',
+            'atributos' => array(
+             ),
+            'label_atributos' => array(
+               
+                )
+        )
+        );
 
         $this->add(array(
                 'name' => 'nombre',

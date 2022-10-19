@@ -1,5 +1,5 @@
 <?php
-use Base\Form\filtrosForm;
+use Catalog\Form\filtrosForm;
 use Franky\Core\paginacion;
 use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
@@ -14,8 +14,16 @@ $MyPaginacion = new paginacion();
 
 $id		= $MyRequest->getRequest('id');
 $callback	= $MyRequest->getRequest('callback');
-
-
+$tiendas = getCatalogStores();
+$store	= $MyRequest->getRequest('store');	
+if(empty($store)){
+        foreach($tiendas as $k => $v)
+        {
+                $store = $k;
+                break;
+        }
+        
+}
 if(empty($Tokenizer->decode($id)))
 {
     $MyRequest->redirect($Tokenizer->decode($callback));
@@ -43,6 +51,7 @@ $CatalogproductsModel->setTampag($MyPaginacion->getTampageDefault());
 $CatalogproductsModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
 $CatalogproductsModel->setBusca($busca_b);
 $CatalogproductsEntity->status(1);
+$CatalogproductsEntity->store($store);
 $CatalogproductsEntity->visible_in_search(1);
 $result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
 $MyPaginacion->setTotal($CatalogproductsModel->getTotal());

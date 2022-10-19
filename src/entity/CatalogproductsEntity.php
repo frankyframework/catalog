@@ -6,6 +6,7 @@ class CatalogproductsEntity
 {
     private $id;
     private $parent_id;
+    private $store;
     private $set_attribute;
     private $type;
     private $name;
@@ -72,6 +73,7 @@ class CatalogproductsEntity
         $this->stock_infinito = (isset($data["stock_infinito"]) ? $data["stock_infinito"] : null);
         $this->envio_requerido = (isset($data["envio_requerido"]) ? $data["envio_requerido"] : null);
         $this->configurable = (isset($data["configurable"]) ? $data["configurable"] : null);
+        $this->store = (isset($data["store"]) ? $data["store"] : null);
     }
 
     public function getArrayCopy()
@@ -145,5 +147,6 @@ class CatalogproductsEntity
 
     public function configurable($configurable = null){ if($configurable !== null){ $this->configurable=$configurable; }else{ return $this->configurable; } }
 
+    public function store($store = null){ if($store != null){ $this->store=$store; }else{ return $this->store; } }
 }
 ?>

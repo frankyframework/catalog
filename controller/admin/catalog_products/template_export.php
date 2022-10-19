@@ -89,6 +89,7 @@ header("Content-disposition: attachment; filename=template_productos.xls");
    <table width="100%" border="1" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
       <tr>
          <th width="" ><strong>Tipo</strong></th>
+         <th width="" ><strong>Tienda</strong></th>
          <th width="" ><strong>Set de atributos</strong></th>
          <th width="" ><strong>ID Atributos configurables</strong></th>
          <th width="" ><strong>ID Padre</strong></th>
@@ -144,6 +145,7 @@ header("Content-disposition: attachment; filename=template_productos.xls");
 <?php foreach($lista_admin_data as $data): ?>
 <tr>
          <td><?=$data['type']?></td>
+         <td><?=$data['store']?></td>
          <td><?=$data['set_attribute']?></td>
          <td><?=$data['configurable']?></td>
          <td><?=$data['parent_id']?></td>

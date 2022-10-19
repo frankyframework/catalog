@@ -15,6 +15,7 @@ $Tokenizer = new Tokenizer();
 
 $MyPaginacion = new paginacion();
 
+
 $id		= $MyRequest->getRequest('id');
 $callback	= $MyRequest->getRequest('callback');
 
@@ -63,6 +64,7 @@ $CatalogproductsModel->setBusca($busca_b);
 
 $CatalogproductsEntity->set_attribute($producto_actual['set_attribute']);
 $CatalogproductsEntity->type('simple');
+$CatalogproductsEntity->store($producto_actual['store']);
 $result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
 $MyPaginacion->setTotal($CatalogproductsModel->getTotal());
 $lista_admin_data = array();

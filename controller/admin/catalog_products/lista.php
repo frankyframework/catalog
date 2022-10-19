@@ -1,5 +1,5 @@
 <?php
-use Base\Form\filtrosForm;
+use Catalog\Form\filtrosForm;
 use Franky\Core\paginacion;
 use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
@@ -12,6 +12,17 @@ $CatalogproductsEntity = new CatalogproductsEntity();
 $Tokenizer = new Tokenizer();
 
 $MyPaginacion = new paginacion();
+
+$tiendas = getCatalogStores();
+$store_b	= $MyRequest->getRequest('store_b');	
+if(empty($store_b)){
+        foreach($tiendas as $k => $v)
+        {
+                $store_b = $k;
+                break;
+        }
+        
+}
 
 
 $MyPaginacion->setPage($MyRequest->getRequest('page',1));
@@ -34,7 +45,7 @@ else{
 if(getCoreConfig('catalog/product/showdelete') == 0){
     $CatalogproductsEntity->status(1);
 }
-
+$CatalogproductsEntity->store($store_b);
 $CatalogproductsModel->setPage($MyPaginacion->getPage());
 $CatalogproductsModel->setTampag($MyPaginacion->getTampageDefault());
 $CatalogproductsModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
@@ -84,7 +95,7 @@ if($CatalogproductsModel->getTotal() > 0)
                 "callback" => $Tokenizer->token('catalog_products',$MyRequest->getURI()),
                 "nuevo_estado"  => ($registro["status"] == 1 ?"desactivar" : "activar"),
                 "images"     => $img,
-                "type"     => ($registro['type'] == 'configurable' ? '<a href="'.$MyRequest->link(ADMIN_CATALOG_PRODUCTS_CONFIGURABLES."?id=".$Tokenizer->token('catalog_products',$registro["id"])).'&amp;callback='.$Tokenizer->token('catalog_products',$MyRequest->getURI()).'">'.$registro['type'].'</a>' : $registro['type'])
+                "type"     => ($registro['type'] == 'configurable' ? '<a href="'.$MyRequest->link(ADMIN_CATALOG_PRODUCTS_CONFIGURABLES."?id=".$Tokenizer->token('catalog_products',$registro["id"])).'&amp;callback='.$Tokenizer->token('catalog_products',$MyRequest->getURI()).'&amp;store='.$store_b.'">'.$registro['type'].'</a>' : $registro['type'])
         ));
 
 
@@ -110,7 +121,9 @@ $permisos_grid = ADMINISTRAR_PRODUCTS_CATALOG;
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());
 $MyFiltrosForm->addBusca();
+$MyFiltrosForm->addStore();
 $MyFiltrosForm->addSubmit();
-
+$MyFiltrosForm->setOptionsInput("store_b", $tiendas);
 $MyFiltrosForm->setAtributoInput("busca_b", "value",$busca_b);
+$MyFiltrosForm->setAtributoInput("store_b", "value",$store_b);
 ?>

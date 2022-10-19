@@ -52,6 +52,20 @@ class ProductsForm  extends \Franky\Form\Form
                 )
         )
         );
+
+        $this->add(array(
+            'name' => 'store',
+            'type'  => 'hidden',
+            'required'  => true,
+            'atributos' => array(
+                'class'       => ''
+             ),
+            'label_atributos' => array(
+                'class'       => ''
+                )
+        )
+        );
+
         $this->add(array(
                 'name' => 'name',
                 'label' => _catalog('Nombre'),

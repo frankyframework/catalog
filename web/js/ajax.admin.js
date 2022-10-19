@@ -558,11 +558,11 @@ function ajax_getCatalogCustomAttrFrmHTML(response)
 
 
 
-function ajax_getFrmCategpry(id,parent)
+function ajax_getFrmCategpry(id,parent,store)
 {
     var var_query = {
           "function": "ajax_getFrmCategpry",
-          "vars_ajax":[id,parent]
+          "vars_ajax":[id,parent,store]
         };
     
     pasarelaAjax('GET', var_query, "ajax_getFrmCategpryHTML", '');

@@ -5,6 +5,7 @@ namespace Catalog\entity;
 class CatalogvitrinaEntity
 {
     private $id;
+    private $store;
     private $nombre;
     private $titulo;
     private $clave;
@@ -28,6 +29,7 @@ class CatalogvitrinaEntity
     public function exchangeArray($data)
     {
         $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->store = (isset($data["store"]) ? $data["store"] : null);
         $this->nombre = (isset($data["nombre"]) ? $data["nombre"] : null);
         $this->titulo = (isset($data["titulo"]) ? $data["titulo"] : null);
         $this->clave = (isset($data["clave"]) ? $data["clave"] : null);
@@ -48,6 +50,7 @@ class CatalogvitrinaEntity
     public function setValidation()
     {
         return array( 
+            "Tienda" => array("valor" => $this->store,"required"),
             "Nombre de la vitrina" => array("valor" => $this->nombre,"required"),
             "Titulo de la vitrina" => array("valor" => $this->titulo,"required"),
             "Numero de productos" => array("valor" => $this->numero,"required","numeric")
@@ -57,6 +60,8 @@ class CatalogvitrinaEntity
     
 
     public function id($id = null){ if($id !== null){ $this->id=$id; }else{ return $this->id; } }
+
+    public function store($store = null){ if($store !== null){ $this->store=$store; }else{ return $this->store; } }
 
     public function nombre($nombre = null){ if($nombre !== null){ $this->nombre=$nombre; }else{ return $this->nombre; } }
 

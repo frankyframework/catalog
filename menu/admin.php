@@ -31,6 +31,11 @@ $menucatalog = array(
       "permiso" =>   ADMINISTRAR_CATALOG_CUSTOM_ATTRIBUTES,
       "url" => $MyRequest->url(ADMIN_CATALOG_SET_CUSTOM_ATTRIBUTES),
       "etiqueta" => _("Set de atributos")
+    ),
+    array(
+      "permiso" =>   ADMINISTRAR_STORES_CATALOG,
+      "url" => $MyRequest->url(ADMIN_LISTA_CATALOG_STORES),
+      "etiqueta" => _("Tiendas")
      )
   )
   )

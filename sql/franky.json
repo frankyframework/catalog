@@ -307,7 +307,36 @@
             "status":1,
             "editable":0,
             "modulo":"catalog"
+        },
+        {
+            "php":"admin/stores/lista.php",
+            "css":"",
+            "js":[],
+            "jquery":[],
+            "permisos":[1,2],
+            "constante":"ADMIN_LISTA_CATALOG_STORES ",
+            "url":"admin/stores/",
+            "nombre":"Tiendas",
+            "ajax":["base/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"catalog"
+        },
+        {
+            "php":"admin/stores/form.php",
+            "css":"",
+            "js":[],
+            "jquery":["jquery-validate"],
+            "permisos":[1,2],
+            "constante":"ADMIN_FRM_CATALOG_STORES",
+            "url":"admin/stores/frm/",
+            "nombre":"Administrar tiendas",
+            "ajax":["base/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"catalog"
         }
+
 
     ]
 }

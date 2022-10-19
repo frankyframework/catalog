@@ -1,19 +1,29 @@
 <?php
+use Catalog\Form\filtrosForm;
 use Catalog\model\CatalogcategoryModel;
+use Catalog\entity\CatalogcategoryEntity;
 use Franky\Haxor\Tokenizer;
 
 $Tokenizer = new Tokenizer();
-		
-$busca_b	= $MyRequest->getRequest('busca_b');	
-
+$tiendas = getCatalogStores();
+$store_b	= $MyRequest->getRequest('store_b');	
+if(empty($store_b)){
+        foreach($tiendas as $k => $v)
+        {
+                $store_b = $k;
+                break;
+        }
+        
+}
 $CatalogCategoryModel = new CatalogcategoryModel();
-
+$CatalogcategoryEntity = new CatalogcategoryEntity();
 $CatalogCategoryModel->setPage(1);
 $CatalogCategoryModel->setTampag(1000);
 $CatalogCategoryModel->setOrdensql("catalog_category.orden ASC");
+$CatalogcategoryEntity->store($store_b);
+$result	 = $CatalogCategoryModel->getData($CatalogcategoryEntity->getArrayCopy());
 
-$CatalogCategoryModel->setBusca($busca_b);
-$result	 = $CatalogCategoryModel->getData([]);
+
 
 $lista_admin_data = array();
 if($CatalogCategoryModel->getTotal() > 0)
@@ -46,4 +56,14 @@ if($CatalogCategoryModel->getTotal() > 0)
 $ordenfunction = "catalog_setOrdenCategoria";
 
 $permisos_grid = ADMINISTRAR_CATEGORY_CATALOG;
+
+$MyFiltrosForm = new filtrosForm('paginar');
+$MyFiltrosForm->setMobile($Mobile_detect->isMobile());
+
+$MyFiltrosForm->addStore();
+$MyFiltrosForm->addSubmit();
+
+
+$MyFiltrosForm->setOptionsInput("store_b", $tiendas);
+$MyFiltrosForm->setAtributoInput("store_b", "value",$store_b);
 ?>

@@ -127,7 +127,7 @@
                             <span class="_stock">Sin stock</span>
                             <?php endif; ?>
                             <?php if(getCoreConfig('catalog/product/showprice')== 1): ?>
-                            <span class="_price"><?php echo getFormatoPrecio($data_detalle['price'],false); ?></span>
+                            <span class="_price"><?php echo getFormatoPrecio($data_detalle['price'],false,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></span>
                             <?php endif ;?>
                             <div class="_cont_more_info">
                                 <?php echo render('/ecommerce/boton.add.phtml',

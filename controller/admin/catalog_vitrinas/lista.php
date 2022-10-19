@@ -1,5 +1,5 @@
 <?php
-use Base\Form\filtrosForm;
+use Catalog\Form\filtrosForm;
 use Franky\Core\paginacion;
 use Catalog\model\CatalogvitrinaModel;
 use Catalog\entity\CatalogvitrinaEntity;
@@ -11,14 +11,26 @@ $Tokenizer = new Tokenizer();
 
 $MyPaginacion = new paginacion();
 
+
+$tiendas = getCatalogStores();
+$store_b	= $MyRequest->getRequest('store_b');	
+if(empty($store_b)){
+        foreach($tiendas as $k => $v)
+        {
+                $store_b = $k;
+                break;
+        }
+        
+}
+
 $MySession->UnsetVar('vitrina');
 $MyPaginacion->setPage($MyRequest->getRequest('page',1));
-$MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"id"));
+$MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"catalog_vitrinas.id"));
 $MyPaginacion->setOrden($MyRequest->getRequest('order',"DESC"));
 $MyPaginacion->setTampageDefault($MyRequest->getRequest('tampag',25));
 $busca_b	= $MyRequest->getRequest('busca_b');
 
-$alias = ['_id' => "catalog_vitrinas.id"];
+$alias = ['_id' => "catalog_vitrinas.id",'store_nombre' => "catalog_vitrinas.store"];
 if(isset($alias[$MyRequest->getRequest('por')]))
 {
 
@@ -28,7 +40,7 @@ else{
     $orden = $MyPaginacion->getCampoOrden();
 }
 
-
+$CatalogvitrinaEntity->store($store_b);
 $CatalogvitrinaModel->setPage($MyPaginacion->getPage());
 $CatalogvitrinaModel->setTampag($MyPaginacion->getTampageDefault());
 $CatalogvitrinaModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
@@ -67,18 +79,19 @@ $deleteFunction = "DeleteCatalogVitrina";
 
 $frm_constante_link = FRM_CATALOG_VITRINA;
 
-$titulo_columnas_grid = array("_id" => _catalog("ID"),"titulo" =>  _catalog("Titulo"),"nombre" =>  _catalog("Nombre"),"clave" => _catalog("Clave"));
-$value_columnas_grid = array("_id" ,'titulo', "nombre","clave");
+$titulo_columnas_grid = array("_id" => _catalog("ID"),"titulo" =>  _catalog("Titulo"),"nombre" =>  _catalog("Nombre"),"store" => _catalog("Tienda"),"clave" => _catalog("Clave"));
+$value_columnas_grid = array("_id" ,'titulo', "nombre","store","clave");
 
-$css_columnas_grid = array("_id" => "w-xxxx-1" , "titulo" => "w-xxxx-3","nombre" => "w-xxxx-3", "clave" => "w-xxxx-3");
+$css_columnas_grid = array("_id" => "w-xxxx-1" , "titulo" => "w-xxxx-3","nombre" => "w-xxxx-2", "store" => "w-xxxx-2", "clave" => "w-xxxx-2");
 
 
 $permisos_grid = ADMINISTRAR_PRODUCTS_CATALOG;
 
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());
-$MyFiltrosForm->addBusca();
+$MyFiltrosForm->addStore();
 $MyFiltrosForm->addSubmit();
 
-$MyFiltrosForm->setAtributoInput("busca_b", "value",$busca_b);
+$MyFiltrosForm->setOptionsInput("store_b", $tiendas);
+$MyFiltrosForm->setAtributoInput("store_b", "value",$store_b);
 ?>

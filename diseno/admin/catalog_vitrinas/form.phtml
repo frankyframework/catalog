@@ -10,6 +10,7 @@
         <?php if(!empty($id)): ?>
         <?php  echo $adminForm->get("id"); ?>
           <?php endif; ?>
+          <?php  echo $adminForm->getRow("store"); ?>
         <?php  echo $adminForm->getRow("nombre"); ?>
          <?php  echo $adminForm->getRow("titulo"); ?>
         <div class="form-group">
@@ -121,7 +122,7 @@ $(document).ready(function()
 
 <script>
 var abrirOverlayRelacionar = function(){
-   $("#iframe_relacionar").attr('src','<?=$MyRequest->url(FRM_CATALOG_VITRINA_RELACIONADOS);?>?id=<?=$data['id']?>&amp;callback=<?=$_callback?>').css({'height':($(window).height()*0.8)});
+   $("#iframe_relacionar").attr('src','<?=$MyRequest->url(FRM_CATALOG_VITRINA_RELACIONADOS);?>?id=<?=$data['id']?>&callback=<?=$_callback?>&store=<?=$store?>').css({'height':($(window).height()*0.8)});
   $("#relacionar_overlay").css({'height':'100%'}).fadeTo(1000,1);
   $("body").addClass("no_scroll");
 }
