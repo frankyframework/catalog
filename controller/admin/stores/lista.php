@@ -8,7 +8,7 @@ use Franky\Haxor\Tokenizer;
 $Tokenizer = new Tokenizer();
 
 $MyPaginacion->setPage($MyRequest->getRequest('page',1));
-
+$MyPaginacion->setCampoOrden($MyRequest->getRequest('por','catalog_stores.id'));
 $MyPaginacion->setOrden($MyRequest->getRequest('order',"ASC"));
 $MyPaginacion->setTampageDefault($MyRequest->getRequest('tampag',25));		
 $busca_b	= $MyRequest->getRequest('busca_b');	
