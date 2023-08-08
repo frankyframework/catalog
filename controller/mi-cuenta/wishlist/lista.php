@@ -1,5 +1,5 @@
 <?php
-$permisos_grid = ADMINISTRAR_CATALOG_WISHLIST;
+$permisos_grid = "administrar_catalog_wishlist";
 $campo_item = "name";
 $campo_item_id = "id";
 $tabla = "catalog_products";

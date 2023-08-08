@@ -10,7 +10,7 @@ function DeleteCatalogCategory($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_CATEGORY_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_category_catalog"))
     {
         $CatalogcategoryEntity->id(addslashes($Tokenizer->decode($id)));
 
@@ -45,7 +45,7 @@ function DeleteCatalogProduct($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
     {
         $CatalogproductsEntity->id(addslashes($Tokenizer->decode($id)));
         $CatalogproductsEntity->status($status);
@@ -78,7 +78,7 @@ function setOrdenImagesProducts($album, $orden)
         global $MyAccessList;
         global $MyMessageAlert;
         $respuesta =null;
-        if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+        if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
         {
            
         
@@ -164,7 +164,7 @@ function ajax_products_agregarProductoRelacionadoVitrina($id_parent,$id){
     global $MySession;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
     {
         
         $Tokenizer = new \Franky\Haxor\Tokenizer;
@@ -193,7 +193,7 @@ function ajax_products_quitarProductoRelacionadoVitrina($id_parent,$id){
     global $MySession;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
     {
        $Tokenizer = new \Franky\Haxor\Tokenizer;
        
@@ -225,7 +225,7 @@ function ajax_products_cargarProductosRelacionadosVitrina($id)
     global $MySession;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
     {
         $Tokenizer = new \Franky\Haxor\Tokenizer;
         
@@ -332,7 +332,7 @@ function ajax_products_agregarProductoRelacionado($id_parent,$id){
     global $MyMessageAlert;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
     {
         $CatalogproductrelatedModel =  new \Catalog\model\CatalogproductrelatedModel();
         $CatalogproductrelatedEntity =  new \Catalog\entity\CatalogproductrelatedEntity();
@@ -362,7 +362,7 @@ function ajax_products_quitarProductoRelacionado($id_parent,$id){
     global $MyMessageAlert;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
     {
         $CatalogproductrelatedModel =  new \Catalog\model\CatalogproductrelatedModel();
         $CatalogproductrelatedEntity =  new \Catalog\entity\CatalogproductrelatedEntity();
@@ -392,7 +392,7 @@ function ajax_products_cargarProductosRelacionados($id)
     global $MyConfigure;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
     {
         $CatalogproductrelatedModel =  new \Catalog\model\CatalogproductrelatedModel();
         $CatalogproductrelatedEntity =  new \Catalog\entity\CatalogproductrelatedEntity();
@@ -479,7 +479,7 @@ function DeleteCatalogVitrina($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_CATEGORY_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_category_catalog"))
     {
         $CatalogvitrinaEntity->id(addslashes($Tokenizer->decode($id)));
         $CatalogvitrinaEntity->status($status);
@@ -510,7 +510,7 @@ function ajax_products_agregarProductoConfigurable($id_parent,$id){
     global $MyMessageAlert;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
     {
         $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
         $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
@@ -543,7 +543,7 @@ function ajax_products_quitarProductoConfigurable($id_parent,$id){
     global $MyMessageAlert;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
     {
         $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
         $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
@@ -573,7 +573,7 @@ function ajax_products_cargarProductosConfigurables($id)
     global $MyConfigure;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
     {
         $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
         $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
@@ -655,7 +655,7 @@ function ajax_products_setAttrConfigurable($id,$attr){
     global $MyMessageAlert;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
     {
         $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
         $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
@@ -690,7 +690,7 @@ function catalog_setOrdenCategoria($orden)
     global $MyAccessList;
     global $MyMessageAlert;
         $respuesta =null;
-        if($MyAccessList->MeDasChancePasar(ADMINISTRAR_CATEGORY_CATALOG))
+        if($MyAccessList->MeDasChancePasar("administrar_category_catalog"))
         {
            
         
@@ -954,7 +954,7 @@ function EliminarCatalogCustomAttribute($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_CATALOG_CUSTOM_ATTRIBUTES))
+    if($MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes"))
     {
         $CustomattributesEntity->id(addslashes($Tokenizer->decode($id)));
         $CustomattributesEntity->status($status);
@@ -1125,7 +1125,6 @@ function ajax_getCatalogCustomAttrFrm($id,$set)
 
 function ajax_getFrmCategpry($id,$parent,$store)
 {
-    global $_Niveles_usuarios;
     global $MyConfigure;
     $respuesta = null;
     $Tokenizer = new Franky\Haxor\Tokenizer();
@@ -1151,7 +1150,7 @@ function ajax_getFrmCategpry($id,$parent,$store)
         $data['id'] = $Tokenizer->token('category', $data['id']);
     }
     $adminForm = new Catalog\Form\CatalogCategoryForm("frmcategoria");
-    $adminForm->setOptionsInput("users[]", $_Niveles_usuarios);
+    $adminForm->setOptionsInput("users[]", getRoles());
     $adminForm->setData($data);
      
     $respuesta['html'] = render(PROJECT_DIR.'/modulos/catalog/diseno/admin/catalog_category/form.phtml',['id' => $id,'adminForm' => $adminForm,'data'=> $data]);
@@ -1176,7 +1175,7 @@ function EliminarCatalogSetAttribute($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_CATALOG_CUSTOM_ATTRIBUTES))
+    if($MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes"))
     {
         $CatalogsetattributesEntity->id(addslashes($Tokenizer->decode($id)));
         $CatalogsetattributesEntity->status($status);
@@ -1212,7 +1211,7 @@ function EliminarTienda($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar(ADMINISTRAR_STORES_CATALOG))
+    if($MyAccessList->MeDasChancePasar("administrar_stores_catalog"))
     {
         $CatalogStoresEntity->id(addslashes($Tokenizer->decode($id)));
         $CatalogStoresEntity->status($status);

@@ -116,7 +116,7 @@ $value_columnas_grid = array("_id" ,"images", "name","sku","type");
 $css_columnas_grid = array("_id" => "w-xxxx-1" ,"images" => "w-xxxx-2" , "name" => "w-xxxx-3", "sku" => "w-xxxx-1", "type" => "w-xxxx-1");
 
 
-$permisos_grid = ADMINISTRAR_PRODUCTS_CATALOG;
+$permisos_grid = "administrar_products_catalog";
 
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());

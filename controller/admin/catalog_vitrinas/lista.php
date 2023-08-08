@@ -85,7 +85,7 @@ $value_columnas_grid = array("_id" ,'titulo', "nombre","store","clave");
 $css_columnas_grid = array("_id" => "w-xxxx-1" , "titulo" => "w-xxxx-3","nombre" => "w-xxxx-2", "store" => "w-xxxx-2", "clave" => "w-xxxx-2");
 
 
-$permisos_grid = ADMINISTRAR_PRODUCTS_CATALOG;
+$permisos_grid = "administrar_products_catalog";
 
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());

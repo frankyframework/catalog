@@ -6,7 +6,6 @@ $ObserverManager = new ObserverManager;
 $CatalogStoresModel = new CatalogStoresModel();
 $CatalogStoresEntity = new CatalogStoresEntity();
 
-include 'lca.php';
 include 'util.php';
 __bindtextdomain("catalog", "catalog");
 

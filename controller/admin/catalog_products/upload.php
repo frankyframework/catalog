@@ -1,7 +1,7 @@
 <?php
 use Franky\Filesystem\File;
 
-if(!$MyRequest->isAjax() || !$MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+if(!$MyRequest->isAjax() || !$MyAccessList->MeDasChancePasar("administrar_products_catalog"))
 {
     $MyRequest->redirect();
 }

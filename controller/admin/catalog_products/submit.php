@@ -69,7 +69,7 @@ if(!$valid)
 }
 
 
-if(!$MyAccessList->MeDasChancePasar(ADMINISTRAR_PRODUCTS_CATALOG))
+if(!$MyAccessList->MeDasChancePasar("administrar_products_catalog"))
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
     $error = true;

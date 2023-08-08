@@ -55,7 +55,7 @@ if($CatalogCategoryModel->getTotal() > 0)
 
 $ordenfunction = "catalog_setOrdenCategoria";
 
-$permisos_grid = ADMINISTRAR_CATEGORY_CATALOG;
+$permisos_grid = "administrar_category_catalog";
 
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());

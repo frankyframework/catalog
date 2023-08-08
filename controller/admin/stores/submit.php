@@ -32,7 +32,7 @@ if($CatalogStoresModel->existe($CatalogStoresEntity->url(),$CatalogStoresEntity-
     $error = true;
 }
 
-if(!$MyAccessList->MeDasChancePasar(ADMINISTRAR_STORES_CATALOG))
+if(!$MyAccessList->MeDasChancePasar("administrar_stores_catalog"))
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
     $error = true;

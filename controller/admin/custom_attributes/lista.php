@@ -63,7 +63,7 @@ $value_columnas_grid = array("createdAt", "name","entity" );
 
 $css_columnas_grid = array("createdAt" => "w-xxxx-4" ,"name" => "w-xxxx-3" ,"entity" => "w-xxxx-3" );
 
-$permisos_grid = ADMINISTRAR_CATALOG_CUSTOM_ATTRIBUTES;
+$permisos_grid = "administrar_catalogo_custom_attributes";
 
 
 $MyFiltrosForm = new filtrosForm('paginar');

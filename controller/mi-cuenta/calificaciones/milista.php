@@ -1,5 +1,5 @@
 <?php
-$permisos_grid = ADMINISTRAR_CATALOG_MIS_CALIFICACIONES;
+$permisos_grid = "administrar_catalog_mis_calificaciones";
 $campo_item = "name";
 $campo_item_id = "id";
 $tabla = "catalog_products";

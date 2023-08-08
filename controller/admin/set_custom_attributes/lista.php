@@ -80,7 +80,7 @@ $value_columnas_grid = array("_id" , "name","description");
 $css_columnas_grid = array("_id" => "w-xxxx-1", "name" => "w-xxxx-4", "description" => "w-xxxx-4");
 
 
-$permisos_grid = ADMINISTRAR_CATALOG_CUSTOM_ATTRIBUTES;
+$permisos_grid = "administrar_catalogo_custom_attributes";
 
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());

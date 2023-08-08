@@ -34,7 +34,7 @@ if(!$valid)
 }
 
 
-if(!$MyAccessList->MeDasChancePasar(ADMINISTRAR_CATALOG_CUSTOM_ATTRIBUTES))
+if(!$MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes"))
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
     $error = true;
