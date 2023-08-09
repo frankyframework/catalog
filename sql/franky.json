@@ -64,7 +64,7 @@
             "resource":"administrar_catalog_wishlist",
             "constante":"ADMIN_CATALOG_WISHLIST",
             "url":"mi-cuenta/catalog-wishlist/",
-            "nombre":"Administras whishlists",
+            "nombre":"Administras wishlists",
             "ajax":["base/ajax.admin.js"],
             "status":1,
             "editable":1,
