@@ -17,7 +17,7 @@
             },
             {
                 "name":"simbolo",
-                "type":"varchas",
+                "type":"varchar",
                 "length":11,
                 "null":1
             },
