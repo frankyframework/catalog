@@ -314,7 +314,7 @@
             "js":[],
             "jquery":[],
             "resource":"administrar_stores_catalog",
-            "constante":"ADMIN_LISTA_CATALOG_STORES ",
+            "constante":"ADMIN_LISTA_CATALOG_STORES",
             "url":"admin/stores/",
             "nombre":"Tiendas",
             "ajax":["base/ajax.admin.js"],
