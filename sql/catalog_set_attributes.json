@@ -10,6 +10,12 @@
                 "auto_increment":1
             },
             {
+                "name":"uid",
+                "type":"int",
+                "length":11,
+                "null":1
+            },
+            {
                 "name":"name",
                 "type":"varchar",
                 "length":255,

@@ -5,6 +5,7 @@ namespace Catalog\entity;
 class CatalogproductsEntity
 {
     private $id;
+    private $uid;
     private $parent_id;
     private $store;
     private $set_attribute;
@@ -46,6 +47,7 @@ class CatalogproductsEntity
     public function exchangeArray($data)
     {
         $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->uid = (isset($data["uid"]) ? $data["uid"] : null);
         $this->parent_id = (isset($data["parent_id"]) ? $data["parent_id"] : null);
         $this->set_attribute = (isset($data["set_attribute"]) ? $data["set_attribute"] : null);
         $this->type = (isset($data["type"]) ? $data["type"] : null);
@@ -92,6 +94,8 @@ class CatalogproductsEntity
     
 
     public function id($id = null){ if($id !== null){ $this->id=$id; }else{ return $this->id; } }
+
+    public function uid($uid = null){ if($uid !== null){ $this->uid=$uid; }else{ return $this->uid; } }
 
     public function parent_id($parent_id = null){ if($parent_id !== null){ $this->parent_id=$parent_id; }else{ return $this->parent_id; } }
     

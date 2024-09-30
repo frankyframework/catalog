@@ -1,0 +1,18 @@
+<?php if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")): ?>
+<div class="_cont_dashboard _perfil">
+  <div class="w_100 cont_admin_redes">
+
+   
+    <div  class="form-group form-inline">
+    <?php if(empty($urlBanity)): ?>
+      <h3>Crear tu usuario de marketplace</h3>
+      <div><a href="<?=$MyRequest->url(ADMIN_USERNAME)?>" title="" class="_btn _secondary"><?=$MyRequest->link('/marketplace/[nombre_de_usuario]/',false,true)?></a></div>
+    <?php else: ?>
+      <h3>Edita tu usuario de marketplace</h3>
+    </div><a href="<?=$MyRequest->url(ADMIN_USERNAME)?>" title="" class="_btn _secondary"><?=$MyRequest->link('/marketplace/'.$urlBanity.'/',false,true)?></a></div>
+    <?php endif ?>
+    
+    </div>
+  </div>
+  </div>
+<?php endif; ?>

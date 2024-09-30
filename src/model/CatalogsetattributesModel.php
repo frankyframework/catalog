@@ -21,7 +21,7 @@ class CatalogsetattributesModel  extends \Franky\Database\Mysql\objectOperations
     function getData($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["id","name","description","attributes","status","orden","createdAt"];
+        $campos = ["id","uid","name","description","attributes","status","orden","createdAt"];
 
         foreach($data as $k => $v)
         {
@@ -85,13 +85,17 @@ class CatalogsetattributesModel  extends \Franky\Database\Mysql\objectOperations
 
     }
 
-    function existe($category,$id='')
+    function existe($category,$id='',$uid='')
     {
         $campos = array("id");
         $this->where()->addAnd('name',$category,'=');
         if(!empty($id))
         {
-                        $this->where()->addAnd('id',$id,'<>');
+            $this->where()->addAnd('id',$id,'<>');
+        }
+        if(!empty($uid))
+        {
+            $this->where()->addAnd('uid',$uid,'=');
         }
         return $this->getColeccion($campos);
     }

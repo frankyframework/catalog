@@ -20,7 +20,10 @@ if($Tokenizer->decode($MyRequest->getRequest('id')) != false)
 {
     $CustomattributesEntity->id($id);
 }
-
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+{
+    $CustomattributesEntity->uid($MySession->getVar('id'));
+}
 
 $error = false;
 
@@ -33,14 +36,15 @@ if(!$valid)
     $MyFlashMessage->setMsg("error",$validaciones->getMsg());
     $error = true;
 }
+$uid = '';
 
-if($CustomattributesModel->existe($nombre,$entity,$id) == REGISTRO_SUCCESS)
+if($CustomattributesModel->existe($nombre,$entity,$id, $CustomattributesEntity->uid()) == REGISTRO_SUCCESS)
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("developer_attr_duplicado"));
     $error = true;
 }
 
-if(!$MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes"))
+if(!$MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes") && (getCoreConfig('catalog/marketplace/enabled') == 0 || !$MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace")))
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
     $error = true;
@@ -73,10 +77,7 @@ else
 
 
 if($error == false)        
-{
-
-
-   
+{   
     if(empty($id))
     {
         
@@ -101,7 +102,11 @@ if($error == false)
         }
 
         $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_CUSTOM_ATTRIBUTES));
+        if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+        {
+            $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_CUSTOM_ATTRIBUTES_MARKETPLACE));
 
+        }
     }
     elseif($result == REGISTRO_ERROR)
     {

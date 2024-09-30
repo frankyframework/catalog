@@ -87,4 +87,8 @@
         <llave>store_error_delete</llave>
         <valor>Error al eliminar la tienda</valor>
     </mensaje>
+    <mensaje>
+        <llave>username_duplicado</llave>
+        <valor>Ya existe una tienda con este combre</valor>
+    </mensaje>
 </mensajes>

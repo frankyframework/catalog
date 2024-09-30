@@ -31,6 +31,10 @@ else{
     $orden = $MyPaginacion->getCampoOrden();
 }
 
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+{
+    $CatalogsetattributesEntity->uid($MySession->GetVar('id'));
+}
 
 
 $CatalogsetattributesModel->setPage($MyPaginacion->getPage());
@@ -73,14 +77,18 @@ $error_grid = _catalog("No hay sets registrados");
 $deleteFunction = "EliminarCatalogSetAttribute";
 
 $frm_constante_link = ADMIN_FRM_CATALOG_SET_CUSTOM_ATTRIBUTES;
+$permisos_grid = "administrar_catalogo_custom_attributes";
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+{
+    $permisos_grid = "administrar_catalogo_custom_attributes_marketplace";
+    $frm_constante_link = ADMIN_FRM_CATALOG_SET_CUSTOM_ATTRIBUTES_MARKETPLACE;
+}
+
 
 $titulo_columnas_grid = array("_id" => _catalog("ID"),"name" =>  _catalog("Nombre"),"description" => _catalog("Descripcion"));
 $value_columnas_grid = array("_id" , "name","description");
 
 $css_columnas_grid = array("_id" => "w-xxxx-1", "name" => "w-xxxx-4", "description" => "w-xxxx-4");
-
-
-$permisos_grid = "administrar_catalogo_custom_attributes";
 
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());

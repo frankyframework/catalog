@@ -1,0 +1,33 @@
+<div class="w-xxxx-12 _catalog_result">
+    <div class="content">
+        <h2><?=$dataUser['meta_title']?></h2> 
+        <?php if(isset($imgMArketplace) &&  !empty($imgMArketplace)): ?>
+        <?= makeHTMLImg($imgMArketplace, "", "", $dataUser['nombre'],"class='image_100'")?>
+        <?php endif; ?>
+        
+        <div class="w-xxxx-12">
+          
+            <div class="cont_widget_catalog_results _no_filters">
+            
+            <div class="w-xxxx-12">
+ 
+            <?php if(isset($image_category['description']) && !empty($image_category['description'])): ?>
+            <p class="landing_producto_descripcion"><?= $image_category['description']?></p>
+            <?php endif; ?>
+            </div>
+                <?php if(!empty($resultados_pagina)): ?>
+                    <?php foreach($resultados_pagina as $data): ?>
+                        <?=render('products/card.phtml',['data' => $data]);?>
+                    <?php endforeach ;?>
+                    <div class="w-xxxx-12 cont-paginar"><?php echo render("widget.paginar.phtml"); ?></div>
+                    <?php echo $itemListSchema->get(); ?>
+                <?php else: ?>
+                    <h2>No se encontraron productos</h2>
+                    <p>Intenta con otros términos de búsqueda.</p>
+                <?php endif; ?>
+
+
+            </div>
+        </div>
+    </div>
+</div>

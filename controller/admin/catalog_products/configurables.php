@@ -30,6 +30,11 @@ if(empty($Tokenizer->decode($id)))
 $CatalogproductsModel->setExcludeId('');
 $CatalogproductsEntity->id($Tokenizer->decode($id));
 $CatalogproductsModel->setBusca("");
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+{
+        $CatalogproductsEntity->uid($MySession->getVar('id'));
+}
+
 if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
 {
     $producto_actual = $CatalogproductsModel->getRows();
@@ -65,6 +70,10 @@ $CatalogproductsModel->setBusca($busca_b);
 $CatalogproductsEntity->set_attribute($producto_actual['set_attribute']);
 $CatalogproductsEntity->type('simple');
 $CatalogproductsEntity->store($producto_actual['store']);
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+{
+        $CatalogproductsEntity->uid($MySession->getVar('id'));
+}
 $result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
 $MyPaginacion->setTotal($CatalogproductsModel->getTotal());
 $lista_admin_data = array();
@@ -121,6 +130,10 @@ $CatalogsetattributesModel = new CatalogsetattributesModel;
 $CatalogsetattributesEntity = new CatalogsetattributesEntity;
 
 $CatalogsetattributesEntity->id($producto_actual['set_attribute']);
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+{
+        $CatalogsetattributesEntity->uid($MySession->getVar('id'));
+}
 $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
 
 $set = $CatalogsetattributesModel->getRows();
@@ -136,7 +149,10 @@ $CustomattributesEntity = new CustomattributesEntity();
 
 $CustomattributesEntity->entity('catalog_products');  
 $CustomattributesEntity->status(1);  
-
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+{
+        $CustomattributesEntity->uid($MySession->getVar('id'));
+}
 $CustomattributesModel->setPage(1);
 $CustomattributesModel->setTampag(100);
 $CustomattributesModel->setOrdensql('id ASC');
@@ -175,7 +191,10 @@ $css_columnas_grid = array("_id" => "w-xxxx-2" ,"images" => "w-xxxx-2" , "name" 
 
 
 $permisos_grid = "administrar_products_catalog";
-
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+{
+    $permisos_grid = "administrar_products_catalog_marketplace";
+}
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());
 $MyFiltrosForm->addBusca();
@@ -183,4 +202,5 @@ $MyFiltrosForm->addSubmit();
 $MyFiltrosForm->addId();
 $MyFiltrosForm->setAtributoInput("id", "value",$id);
 $MyFiltrosForm->setAtributoInput("busca_b", "value",$busca_b);
+
 ?>

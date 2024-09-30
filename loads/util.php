@@ -125,13 +125,16 @@ function getCatalogCategorys($search = [])
 
 
 
-function getAttributesSet()
+function getAttributesSet($uid='')
 {
     $CatalogsetattributesModel = new Catalog\model\CatalogsetattributesModel();
     $CatalogsetattributesEntity = new Catalog\entity\CatalogsetattributesEntity();
     $CatalogsetattributesModel->setTampag(1000);
     $CatalogsetattributesModel->setOrdensql("name ASC");
     $CatalogsetattributesEntity->status(1);
+    if(!empty($uid)) {
+        $CatalogsetattributesEntity->uid($uid);
+    }
     $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
     $total			= $CatalogsetattributesModel->getTotal();
     $data = array();
@@ -695,6 +698,7 @@ function getDataConfigurables($id_product)
                     {
                         $configurables['config'][$key] = ['name' => $attr['name'],'label' => $attr['label']];
                         $configurables['productos'][$i][$attr['name']] =$custom_attr['custom_values'][$attr['name']];
+                        $configurables['productos'][$i][$attr['name'].'_label'] =$attr['data'][$custom_attr['custom_values'][$attr['name']]];
                     }
                 }
             }
@@ -753,5 +757,20 @@ function getMonedas()
 	    }
     }
     return $monedas;
+}
+
+function getFriendlyMarketplace($string)
+{
+        $string = trim($string);
+        $string = trim($string,"?");
+        $a = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
+        $b = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
+        $string = utf8_decode($string);
+        $string = strtr($string, utf8_decode($a), $b);
+        $string = strtolower($string);
+	    $string = preg_replace('#([^a-z0-9_]+)#i', '-', $string);
+        $string = preg_replace('#-{2,}#','-',$string);
+        $string = trim($string,"-");
+	return $string;
 }
 ?>

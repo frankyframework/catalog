@@ -46,7 +46,7 @@ if($CatalogCategoryModel->existe($nombre,$id) == REGISTRO_SUCCESS)
     $error = true;
 }
 
-if(!$MyAccessList->MeDasChancePasar("administrar_category_catalog"))
+if(!$MyAccessList->MeDasChancePasar("administrar_category_catalog") && (getCoreConfig('catalog/marketplace/enabled') == 0 || !$MyAccessList->MeDasChancePasar("administrar_category_catalog_marketplace")))
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
     $error = true;
@@ -124,8 +124,9 @@ if($error == false)
         {
              $MyFlashMessage->setMsg("success",$MyMessageAlert->Message("editar_generico_success"));
         }
-
+        
         $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_CATEGORY)."?store_b=".$CatalogCategoryEntity->store());
+        
 
     }
     elseif($result == REGISTRO_ERROR)

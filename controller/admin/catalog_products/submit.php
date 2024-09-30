@@ -28,7 +28,10 @@ $visible_in_search  = $MyRequest->getRequest('visible_in_search');
 $CatalogproductsEntity->description($description);
 $CatalogproductsEntity->sku(getFriendly($CatalogproductsEntity->sku()));
 $error = false;
-
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+{
+    $CatalogproductsEntity->uid($MySession->getVar('id'));
+}
 if(empty($iva))
 {
     $CatalogproductsEntity->iva(0);
@@ -69,7 +72,7 @@ if(!$valid)
 }
 
 
-if(!$MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+if(!$MyAccessList->MeDasChancePasar("administrar_products_catalog")  && (getCoreConfig('catalog/marketplace/enabled') == 0 || !$MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
     $error = true;
@@ -145,7 +148,10 @@ if(!$error)
             $MyFlashMessage->setMsg("success",$MyMessageAlert->Message("editar_generico_success"));
         }
         $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_PRODUCTS)."?store_b=".$CatalogproductsEntity->store());
-       
+        if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+        {
+            $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_PRODUCTS_MARKETPLACE)."?store_b=".$CatalogproductsEntity->store());
+        }
        
         $CatalogcategoryproductEntity->id_product($id);
         $CatalogcategoryproductModel->remove($CatalogcategoryproductEntity->getArrayCopy());     

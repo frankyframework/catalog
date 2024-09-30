@@ -53,6 +53,12 @@ $CatalogproductsModel->setBusca($busca_b);
 $CatalogproductsEntity->status(1);
 $CatalogproductsEntity->store($store);
 $CatalogproductsEntity->visible_in_search(1);
+
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+{
+        $CatalogproductsEntity->uid($MySession->getVar('id'));
+}
+
 $result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
 $MyPaginacion->setTotal($CatalogproductsModel->getTotal());
 $lista_admin_data = array();
@@ -124,11 +130,14 @@ $error_grid = _catalog("No hay productos registrados");
 $titulo_columnas_grid = array("_id" => _catalog("ID"),_catalog("images") => _catalog("Thumb"), "name" =>  _catalog("Nombre"),"sku" => _catalog("SKU"));
 $value_columnas_grid = array("_id" ,"images", "name","sku");
 
-$css_columnas_grid = array("_id" => "w-xxxx-2" ,"images" => "w-xxxx-2" , "name" => "w-xxxx-4", "sku" => "w-xxxx-2");
+$css_columnas_grid = array("_id" => "w-xxxx-1" ,"images" => "w-xxxx-1" , "name" => "w-xxxx-3", "sku" => "w-xxxx-3");
 
 
 $permisos_grid = "administrar_products_catalog";
-
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+{
+    $permisos_grid = "administrar_products_catalog_marketplace";
+}
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());
 $MyFiltrosForm->addBusca();

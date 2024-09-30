@@ -2,6 +2,11 @@
 use Franky\Core\ObserverManager;
 use Catalog\model\CatalogStoresModel;
 use Catalog\entity\CatalogStoresEntity;
+use Catalog\model\CatalogUsersModel;
+use Catalog\entity\CatalogUsersEntity;
+
+$CatalogUsersModel  = new CatalogUsersModel();
+$CatalogUsersEntity = new CatalogUsersEntity();
 $ObserverManager = new ObserverManager;
 $CatalogStoresModel = new CatalogStoresModel();
 $CatalogStoresEntity = new CatalogStoresEntity();
@@ -49,6 +54,13 @@ if($total > 0)
     }
 }
 
+$urlBanity =  "";
+
+$CatalogUsersEntity->id_user($MySession->GetVar('id'));
+if($CatalogUsersModel->getData($CatalogUsersEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
+    $data = $CatalogUsersModel->getRows();
+    $urlBanity = $data['username']; 
+}
 
 $MyMetatag->setCss("/modulos/catalog/web/css/catalog.css");
 $MyMetatag->setJs("/modulos/catalog/web/js/catalog.js");

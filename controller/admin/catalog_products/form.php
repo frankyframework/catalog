@@ -20,7 +20,6 @@ $store	= $MyRequest->getRequest('store');
 $data = $MyFlashMessage->getResponse();
 
 $galeria_frm = "";
-$album = $MySession->GetVar('addProduct');
 
 $tiendas = getCatalogStores();	
 if(empty($store)){
@@ -33,22 +32,7 @@ if(empty($store)){
 
 $data['store'] = $store;
 
-if(empty($album))
-{
-   $album = md5(session_id().time());
-
-}
-else{
-    if(isset($_SESSION['album_'.$album]) && !empty($_SESSION['album_'.$album]))
-    {
-
-        foreach($_SESSION['album_'.$album]  as $foto)
-        {
-
-            $galeria_frm .= getFotoCatalogProduct($album,$foto['img'],md5($foto['img']),$foto['principal']);
-        }
-    }
-}
+$album = md5(session_id().time());
 
 $data_category = [];
 $data_subcategory = [];
@@ -60,6 +44,10 @@ $adminForm = new ProductsForm("frmproduct");
 $title = "Nuevo producto";
 if(!empty($id))
 {
+    if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+    {
+        $CatalogproductsEntity->uid($MySession->getVar('id'));
+    }
     $CatalogproductsEntity->id($id);
     $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
 
@@ -115,7 +103,12 @@ if($CatalogCategoryModel->getTotal() > 0)
         $categorys[$registro['id']] = $registro['name'];
     }
 }
-$set_attribute = getAttributesSet();
+$uid = '';
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+{
+    $uid = $MySession->getVar('id');
+}
+$set_attribute = getAttributesSet($uid);
 
 $adminForm->setOptionsInput("set_attribute",$set_attribute);
 $adminForm->setOptionsInput("category[]",$categorys);

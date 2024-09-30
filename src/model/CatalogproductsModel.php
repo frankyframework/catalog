@@ -45,7 +45,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     function getData($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["id","parent_id","catalog_products.store","type","set_attribute","name","sku","category","visible_in_search","description","images","videos","url_key","meta_title","meta_keyword","meta_description","price","stock","iva","incluye_iva","createdAt","updateAt","status",
+        $campos = ["id","uid","parent_id","catalog_products.store","type","set_attribute","name","sku","category","visible_in_search","description","images","videos","url_key","meta_title","meta_keyword","meta_description","price","stock","iva","incluye_iva","createdAt","updateAt","status",
         "in_stock","saleable","min_qty","stock_infinito","envio_requerido","configurable"];
 
         foreach($data as $k => $v)
@@ -78,7 +78,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     function getDataSearch($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["catalog_products.id","catalog_products.store","catalog_products.parent_id","catalog_products.type","catalog_products.set_attribute","catalog_products.name","sku","category",
+        $campos = ["catalog_products.id","catalog_products.uid","catalog_products.store","catalog_products.parent_id","catalog_products.type","catalog_products.set_attribute","catalog_products.name","sku","category",
         "catalog_products.visible_in_search","catalog_products.description",
         "images","videos","catalog_products.url_key","catalog_products.meta_title",
         "catalog_products.meta_keyword","catalog_products.meta_description",
@@ -156,7 +156,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     {
         
         $data = $this->optimizeEntity($data);
-        $campos = ["catalog_products.id","catalog_products.store","catalog_products.parent_id","catalog_products.type","catalog_products.set_attribute","catalog_products.name","sku","category",
+        $campos = ["catalog_products.id","catalog_products.uid","catalog_products.store","catalog_products.parent_id","catalog_products.type","catalog_products.set_attribute","catalog_products.name","sku","category",
         "catalog_products.visible_in_search","catalog_products.description",
         "images","videos","catalog_products.url_key","catalog_products.meta_title",
         "catalog_products.meta_keyword","catalog_products.meta_description",
@@ -241,7 +241,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     function getInfoProducto($id)
     {
 
-        $campos = ["catalog_products.id","catalog_products.store","precio","sku","ecommerce_precios.incluye_iva","ecommerce_precios.iva","name as nombre","images as imagen","stock","url_key","min_qty","stock_infinito","saleable","in_stock","min_qty","envio_requerido"];
+        $campos = ["catalog_products.id","catalog_products.uid","catalog_products.store","precio","sku","ecommerce_precios.incluye_iva","ecommerce_precios.iva","name as nombre","images as imagen","stock","url_key","min_qty","stock_infinito","saleable","in_stock","min_qty","envio_requerido"];
 
         $this->where()->addAnd("catalog_products.id",$id,'=');
 
@@ -287,7 +287,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
         $this->where()->addAnd('url_key',$key,'=');
         if(!empty($id))
         {
-                        $this->where()->addAnd('id',$id,'<>');
+            $this->where()->addAnd('id',$id,'<>');
         }
         return $this->getColeccion($campos);
     }
@@ -297,8 +297,9 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
         $this->where()->addAnd('sku',$sku,'=');
         if(!empty($id))
         {
-                        $this->where()->addAnd('id',$id,'<>');
+            $this->where()->addAnd('id',$id,'<>');
         }
+   
         return $this->getColeccion($campos);
     }
 }

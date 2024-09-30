@@ -1,7 +1,7 @@
 <?php
 use Franky\Filesystem\File;
 
-if(!$MyRequest->isAjax() || !$MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+if(!$MyRequest->isAjax() || !$MyAccessList->MeDasChancePasar("administrar_products_catalog")  && (getCoreConfig('catalog/marketplace/enabled') == 0 || !$MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
 {
     $MyRequest->redirect();
 }

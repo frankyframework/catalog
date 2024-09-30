@@ -76,6 +76,7 @@ if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REG
     if($data_detalle['type'] == "configurable")
     {
         $configurables = getDataConfigurables($data_detalle['id']);
+        
         $default_product = true;
         $token = "";
         foreach($configurables['config'] as $key => $val)
@@ -101,6 +102,7 @@ if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REG
     {
         $configurables = getDataConfigurables($data_detalle['parent_id']);
     }
+   
   
   $offerSchema->setPriceCurrency('MXN');
   $offerSchema->setPrice($data_detalle['price']);
@@ -194,7 +196,13 @@ if($CatalogproductrelatedModel->getData($CatalogproductrelatedEntity->getArrayCo
     }
 }
 
-
+if(getCoreConfig('catalog/marketplace/enabled') == 1) {
+    $dataUser = [];
+    $CatalogUsersEntity->id_user($data_detalle['uid']);
+    if($CatalogUsersModel->getData($CatalogUsersEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
+        $dataUser = $CatalogUsersModel->getRows();
+    }
+}
 //print_r($custom_attr);
 //print_r($configurables);
 //die;

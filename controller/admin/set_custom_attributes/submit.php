@@ -19,6 +19,10 @@ $description  = $MyRequest->getRequest('description','',true);
 $CatalogsetattributesEntity->description($description);
 $error = false;
 
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+{
+    $CatalogsetattributesEntity->uid($MySession->getVar('id'));
+}
 
 
 $validaciones =  new validaciones();
@@ -34,7 +38,7 @@ if(!$valid)
 }
 
 
-if(!$MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes"))
+if(!$MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes") && (getCoreConfig('catalog/marketplace/enabled') == 0 || !$MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace")))
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
     $error = true;
@@ -90,7 +94,11 @@ if(!$error)
         }
         $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_SET_CUSTOM_ATTRIBUTES));
        
-       
+        if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+        {
+            $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_SET_CUSTOM_ATTRIBUTES_MARKETPLACE));
+        }
+        
       
 
     }

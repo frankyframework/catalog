@@ -21,6 +21,11 @@ $CatalogCategoryModel->setPage(1);
 $CatalogCategoryModel->setTampag(1000);
 $CatalogCategoryModel->setOrdensql("catalog_category.orden ASC");
 $CatalogcategoryEntity->store($store_b);
+
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_category_catalog_marketplace")) {
+        $CatalogcategoryEntity->uid($MySession->GetVar('id'));
+}
+
 $result	 = $CatalogCategoryModel->getData($CatalogcategoryEntity->getArrayCopy());
 
 

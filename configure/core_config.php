@@ -30,7 +30,6 @@ return array(
                         'data' => ['0' => 'No', '1' => 'Si'],
                         'value' => '0'
                       ),
-                   
           )
   ),
     'catalog-calificaciones' => array(
@@ -80,6 +79,24 @@ return array(
                      )
          )
   ),
+  'catalog-marketplace' => array(
+    'menu' => "MARKETPLACE",
+    'title' => "Marketplace",
+    'config' =>  array(
+          array('path' => 'catalog/marketplace/enabled',
+                  'type' => 'select',
+                  'label' => 'Habilitar marketplace',
+                  'data' => ['0' => 'No', '1' => 'Si'],
+                  'value' => 1
+          ),
+          array('path' => 'catalog/marketplace/role',
+          'type' => 'select',
+          'label' => 'Rol de usuario marketplace',
+          'data' => getRoles(),
+          'value' => 1
+  ),
+    )
+),
 );
 
 ?>

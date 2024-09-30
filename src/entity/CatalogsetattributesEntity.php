@@ -4,6 +4,7 @@ namespace Catalog\entity;
 class CatalogsetattributesEntity
 {
     private $id;
+    private $uid;
     private $name;
     private $description;
     private $attributes;
@@ -22,6 +23,7 @@ class CatalogsetattributesEntity
     public function exchangeArray($data)
     {
         $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->uid = (isset($data["uid"]) ? $data["uid"] : null);
         $this->name = (isset($data["name"]) ? $data["name"] : null);
         $this->description = (isset($data["description"]) ? $data["description"] : null);
         $this->attributes = (isset($data["attributes"]) ? $data["attributes"] : null);
@@ -44,6 +46,8 @@ class CatalogsetattributesEntity
     }
 
     public function id($id = null){ if($id != null){ $this->id=$id; }else{ return $this->id; } }
+
+    public function uid($uid = null){ if($uid != null){ $this->uid=$uid; }else{ return $this->uid; } }
 
     public function name($name = null){ if($name != null){ $this->name=$name; }else{ return $this->name; } }
 

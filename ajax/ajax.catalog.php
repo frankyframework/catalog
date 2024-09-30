@@ -45,7 +45,7 @@ function DeleteCatalogProduct($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog")  || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
     {
         $CatalogproductsEntity->id(addslashes($Tokenizer->decode($id)));
         $CatalogproductsEntity->status($status);
@@ -78,7 +78,7 @@ function setOrdenImagesProducts($album, $orden)
         global $MyAccessList;
         global $MyMessageAlert;
         $respuesta =null;
-        if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+        if($MyAccessList->MeDasChancePasar("administrar_products_catalog")  || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
         {
            
         
@@ -225,7 +225,7 @@ function ajax_products_cargarProductosRelacionadosVitrina($id)
     global $MySession;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog") )
     {
         $Tokenizer = new \Franky\Haxor\Tokenizer;
         
@@ -332,7 +332,7 @@ function ajax_products_agregarProductoRelacionado($id_parent,$id){
     global $MyMessageAlert;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog")  || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
     {
         $CatalogproductrelatedModel =  new \Catalog\model\CatalogproductrelatedModel();
         $CatalogproductrelatedEntity =  new \Catalog\entity\CatalogproductrelatedEntity();
@@ -362,7 +362,7 @@ function ajax_products_quitarProductoRelacionado($id_parent,$id){
     global $MyMessageAlert;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog") || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
     {
         $CatalogproductrelatedModel =  new \Catalog\model\CatalogproductrelatedModel();
         $CatalogproductrelatedEntity =  new \Catalog\entity\CatalogproductrelatedEntity();
@@ -392,7 +392,7 @@ function ajax_products_cargarProductosRelacionados($id)
     global $MyConfigure;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog")  || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
     {
         $CatalogproductrelatedModel =  new \Catalog\model\CatalogproductrelatedModel();
         $CatalogproductrelatedEntity =  new \Catalog\entity\CatalogproductrelatedEntity();
@@ -510,7 +510,7 @@ function ajax_products_agregarProductoConfigurable($id_parent,$id){
     global $MyMessageAlert;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog")  || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
     {
         $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
         $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
@@ -543,7 +543,7 @@ function ajax_products_quitarProductoConfigurable($id_parent,$id){
     global $MyMessageAlert;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog")  || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
     {
         $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
         $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
@@ -573,7 +573,7 @@ function ajax_products_cargarProductosConfigurables($id)
     global $MyConfigure;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog") || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
     {
         $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
         $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
@@ -598,13 +598,14 @@ function ajax_products_cargarProductosConfigurables($id)
                 $registro["images"] = json_decode($registro["images"],true);
                 if(!empty($registro['images']))
                 {
+                    
                     foreach($registro["images"] as $foto)
                     {
                         if($foto['principal'] == 1)
-                        {
-                            if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$registro["id_product"].'/'.$foto['img']))
+                        { 
+                            if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img']))
                             {
-                                $img = imageResize($MyConfigure->getUploadDir()."/catalog/products/".$registro["id_product"].'/'.$foto['img'],50,50, true);
+                                $img = imageResize($MyConfigure->getUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img'],50,50, true);
                                 $img = makeHTMLImg($img,50,50,$registro['name']);
                             }
                         }
@@ -655,7 +656,7 @@ function ajax_products_setAttrConfigurable($id,$attr){
     global $MyMessageAlert;
     $respuesta =[];
     
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog")  || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
     {
         $CatalogproductsModel =  new \Catalog\model\CatalogproductsModel();
         $CatalogproductsEntity =  new \Catalog\entity\CatalogproductsEntity();
@@ -954,7 +955,7 @@ function EliminarCatalogCustomAttribute($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes"))
+    if($MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes") || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
     {
         $CustomattributesEntity->id(addslashes($Tokenizer->decode($id)));
         $CustomattributesEntity->status($status);
@@ -1175,7 +1176,7 @@ function EliminarCatalogSetAttribute($id,$status)
 
     $respuesta = null;
 
-    if($MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes"))
+    if($MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes") || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
     {
         $CatalogsetattributesEntity->id(addslashes($Tokenizer->decode($id)));
         $CatalogsetattributesEntity->status($status);

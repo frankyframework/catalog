@@ -17,6 +17,10 @@ if(!empty($id))
     $CustomattributesModel = new CustomattributesModel();
     $CustomattributesEntity = new CustomattributesEntity();
     $CustomattributesEntity->id($id);
+    if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+    {
+            $CustomattributesEntity->uid($MySession->getVar('id'));
+    }
     $result	 = $CustomattributesModel->getData($CustomattributesEntity->getArrayCopy());
     $data           = $CustomattributesModel->getRows();
     $data['data'] = json_decode($data['data'],true);
@@ -33,7 +37,16 @@ if(!empty($id))
     $adminForm->addId();
 }
 
-
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+{
+    $typesInput = ['text' => "Texto",
+                            "textarea" => "Texto largo",
+                            "select" => "Drop Down",
+                            "checkbox" => "Checkbox",
+                            "radio" => "Radio"
+    ];
+    $adminForm->setOptionsInput("type", $typesInput);
+}
 $adminForm->setData($data);
 $categorias = getCatalogCategorys('sql',['status' => 1]);
 $adminForm->setAtributoInput("callback","value", urldecode($callback));

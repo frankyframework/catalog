@@ -1,0 +1,35 @@
+<div class="w-xxxx-12">
+    <div class="content">
+    <div class="w-xxxx-12"><?=breadcrumbs(); ?></div>
+    <h2 class="align_center">Selecciona un nombre para tu tienda</h2>
+    <ul>
+        <li>Este nombre servira para compartir tus publicaciones en la url <?=$MyRequest->link('/marketplace/[nombre_de_usuario]/',false,true)?></li>
+        <li>Recuerda no usar caracteres especiales ni espacios</li>
+    </ul>
+        <div class="w-xxxx-6">
+            <?php echo $adminForm->openTag(); ?>
+            <?php  echo $adminForm->getRow("username"); ?>
+            <div id="imagen_previa">
+            <?php if(!empty($data['image'])): ?>
+              <?=makeHTMLImg($data['image'], "", "", "");?>
+            <?php endif; ?>
+        </div>
+        <?php echo $adminForm->getRow('image'); ?>
+        <div class="form-group"><h3>SEO</h3></div>
+        <?php echo $adminForm->getRow('meta_title'); ?>
+        <?php echo $adminForm->getRow('meta_description'); ?>
+        <?php echo $adminForm->getRow('meta_keywords'); ?>
+            <?php  echo $adminForm->getRow("guardar"); ?>
+            <?php echo $adminForm->endTag(); ?>
+        </div>
+    </div>
+
+  
+
+</div>
+
+<script >
+$(document).ready(function(){
+         $("#frmusername").validate();
+});
+</script>

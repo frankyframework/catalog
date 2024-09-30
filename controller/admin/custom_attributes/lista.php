@@ -21,7 +21,10 @@ $CustomattributesModel = new CustomattributesModel();
 $CustomattributesEntity = new CustomattributesEntity();
 
 $CustomattributesEntity->entity('catalog_products');  
-
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+{
+        $CustomattributesEntity->uid($MySession->getVar('id'));
+}
 $CustomattributesModel->setPage($MyPaginacion->getPage());
 $CustomattributesModel->setTampag($MyPaginacion->getTampageDefault());
 $CustomattributesModel->setOrdensql($MyPaginacion->getCampoOrden()." ".$MyPaginacion->getOrden());
@@ -58,12 +61,17 @@ $class_grid = "cont_custom_attributes";
 $error_grid = _catalog("No hay atributos registrados");
 $deleteFunction = "EliminarCatalogCustomAttribute";
 $frm_constante_link = FRM_CATALOG_CUSTOM_ATTRIBUTES;
+$permisos_grid = "administrar_catalogo_custom_attributes";
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+{
+        $frm_constante_link = FRM_CATALOG_CUSTOM_ATTRIBUTES_MARKETPLACE;
+        $permisos_grid = "administrar_catalogo_custom_attributes_marketplace";
+}
+
 $titulo_columnas_grid = array("createdAt" => _catalog("Fecha"),"name" => _catalog("Nombre"),"entity" => _catalog("Entidad"));
 $value_columnas_grid = array("createdAt", "name","entity" );
 
 $css_columnas_grid = array("createdAt" => "w-xxxx-4" ,"name" => "w-xxxx-3" ,"entity" => "w-xxxx-3" );
-
-$permisos_grid = "administrar_catalogo_custom_attributes";
 
 
 $MyFiltrosForm = new filtrosForm('paginar');

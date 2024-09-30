@@ -21,6 +21,11 @@ $adminForm = new CatalogsetattributesForm("frmsetatributos");
 $title = "Nuevo set de atributos";
 if(!empty($id))
 {
+    if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+    {
+        $CatalogsetattributesEntity->uid($MySession->getVar('id'));
+    }
+
     $CatalogsetattributesEntity->id($id);
     $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
 
@@ -39,8 +44,12 @@ if(!empty($id))
 
 }
 //print_r($data); exit;
-
-$custom_attribtues = getDataCustomAttribute(0,'catalog_products');
+$uid = '';
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+{
+    $uid = $MySession->GetVar('id');
+}
+$custom_attribtues = getDataCustomAttribute(0,'catalog_products',$uid);
 $_custom_attribtues = [];
 foreach($custom_attribtues['custom_imputs'] as $attr)
 {

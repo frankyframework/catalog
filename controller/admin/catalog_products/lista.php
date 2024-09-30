@@ -50,6 +50,12 @@ $CatalogproductsModel->setPage($MyPaginacion->getPage());
 $CatalogproductsModel->setTampag($MyPaginacion->getTampageDefault());
 $CatalogproductsModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
 $CatalogproductsModel->setBusca($busca_b);
+
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+{
+        $CatalogproductsEntity->uid($MySession->getVar('id'));
+}
+
 $result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
 $MyPaginacion->setTotal($CatalogproductsModel->getTotal());
 $lista_admin_data = array();
@@ -87,6 +93,11 @@ if($CatalogproductsModel->getTotal() > 0)
 
             }
         }
+        $configurableUrl = ADMIN_CATALOG_PRODUCTS_CONFIGURABLES;
+        if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+        {
+            $configurableUrl = ADMIN_CATALOG_PRODUCTS_CONFIGURABLES_MARKETPLACE;
+        }
        
         $lista_admin_data[$iRow] = array_merge($registro,array(
                 "thisClass"     => $thisClass,
@@ -95,7 +106,7 @@ if($CatalogproductsModel->getTotal() > 0)
                 "callback" => $Tokenizer->token('catalog_products',$MyRequest->getURI()),
                 "nuevo_estado"  => ($registro["status"] == 1 ?"desactivar" : "activar"),
                 "images"     => $img,
-                "type"     => ($registro['type'] == 'configurable' ? '<a href="'.$MyRequest->link(ADMIN_CATALOG_PRODUCTS_CONFIGURABLES."?id=".$Tokenizer->token('catalog_products',$registro["id"])).'&amp;callback='.$Tokenizer->token('catalog_products',$MyRequest->getURI()).'&amp;store='.$store_b.'">'.$registro['type'].'</a>' : $registro['type'])
+                "type"     => ($registro['type'] == 'configurable' ? '<a href="'.$MyRequest->link($configurableUrl."?id=".$Tokenizer->token('catalog_products',$registro["id"])).'&amp;callback='.$Tokenizer->token('catalog_products',$MyRequest->getURI()).'&amp;store='.$store_b.'">'.$registro['type'].'</a>' : $registro['type'])
         ));
 
 
@@ -109,14 +120,19 @@ $error_grid = _catalog("No hay productos registrados");
 $deleteFunction = "DeleteCatalogProduct";
 
 $frm_constante_link = FRM_CATALOG_PRODUCTS;
+$permisos_grid = "administrar_products_catalog";
 
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+{
+    $frm_constante_link = FRM_CATALOG_PRODUCTS_MARKETPLACE;
+    $permisos_grid = "administrar_products_catalog_marketplace";
+}
 $titulo_columnas_grid = array("_id" => _catalog("ID"),"images" => _catalog("Thumb"), "name" =>  _catalog("Nombre"),"sku" => _catalog("SKU"),"type" => _catalog("Tipo"));
 $value_columnas_grid = array("_id" ,"images", "name","sku","type");
 
 $css_columnas_grid = array("_id" => "w-xxxx-1" ,"images" => "w-xxxx-2" , "name" => "w-xxxx-3", "sku" => "w-xxxx-1", "type" => "w-xxxx-1");
 
 
-$permisos_grid = "administrar_products_catalog";
 
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());
