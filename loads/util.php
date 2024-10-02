@@ -217,6 +217,8 @@ function catalog_getPriceMaxMinProduct()
  
     $precio = [0,0];
     $CatalogproductsEntity->status(1);
+    $CatalogproductsEntity->in_validation(0);
+    $CatalogproductsEntity->validate(1);
     $CatalogproductsEntity->store(DATA_STORE_CONFIG['id']);
     if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
     {
@@ -256,7 +258,7 @@ function catalog_setPriceEcommerce($data)
 
         if($PreciosModel->getData($PreciosEntity2->getArrayCopy()) == REGISTRO_SUCCESS)
         {
-            $result2 = $PreciosModel->updateByIdProdcuto($PreciosEntity->getArrayCopy());
+            $result2 = $PreciosModel->updateByIdProducto($PreciosEntity->getArrayCopy());
         }
         else {
             $result2 = $PreciosModel->save($PreciosEntity->getArrayCopy());
@@ -449,6 +451,8 @@ function getCatalogVitrina($clave)
     $CatalogproductsEntity = new \Catalog\entity\CatalogproductsEntity();
     $Tokenizer = new \Franky\Haxor\Tokenizer;
     $CatalogproductsEntity->status(1);
+    $CatalogproductsEntity->in_validation(0);
+    $CatalogproductsEntity->validate(1);
     $CatalogproductsEntity->visible_in_search(1);
     $CatalogvitrinaEntity->status(1);
     $CatalogvitrinaEntity->store(DATA_STORE_CONFIG['id']);
@@ -681,6 +685,8 @@ function getDataConfigurables($id_product)
 
     $CatalogproductsEntity->exchangeArray([]);
     $CatalogproductsEntity->status(1);
+    $CatalogproductsEntity->in_validation(0);
+    $CatalogproductsEntity->validate(1);
     $CatalogproductsEntity->parent_id($id_product);
     
     if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)

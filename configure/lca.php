@@ -19,6 +19,9 @@ return [
         "administrar_catalog_calificaciones_marketplace" => "Calificaciones",
         "administrar_catalog_calificaciones_pendientes_marketplace" => "Calificaciones pendientes",
         "administrar_catalog_contactanos_marketplace" => "Contacto de clientes",
+        "administrar_solicitud_user_marketplace" => "Administrar Solicitudes para usuario marketplace",
+        "moderar_publicaciones_catalog" => "Moderacion de publicaciones",
+        "solicitud_user_marketplace" => "Solicitudes para escalar a usuario marketplace",
     ]
 ]
 ?>

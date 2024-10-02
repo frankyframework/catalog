@@ -49,7 +49,13 @@ if(getCoreConfig('catalog/marketplace/enabled') == 1){
   );
 
 
-
+  if(getCoreConfig('catalog/marketplace/moderar-publicaciones') == 1):
+    $menucatalog[1]['children'][] = array(
+      "permiso" =>   "administrar_products_catalog_marketplace",
+      "url" => $MyRequest->url(SOLICITUDES_PUBLICACIONES_CATALOG),
+      "etiqueta" => "Mis aprovaciones pendientes"
+    );
+  endif;
   if(getCoreConfig('catalog/calificaciones/enabled') == 1){
     if(getCoreConfig('catalog/calificaciones/moderado') == 1){
       

@@ -91,4 +91,9 @@
         <llave>username_duplicado</llave>
         <valor>Ya existe una tienda con este combre</valor>
     </mensaje>
+    <mensaje>
+        <llave>savemoderado_success</llave>
+        <valor>La información de tu producto se guardo correctamente, en breve sera revisada por un moderador para su publicación</valor>
+    </mensaje>
+    
 </mensajes>

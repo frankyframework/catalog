@@ -73,6 +73,9 @@ $CatalogproductsModel->setOrdensql($MyPaginacion->getCampoOrden()." ".$MyPaginac
 
 
 $CatalogproductsEntity->status(1);
+$CatalogproductsEntity->in_validation(0);
+$CatalogproductsEntity->validate(1);
+
 $CatalogproductsEntity->uid($dataUser['id_user']);
 $CatalogproductsEntity->visible_in_search(1);
 $CatalogproductsEntity->store(DATA_STORE_CONFIG['id']);

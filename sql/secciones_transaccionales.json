@@ -1,0 +1,16 @@
+{
+    "data":[
+        {
+            "id" : 30,
+            "nombre" : "Solicitud de información de producto",
+            "friendly": "contactanos-producto",
+            "status" : 1
+        },
+        {
+            "id" : 31,
+            "nombre" : "Notificacion de contactanos de producto para usuario",
+            "friendly": "contactanos-producto-user-notification",
+            "status" : 1
+        }
+    ]
+}

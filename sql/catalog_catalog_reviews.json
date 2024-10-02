@@ -10,39 +10,27 @@
                 "auto_increment":1
             },
             {
-                "name":"username",
-                "type":"varchar",
-                "length":255,
-                "null":0
-            },
-            {
-                "name":"id_user",
+                "name":"parent_id",
                 "type":"int",
                 "length":11,
                 "null":0
             },
             {
-                "name":"image",
-                "type":"varchar",
-                "length":255,
-                "null":1
-            },
-            {
-                "name":"meta_title",
-                "type":"varchar",
-                "length":255,
-                "null":0
-            },
-            {
-                "name":"meta_description",
-                "type":"varchar",
-                "length":255,
-                "null":0
-            },
-            {
-                "name":"meta_keywords",
+                "name":"message",
                 "type":"text",
                 "null":1
+            },
+            {
+                "name":"data",
+                "type":"text",
+                "null":1
+            },
+            {
+                "name":"status",
+                "type":"int",
+                "length":11,
+                "null":0,
+                "default":0
             },
             {
                 "name":"createdAt",

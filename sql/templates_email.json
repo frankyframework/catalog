@@ -1,0 +1,36 @@
+{
+    "data":[
+        {
+            "id":30,
+            "nombre":"Solicitud de información de producto",
+            "id_transaccional":30,
+            "status":1,
+            "fecha":"2024-10-01 00:00:00",
+            "Asunto":"Solicitud de información de producto",
+            "destinatario":["{email_marketplace}","webmaster@test.com"],
+            "cc":[],
+            "bcc":[],
+            "name_from":"Webmaster",
+            "email_from":"webmaster@test.com",
+            "reply":"webmaster@test.com",
+            "editable":1,
+            "html": "{header}<table style=\"font-family: Arial, Helvetica, sans-serif; color: #333;\" border=\"0\" width=\"500\" align=\"center\">\r\n<tbody>\r\n<tr>\r\n<td style=\"font-size: 25px; font-family: 'Times New Roman', Times, serif;\" width=\"80%\">{sitio_titulo}</td>\r\n<td style=\"background: #A00; color: #fff; font-size: 15px; text-align: right; padding-right: 5px;\" width=\"20%\">Solicitud de informacion</td>\r\n</tr>\r\n</tbody>\r\n</table>\r\n<table style=\"font-family: Arial, Helvetica, sans-serif; color: #000; font-size: 14px;\" border=\"0\" width=\"500\" align=\"center\">\r\n<tbody>\r\n<tr>\r\n<td align=\"right\" width=\"100\">Producto:</td>\r\n<td style=\"color: #333;\" align=\"left\">{Producto}</td>\r\n</tr>\r\n<tr>\r\n<td align=\"right\" width=\"100\">Nombre:</td>\r\n<td style=\"color: #333;\" align=\"left\">{nombre}</td>\r\n</tr>\r\n<tr>\r\n<td align=\"right\">E-Mail:</td>\r\n<td style=\"color: #333;\" align=\"left\">{email}</td>\r\n</tr>\r\n<tr>\r\n<td align=\"right\">TelÃ©fono:</td>\r\n<td style=\"color: #333;\" align=\"left\">{telefono}</td>\r\n</tr>\r\n<tr>\r\n<td align=\"right\">Asunto:</td>\r\n<td style=\"color: #333;\" align=\"left\">{asunto}</td>\r\n</tr>\r\n<tr>\r\n<td align=\"right\">Comentarios:</td>\r\n<td style=\"color: #333;\" align=\"left\">{comentarios}</td>\r\n</tr>\r\n</tbody>\r\n</table>{footer}"
+         },
+         {
+            "id":31,
+            "nombre":"Notificacion de solicitud de informacion de producto para usuario",
+            "id_transaccional":31,
+            "status":1,
+            "fecha":"2024-10-01 00:00:00",
+            "Asunto":"Tu solicitud fue recibida",
+            "destinatario":["{email}"],
+            "cc":[],
+            "bcc":[],
+            "name_from":"Webmaster",
+            "email_from":"webmaster@test.com",
+            "reply":"webmaster@test.com",
+            "editable":1,
+            "html": "{header}<table style=\"font-family: Arial, Helvetica, sans-serif; color: #333;\" border=\"0\" width=\"500\" align=\"center\">\r\n<tbody>\r\n<tr>\r\n<td style=\"font-size: 25px; font-family: 'Times New Roman', Times, serif;\" width=\"80%\">{sitio_titulo}</td>\r\n<td style=\"background: #A00; color: #fff; font-size: 15px; text-align: right; padding-right: 5px;\" width=\"20%\">Información recibida</td>\r\n</tr>\r\n</tbody>\r\n</table>\r\n<table style=\"font-family: Arial, Helvetica, sans-serif; color: #000; font-size: 14px;\" border=\"0\" width=\"500\" align=\"center\">\r\n<tbody>\r\n<tr>\r\n<td align=\"right\" width=\"100\">Producto:</td>\r\n<td style=\"color: #333;\" align=\"left\">{producto}</td>\r\n</tr>\r\n<tr>\r\n<td align=\"right\" width=\"100\">Nombre:</td>\r\n<td style=\"color: #333;\" align=\"left\">{nombre}</td>\r\n</tr>\r\n<tr>\r\n<td align=\"right\">E-Mail:</td>\r\n<td style=\"color: #333;\" align=\"left\">{email}</td>\r\n</tr>\r\n<tr>\r\n<td align=\"right\">Teléfono:</td>\r\n<td style=\"color: #333;\" align=\"left\">{telefono}</td>\r\n</tr>\r\n<tr>\r\n<td align=\"right\">Asunto:</td>\r\n<td style=\"color: #333;\" align=\"left\">{asunto}</td>\r\n</tr>\r\n<tr>\r\n<td align=\"right\">Comentarios:</td>\r\n<td style=\"color: #333;\" align=\"left\">{comentarios}</td>\r\n</tr>\r\n</tbody>\r\n</table>{footer}"
+        }
+    ]
+}

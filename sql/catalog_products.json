@@ -173,7 +173,18 @@
                 "length":1,
                 "null":0
             },
-           
+            {
+                "name":"in_validation",
+                "type":"int",
+                "length":1,
+                "null":0
+            },
+            {
+                "name":"validate",
+                "type":"int",
+                "length":1,
+                "null":0
+            },
             {
                 "name":"createdAt",
                 "type":"datetime",

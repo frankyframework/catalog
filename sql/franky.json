@@ -531,6 +531,76 @@
             "status":1,
             "editable":1,
             "modulo":"catalog"
+        },
+        {
+            "php":"admin/marketplace/solicitud.php",
+            "css":"",
+            "js":"",
+            "jquery":"",
+            "resource":"moderar_publicaciones_catalog",
+            "constante":"ADMIN_MODERAR_PUBLICACIONES_CATALOG",
+            "url":"admin/marketplace/catalog/",
+            "nombre":"Moderacion de publicaciones",
+            "ajax":["base/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"catalog"
+        },
+        {
+            "php":"admin/marketplace/solicitud.user.php",
+            "css":"",
+            "js":"",
+            "jquery":"",
+            "resource":"administrar_solicitud_user_marketplace",
+            "constante":"ADMIN_SOLICITUD_USER_MARKETPLACE",
+            "url":"admin/marketplace/users/",
+            "nombre":"Solicitudes usuario marketplace",
+            "ajax":["base/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"catalog"
+        },
+        {
+            "php":"mi-cuenta/marketplace/solicitud.php",
+            "css":"",
+            "js":"",
+            "jquery":"",
+            "resource":"administrar_products_catalog_marketplace",
+            "constante":"SOLICITUDES_PUBLICACIONES_CATALOG",
+            "url":"mi-cuenta/marketplace/catalog/",
+            "nombre":"Aprovacion de productos pendientes",
+            "ajax":["base/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"catalog"
+        },
+        {
+            "php":"mi-cuenta/marketplace/solicitud.user.php",
+            "css":"",
+            "js":"",
+            "jquery":["jquery-validate"],
+            "resource":"solicitud_user_marketplace",
+            "constante":"SOLICITUD_USER_MARKETPLACE",
+            "url":"mi-cuenta/marketplace/users/",
+            "nombre":"Solicitudes usuario marketplace",
+            "ajax":["base/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"catalog"
+        },
+        {
+            "php":"products/preview.php",
+            "css":"",
+            "js":[],
+            "jquery":["jquery-validate","slick","photoswipe"],
+            "resource":"moderar_publicaciones_catalog",
+            "constante":"CATALOG_PREVIEW",
+            "url":"productos/preview/[friendly]/",
+            "nombre":"Preview de detalle del producto",
+            "ajax":[],
+            "status":1,
+            "editable":1,
+            "modulo":"catalog"
         }
     ]
 }

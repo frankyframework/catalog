@@ -3,7 +3,14 @@ use Franky\Core\validaciones;
 use Catalog\model\CatalogComentariosModel;
 use Catalog\entity\CatalogComentariosEntity;
 use Franky\Haxor\Tokenizer;
+use Catalog\model\CatalogproductsModel;
+use Catalog\entity\CatalogproductsEntity;
+use Base\model\USERS;
 
+
+$CatalogproductsModel  = new CatalogproductsModel();
+$CatalogproductsEntity = new CatalogproductsEntity();
+$MyUser             = new USERS();
 $Tokenizer = new Tokenizer();
 $MyContacto         = new CatalogComentariosModel();
 $MyContactoEntity         = new CatalogComentariosEntity($MyRequest->getRequest());
@@ -43,7 +50,18 @@ if($error== false)
                 $location= $MyRequest->getReferer();
 
                 $campos = $MyContactoEntity->getArrayCopy();
+                if(getCoreConfig('catalog/marketplace/enabled') == 1) {
 
+                    $CatalogproductsEntity->id($MyContactoEntity->getParentId());
+                    if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+                    {
+                        $data_detalle = $CatalogproductsModel->getRows();
+                        $MyUser->getData($id);
+                        $dataUser = $MyUser->getRows();
+                        $campos["email_marketplace"] = $dataUser['email'];
+                    }
+                }
+       
 
                 $TemplateemailModel    = new \Base\model\TemplateemailModel;
                 $TemplateemailEntity    = new \Base\entity\TemplateemailEntity;

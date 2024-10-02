@@ -6,6 +6,8 @@ use Catalog\entity\CatalogcategoryproductEntity;
 use Catalog\model\CatalogcategoryproductModel;
 use Franky\Haxor\Tokenizer;
 use Franky\Core\ObserverManager;
+use Catalog\model\CatalogCatalogReviewsModel;
+use Catalog\entity\CatalogCatalogReviewsEntity;
 
 $Tokenizer = new Tokenizer();
 $CatalogcategoryproductEntity    = new CatalogcategoryproductEntity();
@@ -28,9 +30,15 @@ $visible_in_search  = $MyRequest->getRequest('visible_in_search');
 $CatalogproductsEntity->description($description);
 $CatalogproductsEntity->sku(getFriendly($CatalogproductsEntity->sku()));
 $error = false;
+
+$CatalogproductsEntity->in_validation(0);
+$CatalogproductsEntity->validate(1);
 if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
 {
     $CatalogproductsEntity->uid($MySession->getVar('id'));
+    $CatalogproductsEntity->in_validation(1);
+    $CatalogproductsEntity->validate(0);
+
 }
 if(empty($iva))
 {
@@ -147,11 +155,7 @@ if(!$error)
         
             $MyFlashMessage->setMsg("success",$MyMessageAlert->Message("editar_generico_success"));
         }
-        $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_PRODUCTS)."?store_b=".$CatalogproductsEntity->store());
-        if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
-        {
-            $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_PRODUCTS_MARKETPLACE)."?store_b=".$CatalogproductsEntity->store());
-        }
+        
        
         $CatalogcategoryproductEntity->id_product($id);
         $CatalogcategoryproductModel->remove($CatalogcategoryproductEntity->getArrayCopy());     
@@ -169,6 +173,36 @@ if(!$error)
         
         $MySession->UnsetVar('album_'.$album);
         $MySession->UnsetVar('addProduct');
+
+        $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_PRODUCTS)."?store_b=".$CatalogproductsEntity->store());
+        if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+        {
+            if(getCoreConfig('catalog/marketplace/moderar-publicaciones') == 1)
+            {
+                $CatalogCatalogReviewsEntity    = new CatalogCatalogReviewsEntity();
+                $CatalogCatalogReviewsModel     = new CatalogCatalogReviewsModel();
+                $CatalogCatalogReviewsEntity->status(0);
+                $CatalogCatalogReviewsEntity->parent_id($id);
+                if($CatalogCatalogReviewsModel->getData($CatalogCatalogReviewsEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
+
+                    $dataReview = $CatalogCatalogReviewsModel->getRows();
+                    $CatalogCatalogReviewsEntity->id($dataReview['id']);
+                }
+                $CatalogCatalogReviewsEntity->createdAt(date('Y-m-d H:i:s'));
+                $CatalogCatalogReviewsEntity->updateAt(date('Y-m-d H:i:s'));
+                $CatalogCatalogReviewsEntity->message("");
+                $CatalogproductsModel->getData(["id" => $id]);
+                $productData = $CatalogproductsModel->getRows();
+
+                $productData['custom_attr'] = getDataCustomAttribute($data_detalle['id'],'catalog_products');
+
+                $CatalogCatalogReviewsEntity->data(addslashes(json_encode($productData)));
+                $CatalogCatalogReviewsModel->save($CatalogCatalogReviewsEntity->getArrayCopy());
+                $MyFlashMessage->free();
+                $MyFlashMessage->setMsg("success",$MyMessageAlert->Message("catalog_savemoderado_success"));
+            }
+            $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_PRODUCTS_MARKETPLACE)."?store_b=".$CatalogproductsEntity->store());
+        }
 
 
     }

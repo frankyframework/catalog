@@ -84,18 +84,45 @@ return array(
     'title' => "Marketplace",
     'config' =>  array(
           array('path' => 'catalog/marketplace/enabled',
-                  'type' => 'select',
-                  'label' => 'Habilitar marketplace',
-                  'data' => ['0' => 'No', '1' => 'Si'],
-                  'value' => 1
+            'type' => 'select',
+            'label' => 'Habilitar marketplace',
+            'data' => ['0' => 'No', '1' => 'Si'],
+            'value' => 1
           ),
-          array('path' => 'catalog/marketplace/role',
+          array('path' => 'catalog/marketplace/moderar-publicaciones',
           'type' => 'select',
-          'label' => 'Rol de usuario marketplace',
-          'data' => getRoles(),
+          'label' => 'Moderar publicaciones marketplace',
+          'data' => ['0' => 'No', '1' => 'Si'],
           'value' => 1
-  ),
-    )
+        ),
+          array('path' => 'catalog/marketplace/role',
+            'type' => 'select',
+            'label' => 'Rol de usuario marketplace',
+            'data' => getRoles(),
+            'value' => 1
+          ),
+          array('path' => 'catalog/contactanos/user-notification',
+            'type' => 'select',
+            'label' => '¿Notificar al remitente que su información fue recibida?',
+            'validation' => array('required' => false),
+            'data' => ['0' => 'No', '1' => 'Si'],
+            'value' => '0'
+          ),
+          array('path' => 'catalog/contactanos/email-contactanos',
+            'type' => 'select',
+            'label' => 'Template E-mail envío de contacto',
+            'validation' => array('required' => true),
+            'data' => getTemplatesEmail(),
+            'value' => '1'
+          ),
+          array('path' => 'catalog/contactanos/email-user-contactanos',
+              'type' => 'select',
+              'label' => 'Template E-mail notificacion a usuario de contacto',
+              'validation' => array('required' => true),
+              'data' => getTemplatesEmail(),
+              'value' => '1'
+            ),
+          )
 ),
 );
 

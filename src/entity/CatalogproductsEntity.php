@@ -34,6 +34,8 @@ class CatalogproductsEntity
     private $stock_infinito;
     private $envio_requerido;
     private $configurable;
+    private $in_validation;
+    private $validate;
 
 
     public function __construct($data = null)
@@ -76,6 +78,8 @@ class CatalogproductsEntity
         $this->envio_requerido = (isset($data["envio_requerido"]) ? $data["envio_requerido"] : null);
         $this->configurable = (isset($data["configurable"]) ? $data["configurable"] : null);
         $this->store = (isset($data["store"]) ? $data["store"] : null);
+        $this->in_validation = (isset($data["in_validation"]) ? $data["in_validation"] : null);
+        $this->validate = (isset($data["validate"]) ? $data["validate"] : null);
     }
 
     public function getArrayCopy()
@@ -152,5 +156,10 @@ class CatalogproductsEntity
     public function configurable($configurable = null){ if($configurable !== null){ $this->configurable=$configurable; }else{ return $this->configurable; } }
 
     public function store($store = null){ if($store != null){ $this->store=$store; }else{ return $this->store; } }
+
+    public function in_validation($in_validation = null){ if($in_validation != null){ $this->in_validation=$in_validation; }else{ return $this->in_validation; } }
+
+    public function validate($validate = null){ if($validate != null){ $this->validate=$validate; }else{ return $this->validate; } }
+
 }
 ?>

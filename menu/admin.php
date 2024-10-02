@@ -41,11 +41,31 @@ $menucatalog = array(
       "permiso" =>   "administrar_catalog_contactanos",
       "url" => $MyRequest->url(CONTACTOS_CATALOG_LIST),
       "etiqueta" => _("Contacto")
-     )
+    )
   )
   )
    
 );
+if(getCoreConfig('catalog/marketplace/enabled') == 1){
+
+  $menucatalog[1] = array(
+    'title'=> "Marketplace",
+    'children' =>  [
+      array(
+        "permiso" =>   "administrar_solicitud_user_marketplace",
+        "url" => $MyRequest->url(ADMIN_SOLICITUD_USER_MARKETPLACE),
+        "etiqueta" => _("Solicitudes usuario marketplace")
+       )
+    ]
+  );
+  if(getCoreConfig('catalog/marketplace/moderar-publicaciones') == 1):
+    $menucatalog[1]['children'][] = array(
+      "permiso" =>   "moderar_publicaciones_catalog",
+      "url" => $MyRequest->url(ADMIN_MODERAR_PUBLICACIONES_CATALOG),
+      "etiqueta" => "Moderacion de publicaciones"
+    );
+  endif;
+}
 
 if(getCoreConfig('catalog/calificaciones/enabled') == 1):
   if(getCoreConfig('catalog/calificaciones/moderado') == 1):

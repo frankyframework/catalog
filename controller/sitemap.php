@@ -12,6 +12,8 @@ $CatalogproductsModel->setOrdensql("catalog_products.name ASC");
 
 
 $CatalogproductsEntity->status(1);
+$CatalogproductsEntity->in_validation(0);
+$CatalogproductsEntity->validate(1);
 $catalogo = array();
 if($CatalogproductsModel->getDataSearch($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
 {
