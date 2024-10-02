@@ -503,6 +503,34 @@
             "status":1,
             "editable":1,
             "modulo":"catalog"
+        },
+        {
+            "php":"admin/catalogo_contacto/lista.php",
+            "css":"",
+            "js":"",
+            "jquery":"",
+            "resource":"administrar_catalog_contactanos",
+            "constante":"CONTACTOS_CATALOG_LIST",
+            "url":"admin/catalogo_contacto/",
+            "nombre":"Contactanos",
+            "ajax":["base/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"catalog"
+        },
+        {
+            "php":"mi-cuenta/catalogo_contacto/lista.php",
+            "css":"",
+            "js":"",
+            "jquery":"",
+            "resource":"administrar_catalog_contactanos_marketplace",
+            "constante":"CONTACTOS_CATALOG_LIST_MARKETPLACE",
+            "url":"mi-cuenta/catalogo_contacto/",
+            "nombre":"Contactanos",
+            "ajax":["base/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"catalog"
         }
     ]
 }

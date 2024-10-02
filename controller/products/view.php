@@ -2,7 +2,7 @@
 use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
 use Franky\Haxor\Tokenizer;
-use Base\Form\contactanosForm;
+use Catalog\Form\CatalogComentariosForm;
 use Catalog\model\CatalogproductrelatedModel;
 use Catalog\entity\CatalogproductrelatedEntity;
 use Catalog\schema\productSchema;
@@ -132,14 +132,12 @@ $data_detalle['id_wishlist'] = $Tokenizer->token('wishlist',$data_detalle["id"])
 
 $data_detalle['id'] = $Tokenizer->token('catalog_products', $data_detalle['id']);
 
-$contactanosForm = new contactanosForm("frmContacto");
+$contactanosForm = new CatalogComentariosForm("frmContacto");
 $contactanosForm->setMobile($Mobile_detect->isMobile());
 
 $contactanosForm->setData($MyFlashMessage->getResponse());
 $contactanosForm->setAtributoInput('token_xsrf', 'value',$Tokenizer->token('cantactanos_xsrf', time()));
-$contactanosForm->setAtributoInput('asunto', 'value','SKU'.$data_detalle['sku'].': '.$data_detalle['name']);
-$contactanosForm->setAtributoBase('asunto', 'type','hidden');
-$contactanosForm->setAtributoInput('asunto', 'placeholder','');
+$contactanosForm->setAtributoInput('parent_id', 'value',$data_detalle['id']);
 
 $MyFrankyMonster->setPHPFile(getVista("products/view.phtml"));
 //print_r($data_detalle);

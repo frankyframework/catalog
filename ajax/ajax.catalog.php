@@ -1237,6 +1237,34 @@ function EliminarTienda($id,$status)
 }
 
 
+function EliminarComentarioCatalog($id,$status)
+{
+
+	$ContactoModel = new Catalog\model\CatalogComentariosModel;
+    $Tokenizer = new \Franky\Haxor\Tokenizer;
+    global $MyAccessList;
+    global $MyMessageAlert;
+    $respuesta = null;
+    if($MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes") || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
+    {
+        if($ContactoModel->delete(addslashes($Tokenizer->decode($id))) == REGISTRO_SUCCESS)
+        {
+
+
+        }
+        else
+        {
+        $respuesta[] = array("message" => $MyMessageAlert->Message(($status == 1 ? "activar" : "eliminar")."_generico_error"));
+        }
+    }
+    else
+    {
+            $respuesta[] = array("message" => $MyMessageAlert->Message("sin_privilegios"));
+    }
+
+	return $respuesta;
+}
+
 /******************************** EJECUTA *************************/
 
 $MyAjax->register("EliminarCatalogCustomAttribute");
@@ -1261,4 +1289,5 @@ $MyAjax->register("ajax_getCatalogCustomAttrFrm");
 $MyAjax->register("ajax_getFrmCategpry");
 $MyAjax->register("EliminarCatalogSetAttribute");
 $MyAjax->register("EliminarTienda");
+$MyAjax->register("EliminarComentarioCatalog");
 ?>

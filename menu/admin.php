@@ -36,6 +36,11 @@ $menucatalog = array(
       "permiso" =>   "administrar_stores_catalog",
       "url" => $MyRequest->url(ADMIN_LISTA_CATALOG_STORES),
       "etiqueta" => _("Tiendas")
+    ),
+    array(
+      "permiso" =>   "administrar_catalog_contactanos",
+      "url" => $MyRequest->url(CONTACTOS_CATALOG_LIST),
+      "etiqueta" => _("Contacto")
      )
   )
   )

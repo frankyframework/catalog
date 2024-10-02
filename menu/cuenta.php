@@ -39,7 +39,12 @@ if(getCoreConfig('catalog/marketplace/enabled') == 1){
          "permiso" =>   "administrar_catalogo_custom_attributes_marketplace",
          "url" => $MyRequest->url(ADMIN_CATALOG_SET_CUSTOM_ATTRIBUTES_MARKETPLACE),
          "etiqueta" => _("Set de atributos")
-      ]
+      ],
+      array(
+        "permiso" =>   "administrar_catalog_contactanos_marketplace",
+        "url" => $MyRequest->url(CONTACTOS_CATALOG_LIST_MARKETPLACE),
+        "etiqueta" => _("Contacto")
+       )
     ]
   );
 
