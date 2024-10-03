@@ -103,4 +103,12 @@
         <llave>declinar_info</llave>
         <valor>Error al intentar declinar la información</valor>
     </mensaje>
+    <mensaje>
+        <llave>success_user_marketplace</llave>
+        <valor>Tu información se guardo correctamente, en breve sera revisada por nuestro equipo</valor>
+    </mensaje>
+    <mensaje>
+        <llave>error_user_marketplace</llave>
+        <valor>Parece que hubo un problema al guardar tu información, intenta mas tarde</valor>
+    </mensaje>
 </mensajes>

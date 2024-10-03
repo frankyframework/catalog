@@ -16,7 +16,12 @@ class UserMarketplaceForm extends \Franky\Form\Form
         ));
 
 
-
+        $this->add(array(
+            'name' => 'id',
+            'type'  => 'hidden',
+            
+        )
+    );
         $this->add(array(
                 'name' => 'rfc',
                 'label' => _catalog('RFC'),

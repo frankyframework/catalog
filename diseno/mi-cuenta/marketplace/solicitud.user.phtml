@@ -4,7 +4,9 @@
     <p><?=__("Para solicitar tu alta como vendedor es necesario llenar los siguientes datos")?></p>
 
         <?php echo $userForm->openTag(); ?>
-        
+        <?php if(!empty($dataUM)): ?>
+        <?php echo $userForm->get('id'); ?>
+        <?php endif; ?>
         <?php echo $userForm->getRow('rfc'); ?>
                 
         <?php echo $userForm->getRow('ine_anverso'); ?>

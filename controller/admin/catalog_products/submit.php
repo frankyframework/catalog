@@ -188,7 +188,10 @@ if(!$error)
                     $dataReview = $CatalogCatalogReviewsModel->getRows();
                     $CatalogCatalogReviewsEntity->id($dataReview['id']);
                 }
-                $CatalogCatalogReviewsEntity->createdAt(date('Y-m-d H:i:s'));
+                else {
+                    $CatalogCatalogReviewsEntity->createdAt(date('Y-m-d H:i:s'));
+                }
+                
                 $CatalogCatalogReviewsEntity->updateAt(date('Y-m-d H:i:s'));
                 $CatalogCatalogReviewsEntity->message("");
                 $CatalogproductsModel->getData(["id" => $id]);

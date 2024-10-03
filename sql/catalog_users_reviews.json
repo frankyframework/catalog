@@ -39,7 +39,7 @@
                 "null":1
             },
             {
-                "name":"comprovante",
+                "name":"comprobante",
                 "type":"varchar",
                 "length":255,
                 "null":1

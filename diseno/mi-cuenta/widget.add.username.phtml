@@ -4,6 +4,17 @@
     <div  class="form-group form-inline">
       <h3>Marketplace</h3>
       <div><a href="<?=$MyRequest->url(SOLICITUD_USER_MARKETPLACE)?>" title="" class="_btn _secondary">Quiero convertirme en vendedor</a></div>
+    
+      <?php $dataUM = statusUserMArketplace(); ?>
+
+      <?php if(!empty($dataUM)): ?>
+        <div>
+            <h4>El status de tu solicitud actual es: <?=$dataUM["statusF"]?></h4>
+            <?php if(!empty($dataUM['message'])): ?>
+              <p>Mensaje del administrador: <?=$dataUM["message"]?></p>
+            <?php endif;?>
+        </div>
+      <?php endif;?>
     </div>
   </div>
   </div>

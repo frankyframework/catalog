@@ -779,4 +779,27 @@ function getFriendlyMarketplace($string)
         $string = trim($string,"-");
 	return $string;
 }
+
+function statusUserMArketplace(){
+
+    global $MySession;
+    $CatalogUsersReviewsModel = new Catalog\model\CatalogUsersReviewsModel;
+    $CatalogUsersReviewsEntity = new Catalog\entity\CatalogUsersReviewsEntity;
+    $CatalogUsersReviewsEntity->parent_id($MySession->GetVar('id'));
+    $CatalogUsersReviewsModel->setOrdensql("catalog_users_reviews.id DESC");
+    $dataUM = [];
+    if ($CatalogUsersReviewsModel->getData($CatalogUsersReviewsEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
+        $dataUM = $CatalogUsersReviewsModel->getRows();
+        $dataUM['statusF'] = "En revición";
+        switch($dataUM['status']) {
+            case 1:
+                $dataUM['statusF'] = "Aprovada";
+                break;
+            case 2:
+                $dataUM['statusF'] = "Rechazada";
+                break;
+        }
+    }
+    return $dataUM;
+}
 ?>
