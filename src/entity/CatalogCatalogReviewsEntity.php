@@ -51,7 +51,7 @@ class CatalogCatalogReviewsEntity
 
     public function parent_id($parent_id = null){ if($parent_id != null){ $this->parent_id=$parent_id; }else{ return $this->parent_id; } }
 
-    public function message($message = null){ if($message != null){ $this->message=$message; }else{ return $this->message; } }
+    public function message($message = null){ if($message !== null){ $this->message=$message; }else{ return $this->message; } }
 
     public function data($data = null){ if($data != null){ $this->data=$data; }else{ return $this->data; } }
 

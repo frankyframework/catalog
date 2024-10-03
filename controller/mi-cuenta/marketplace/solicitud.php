@@ -1,5 +1,4 @@
 <?php
-use Catalog\Form\CancelForm;
 use Catalog\Form\filtrosForm;
 use Franky\Core\paginacion;
 use Catalog\model\CatalogCatalogReviewsModel;
@@ -10,7 +9,6 @@ $CatalogCatalogReviewsModel = new CatalogCatalogReviewsModel();
 $CatalogCatalogReviewsEntity = new CatalogCatalogReviewsEntity();
 $Tokenizer = new Tokenizer();
 $MyPaginacion = new paginacion();  
-$cancelForm = new CancelForm("frmdecline"); 
 
 $MyPaginacion->setPage($MyRequest->getRequest('page',1));
 $MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"catalog_catalog_reviews.updateAt"));
@@ -77,16 +75,12 @@ if($CatalogCatalogReviewsModel->getTotal() > 0)
 $title_grid = _catalog("Moderacion de catalogo");
 $class_grid = "catalog_reviews";
 $error_grid = _catalog("No hay productos registrados");
-$deleteFunction = "Catalog_AprovarInformacion";
 
-$frm_constante_link = "";
 
 $titulo_columnas_grid = array("updateAt" => _("Fecha"),'name' => _("Producto"), "message" =>  _("Mensaje"), "status" =>  _("Status"));
 $value_columnas_grid = array("updateAt" ,'name', "message","status");
 $css_columnas_grid = array("updateAt" => "w-xxxx-1" ,'name' => "w-xxxx-3" ,"message" => "w-xxxx-4","status" => "w-xxxx-1");
 
-
-$permisos_grid = "moderar_publicaciones_catalog";
 
 $MyFiltrosForm = new filtrosForm('paginar');
 $MyFiltrosForm->setMobile($Mobile_detect->isMobile());

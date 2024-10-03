@@ -1,0 +1,50 @@
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?> </div>
+        <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin"><?php echo $title_grid; ?></h1>
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="_wrapp_form_serch">
+                <?php echo $MyFiltrosForm->openTag(); ?>
+                <?php echo $MyFiltrosForm->getAllRow(); ?>
+                <?php echo $MyFiltrosForm->endTag(); ?>
+              
+            </div>
+        </div>
+
+        <div  class="w-xxxx-12 cont_gral_admin <?php echo $class_grid; ?>">
+            <div >
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-12 contenedor_titulo_columnas">
+                        <?php $i = 1; ?>
+                        <?php foreach($titulo_columnas_grid as $k =>$v): ?>
+                        <div class="<?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>"><?php echo makeHTMLOrder( $k, $v);  ?></div>
+                        <?php endforeach; ?>
+                       
+                       
+                    </div>
+                    <div class="contenedor_columnas_info"  >
+                    <div class="w-xxxx-12 contenedor_columnas"  >
+                        <?php $i = 1; ?>
+                        <?php foreach($value_columnas_grid as $k): ?>
+                        <div class="{{_data.thisClass}}   <?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>">{{_data.<?php echo $k;  ?>}}</div>
+                        <?php endforeach; ?>
+                        
+                      
+                    </div>
+                    </div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="no_hay_datos" ><?php echo $error_grid; ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <?php echo render("admin/widget.paginar.phtml"); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+window.admingrid = <?php echo json_encode($lista_admin_data); ?>;
+</script>
+

@@ -45,6 +45,29 @@ class filtrosForm extends \Base\Form\filtrosForm
         );  
     }
 
+    public function addStatusCatalogMarketplace()
+    {
+        $this->add(array(
+            'name' => 'status_b',
+            'label' => _catalog('Status'),
+            'type'  => 'select',
+            'required'  => true,
+        'required'  => true,
+            'atributos' => array(
+                'class'       => 'required'
+            ),
+            'options' => array(
+                "0" => "En validacion",
+                "1" => "Aprovado",
+                "2" => "Declinado",
+            ),
+            'label_atributos' => array(
+                'class'       => 'desc_form_obligatorio'
+            )
+            )
+        );  
+    }
+
 
 }
 ?>

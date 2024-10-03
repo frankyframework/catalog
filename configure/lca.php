@@ -21,6 +21,7 @@ return [
         "administrar_catalog_contactanos_marketplace" => "Contacto de clientes",
         "administrar_solicitud_user_marketplace" => "Administrar Solicitudes para usuario marketplace",
         "moderar_publicaciones_catalog" => "Moderacion de publicaciones",
+        "product_preview" => "Vista previa de productos",
         "solicitud_user_marketplace" => "Solicitudes para escalar a usuario marketplace",
     ]
 ]

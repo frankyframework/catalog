@@ -98,14 +98,25 @@ if($CatalogproductsModel->getTotal() > 0)
         {
             $configurableUrl = ADMIN_CATALOG_PRODUCTS_CONFIGURABLES_MARKETPLACE;
         }
-       
+        $statusV = "En validacion";
+        if($registro["in_validation"] == 0 &&  $registro["validate"] == 0 )
+        {
+            $statusV = "No autorizado";
+        }
+        if($registro["in_validation"] == 0 &&  $registro["validate"] == 1 )
+        {
+            $statusV = "Autorizado";
+        }
+        $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro['url_key']]);
         $lista_admin_data[$iRow] = array_merge($registro,array(
                 "thisClass"     => $thisClass,
                 "id" => $Tokenizer->token('catalog_products',$registro["id"]),
                 "_id" => $registro["id"],
                 "callback" => $Tokenizer->token('catalog_products',$MyRequest->getURI()),
                 "nuevo_estado"  => ($registro["status"] == 1 ?"desactivar" : "activar"),
-                "images"     => $img,
+                "status"  => $statusV,
+                "images"     => "<a href=\"".$registro['link']."\" target='_blank'>".$img."</a>",
+                "name"     => "<a href=\"".$registro['link']."\" target='_blank'>".$registro['name']."</a>",
                 "type"     => ($registro['type'] == 'configurable' ? '<a href="'.$MyRequest->link($configurableUrl."?id=".$Tokenizer->token('catalog_products',$registro["id"])).'&amp;callback='.$Tokenizer->token('catalog_products',$MyRequest->getURI()).'&amp;store='.$store_b.'">'.$registro['type'].'</a>' : $registro['type'])
         ));
 

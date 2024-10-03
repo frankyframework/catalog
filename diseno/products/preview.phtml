@@ -1,0 +1,58 @@
+<div class="w-xxxx-12 _product_view">
+    <div class="content">
+   
+        <div class="w-xxxx-12">
+            <div class="content">
+                <div class="w-xxxx-6 _catalog_gallery">
+                    <?=render("products/widget.images.phtml",['data_detalle' => $data_detalle,'MyConfigure' => $MyConfigure])?>
+                </div>
+                <div class="w-xxxx-6 _product_info">
+                    <div class="w-xxxx-12">
+                        <h1 class="_name"><?=$data_detalle['name']?></h1>
+                        <span class="_sku">SKU: <?=$data_detalle['sku']?></span>
+                    </div>
+                    <div class="w-xxxx-12">
+                       
+
+                        <div class="_cont_buy">
+                            <?php if($data_detalle["in_stock"] == 1):?>
+                                <?php if($data_detalle["stock_infinito"] == 1): ?>
+                                <span class="_stock">En stock</span>
+                                <?php else: ?>
+                                <span class="_stock">Stock: <?=$data_detalle['stock']?></span>
+                                <?php endif; ?>
+                            <?php else: ?>
+                            <span class="_stock">Sin stock</span>
+                            <?php endif; ?>
+                            <?php if(getCoreConfig('catalog/product/showprice')== 1): ?>
+                            <span class="_price"><?php echo getFormatoPrecio($data_detalle['price'],false,DATA_STORE_CONFIG['simbolo'],DATA_STORE_CONFIG['abreviatura']); ?></span>
+                            <?php endif ;?>
+                            
+                            
+                           
+                        </div>
+                    </div>
+                    <div class="w-xxxx-12">
+                        <h2 class="_h2_description">Descripción</h2>
+                        <div class="_description"><?=$data_detalle['description']?></div>
+                    </div>
+
+                    <div class="w-xxxx-12">
+                        <?php foreach ($custom_attr['friendly_values_attrs'] as $label => $val): ?>
+                            <?php if(!empty($val)): ?>
+                                <h2 class="_h2_description"><?=$label?></h2>
+                                <div class="_description"><?=$val?></div>
+                        <?php endif; ?>
+                        <?php endforeach ?>
+                    </div>
+
+                    
+                </div>
+              
+               
+            </div>
+            
+        </div>
+
+    </div>
+</div>

@@ -21,6 +21,11 @@
                         <?php endforeach; ?>
                         <div class="w-xxxx-1">
                               <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                                  <?=_catalog('Declinar')?>
+                              <?php endif; ?>
+                        </div>
+                        <div class="w-xxxx-1">
+                              <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
                                   <?=_catalog('Aprovar')?>
                               <?php endif; ?>
                         </div>
@@ -33,10 +38,14 @@
                         <?php foreach($value_columnas_grid as $k): ?>
                         <div class="{{_data.thisClass}}   <?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>">{{_data.<?php echo $k;  ?>}}</div>
                         <?php endforeach; ?>
-                        <div class='w-xxxx-2 {{_data.thisClass}}'>
+                        <div class='w-xxxx-1 {{_data.thisClass}}'>
                             <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
-                            <a class="btn_adm_eliminar" data-id="{{_data.id}}" href="#desactivar" ></a>
-                            <a class="btn_adm_aceptar" data-id="{{_data.id}}" href="#activar" ><i class="icon icon-valido"></i></a>
+                            {{_data.declinar}}
+                             <?php endif; ?>
+                        </div>
+                        <div class='w-xxxx-1 {{_data.thisClass}}'>
+                            <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                            {{_data.aprovar}}
                             <?php endif; ?>
                         </div>
                       
@@ -53,6 +62,25 @@
         </div>
     </div>
 </div>
+<div class="w-xxxx-12 cancelar_solicitud_catalog_frm overlay">
+    <div class="overlay-content">
+            <div class="w-xxxx-12 align_right">
+                <a class="_btn _btn-primary btn_cancel_declined" href="#" data-action="cancel"><i class="icon icon-cancelar"> </i></a>
+            </div>
+        <div class="w-xxxx-4 w-xxx-4 w-xxx-4 w-x-12">
+            &nbsp;
+        </div>
+        <div class="w-xxxx-4 w-xxx-4 w-xxx-4 w-x-12">
+        <?= $cancelForm->openTag() ?>
+            <?=$cancelForm->getRow("id"); ?>
+            <?=$cancelForm->getRow("message"); ?>
+            <?=$cancelForm->get("guardar"); ?>
+        <?= $cancelForm->endTag() ?>
+        </div>
+        <div class="w-xxxx-4 w-xxx-4 w-xxx-4 w-x-12">
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
 window.admingrid = <?php echo json_encode($lista_admin_data); ?>;
 </script>
@@ -63,8 +91,12 @@ $(window).load(function(){
          event.preventDefault();
          var nuevo_estado = ($(this).attr("href").replace("#","") == "activar" ? 1 : 0);
 
-         EliminarRegistro('<?php echo $deleteFunction; ?>',$(this).attr("data-id"),nuevo_estado,"","EliminarRegistorPanelRemove")
+         AutorizarDatosProducto($(this).attr("data-id"),nuevo_estado)
 
+    });
+    $("form[name=frmdecline]").on('submit',function(e){
+        e.preventDefault();
+        DeclinarDatosProducto();
     });
 
 

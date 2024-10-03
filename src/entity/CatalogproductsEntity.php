@@ -157,7 +157,7 @@ class CatalogproductsEntity
 
     public function store($store = null){ if($store != null){ $this->store=$store; }else{ return $this->store; } }
 
-    public function in_validation($in_validation = null){ if($in_validation != null){ $this->in_validation=$in_validation; }else{ return $this->in_validation; } }
+    public function in_validation($in_validation = null){ if($in_validation !== null){ $this->in_validation=$in_validation; }else{ return $this->in_validation; } }
 
     public function validate($validate = null){ if($validate != null){ $this->validate=$validate; }else{ return $this->validate; } }
 

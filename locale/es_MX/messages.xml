@@ -95,5 +95,12 @@
         <llave>savemoderado_success</llave>
         <valor>La información de tu producto se guardo correctamente, en breve sera revisada por un moderador para su publicación</valor>
     </mensaje>
-    
+    <mensaje>
+        <llave>aprovar_info</llave>
+        <valor>Error al intentar aprovar la información</valor>
+    </mensaje>
+    <mensaje>
+        <llave>declinar_info</llave>
+        <valor>Error al intentar declinar la información</valor>
+    </mensaje>
 </mensajes>

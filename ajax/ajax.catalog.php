@@ -1265,6 +1265,47 @@ function EliminarComentarioCatalog($id,$status)
 	return $respuesta;
 }
 
+function Catalog_AprovarInformacion($id,$status, $message)
+{
+
+	$CatalogCatalogReviewsModel = new Catalog\model\CatalogCatalogReviewsModel;
+    $CatalogCatalogReviewsEntity = new Catalog\entity\CatalogCatalogReviewsEntity();
+    $CatalogproductsModel               = new Catalog\model\CatalogproductsModel();
+    $CatalogproductsEntity              = new Catalog\entity\CatalogproductsEntity();
+    $Tokenizer = new \Franky\Haxor\Tokenizer;
+    global $MyAccessList;
+    global $MyMessageAlert;
+    $respuesta = null;
+    if($MyAccessList->MeDasChancePasar("moderar_publicaciones_catalog") || (getCoreConfig('catalog/marketplace/enabled') == 1))
+    {
+        $CatalogCatalogReviewsEntity->id($Tokenizer->decode($id));
+        $CatalogCatalogReviewsEntity->status($status);
+        $CatalogCatalogReviewsEntity->message($message);
+        if($CatalogCatalogReviewsModel->save($CatalogCatalogReviewsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+            $CatalogCatalogReviewsModel->getData($CatalogCatalogReviewsEntity->getArrayCopy());
+            $data = $CatalogCatalogReviewsModel->getRows();
+            $CatalogproductsEntity->id($data['parent_id']);
+            if($status == 2) {
+                $status = 0;
+            }
+            $CatalogproductsEntity->validate($status);
+            $CatalogproductsEntity->in_validation(0);
+            $CatalogproductsModel->save($CatalogproductsEntity->getArrayCopy());
+        }
+        else
+        {
+            $respuesta[] = array("message" => $MyMessageAlert->Message("catalog_".($status == 1 ? "aprovar" : "declinar")."_info"));
+        }
+    }
+    else
+    {
+            $respuesta[] = array("message" => $MyMessageAlert->Message("sin_privilegios"));
+    }
+
+	return $respuesta;
+}
+
 /******************************** EJECUTA *************************/
 
 $MyAjax->register("EliminarCatalogCustomAttribute");
@@ -1290,4 +1331,5 @@ $MyAjax->register("ajax_getFrmCategpry");
 $MyAjax->register("EliminarCatalogSetAttribute");
 $MyAjax->register("EliminarTienda");
 $MyAjax->register("EliminarComentarioCatalog");
+$MyAjax->register("Catalog_AprovarInformacion");
 ?>
