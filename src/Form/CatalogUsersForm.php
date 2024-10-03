@@ -18,7 +18,7 @@ class CatalogUsersForm extends \Franky\Form\Form
 
         $this->add(array(
                 'name' => 'username',
-                'label' => 'Usuario de marketplace (URL):',
+                'label' => 'Usuario de marketplace:',
                 'type'  => 'text',
                 'required'  => true,
                 'atributos' => array(
