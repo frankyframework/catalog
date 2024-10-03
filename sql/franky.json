@@ -548,14 +548,14 @@
         },
         {
             "php":"admin/marketplace/solicitud.user.php",
-            "css":"",
+            "css":["overlay.css"],
             "js":"",
             "jquery":"",
             "resource":"administrar_solicitud_user_marketplace",
             "constante":"ADMIN_SOLICITUD_USER_MARKETPLACE",
             "url":"admin/marketplace/users/",
             "nombre":"Solicitudes usuario marketplace",
-            "ajax":["base/ajax.admin.js"],
+            "ajax":["base/ajax.admin.js","catalog/ajax.admin.js"],
             "status":1,
             "editable":1,
             "modulo":"catalog"

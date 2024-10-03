@@ -111,4 +111,12 @@
         <llave>error_user_marketplace</llave>
         <valor>Parece que hubo un problema al guardar tu información, intenta mas tarde</valor>
     </mensaje>
+    <mensaje>
+        <llave>aprovar_user_marketplace</llave>
+        <valor>Error al intentar aprovar la solicitud del usuario</valor>
+    </mensaje>
+    <mensaje>
+        <llave>declinar_user_marketplace</llave>
+        <valor>Error al intentar declinar la solicitud del usuario</valor>
+    </mensaje>
 </mensajes>

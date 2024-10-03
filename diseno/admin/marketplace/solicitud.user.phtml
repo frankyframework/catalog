@@ -1,0 +1,111 @@
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?> </div>
+        <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin"><?php echo $title_grid; ?></h1>
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="_wrapp_form_serch">
+                <?php echo $MyFiltrosForm->openTag(); ?>
+                <?php echo $MyFiltrosForm->getAllRow(); ?>
+                <?php echo $MyFiltrosForm->endTag(); ?>
+              
+            </div>
+        </div>
+
+        <div  class="w-xxxx-12 cont_gral_admin <?php echo $class_grid; ?>">
+            <div >
+                <div class="w-xxxx-12">
+                    <div class="w-xxxx-12 contenedor_titulo_columnas">
+                        <?php $i = 1; ?>
+                        <?php foreach($titulo_columnas_grid as $k =>$v): ?>
+                        <div class="<?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>"><?php echo makeHTMLOrder( $k, $v);  ?></div>
+                        <?php endforeach; ?>
+                        <div class="w-xxxx-1">
+                              <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                                  <?=_catalog('Declinar')?>
+                              <?php endif; ?>
+                        </div>
+                        <div class="w-xxxx-1">
+                              <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                                  <?=_catalog('Aprovar')?>
+                              <?php endif; ?>
+                        </div>
+                       
+                       
+                    </div>
+                    <div class="contenedor_columnas_info"  >
+                    <div class="w-xxxx-12 contenedor_columnas"  >
+                        <?php $i = 1; ?>
+                        <?php foreach($value_columnas_grid as $k): ?>
+                        <div class="{{_data.thisClass}}   <?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>">{{_data.<?php echo $k;  ?>}}</div>
+                        <?php endforeach; ?>
+                        <div class='w-xxxx-1 {{_data.thisClass}}'>
+                            <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                            {{_data.declinar}}
+                             <?php endif; ?>
+                        </div>
+                        <div class='w-xxxx-1 {{_data.thisClass}}'>
+                            <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
+                            {{_data.aprovar}}
+                            <?php endif; ?>
+                        </div>
+                        <div class='w-xxxx-12 _open_comment'>
+                            <a href="javascript:void(0);" onclick="$(this).next('div').toggle('slow'); $(this).parent('div').toggleClass('active');">Ver información del suscriptor</a>
+                            <div style="display:none;">
+                            <div>RFC: {{_data.rfc}}</div>
+                            <div>INE <br />{{_data.ine_anverso}}<br />{{_data.ine_reverso}}</div>
+                            <div>Comprobante de domicilio <br />{{_data.comprobante}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                <div class="w-xxxx-12">
+                    <div class="no_hay_datos" ><?php echo $error_grid; ?></div>
+                </div>
+                <div class="w-xxxx-12">
+                    <?php echo render("admin/widget.paginar.phtml"); ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="w-xxxx-12 cancelar_solicitud_catalog_frm overlay">
+    <div class="overlay-content">
+            <div class="w-xxxx-12 align_right">
+                <a class="_btn _btn-primary btn_cancel_declined" href="#" data-action="cancel"><i class="icon icon-cancelar"> </i></a>
+            </div>
+        <div class="w-xxxx-4 w-xxx-4 w-xxx-4 w-x-12">
+            &nbsp;
+        </div>
+        <div class="w-xxxx-4 w-xxx-4 w-xxx-4 w-x-12">
+        <?= $cancelForm->openTag() ?>
+            <?=$cancelForm->getRow("id"); ?>
+            <?=$cancelForm->getRow("message"); ?>
+            <?=$cancelForm->get("guardar"); ?>
+        <?= $cancelForm->endTag() ?>
+        </div>
+        <div class="w-xxxx-4 w-xxx-4 w-xxx-4 w-x-12">
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+window.admingrid = <?php echo json_encode($lista_admin_data); ?>;
+</script>
+<script >
+$(window).load(function(){
+    $(".btn_adm_eliminar,.btn_adm_aceptar").click(function(event){
+
+         event.preventDefault();
+         var nuevo_estado = ($(this).attr("href").replace("#","") == "activar" ? 1 : 0);
+
+         AutorizarDatosUserMarketplace($(this).attr("data-id"),nuevo_estado)
+
+    });
+    $("form[name=frmdecline]").on('submit',function(e){
+        e.preventDefault();
+        DeclinarDatosUserMarketplace();
+    });
+
+
+});
+</script>

@@ -180,6 +180,7 @@ if(!$error)
 {
 
     $CatalogUsersReviewsEntity->status(0);
+    $CatalogUsersReviewsEntity->message("");
     $CatalogUsersReviewsEntity->parent_id($MySession->GetVar('id'));
     if(empty($id))
     {

@@ -670,3 +670,53 @@ $("a.btn_cancel_declined").click(function(e){
     $("body").removeClass("no_scroll");
     $(".cancelar_solicitud_catalog_frm").hide();
 });
+
+
+function AutorizarDatosUserMarketplace(id,nuevo_estado)
+{
+    if(nuevo_estado == 1) {
+        var var_query = {
+            "function": "Catalog_AutorizarDatosUserMarketplace",
+            "vars_ajax":[id,nuevo_estado,""]
+        };
+      
+        pasarelaAjax('POST', var_query, "AutorizarDatosUserMarketplaceHTML", '');
+    } else {
+        $("form[name=frmdecline]").find("input[name=id]").val(id);
+        $(".cancelar_solicitud_catalog_frm").show();
+        $(".cancelar_solicitud_catalog_frm").css({'height':'100%'}).fadeTo(1000,1);
+        $(".cancelar_solicitud_catalog_frm .overlay-content").css({'height':300});
+        $("body").addClass("no_scroll");
+    }
+}
+function DeclinarDatosUserMarketplace()
+{
+    var id = $("form[name=frmdecline]").find("input[name=id]").val();
+    var message = $("form[name=frmdecline]").find("textarea[name=message]").val(); 
+    var var_query = {
+        "function": "Catalog_AutorizarDatosUserMarketplace",
+        "vars_ajax":[id,2,message]
+    };
+  
+    pasarelaAjax('POST', var_query, "AutorizarDatosUserMarketplaceHTML", ''); 
+}
+
+function AutorizarDatosUserMarketplaceHTML(response,id,status,message)
+{
+
+    var respuesta = null;
+    if(response != "null" && response != null)
+    {
+        respuesta = JSON.parse(response);
+
+        if(respuesta[0] && respuesta[0]["message"])
+        {
+
+            _alert(respuesta[0]["message"],"");
+        }
+    }
+    else
+    {
+        window.location.reload();
+    }
+}

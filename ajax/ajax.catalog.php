@@ -1306,6 +1306,48 @@ function Catalog_AprovarInformacion($id,$status, $message)
 	return $respuesta;
 }
 
+function Catalog_AutorizarDatosUserMarketplace($id,$status, $message)
+{
+
+	$CatalogUsersReviewsModel = new Catalog\model\CatalogUsersReviewsModel;
+    $CatalogUsersReviewsEntity = new Catalog\entity\CatalogUsersReviewsEntity();
+    $UsersModel               = new Base\model\USERS();
+    $UsersEntity              = new Base\entity\users();
+    $Tokenizer = new \Franky\Haxor\Tokenizer;
+    global $MyAccessList;
+    global $MyMessageAlert;
+    $respuesta = null;
+    if($MyAccessList->MeDasChancePasar("administrar_solicitud_user_marketplace") || (getCoreConfig('catalog/marketplace/enabled') == 1))
+    {
+        $CatalogUsersReviewsEntity->id($Tokenizer->decode($id));
+        $CatalogUsersReviewsEntity->status($status);
+        $CatalogUsersReviewsEntity->message($message);
+        if($CatalogUsersReviewsModel->save($CatalogUsersReviewsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+            $CatalogUsersReviewsModel->getData($CatalogUsersReviewsEntity->getArrayCopy());
+            $data = $CatalogUsersReviewsModel->getRows();
+            
+            if($status == 1) {
+                $UsersEntity->setId($data['parent_id']);
+                $UsersEntity->setRole(getCoreConfig("catalog/marketplace/role"));
+                $UsersModel->save($UsersEntity->getArrayCopy());
+            }
+            
+        }
+        else
+        {
+            $respuesta[] = array("message" => $MyMessageAlert->Message("catalog_".($status == 1 ? "aprovar" : "declinar")."_user_marketplace"));
+        }
+    }
+    else
+    {
+            $respuesta[] = array("message" => $MyMessageAlert->Message("sin_privilegios"));
+    }
+
+	return $respuesta;
+}
+
+
 /******************************** EJECUTA *************************/
 
 $MyAjax->register("EliminarCatalogCustomAttribute");
@@ -1332,4 +1374,5 @@ $MyAjax->register("EliminarCatalogSetAttribute");
 $MyAjax->register("EliminarTienda");
 $MyAjax->register("EliminarComentarioCatalog");
 $MyAjax->register("Catalog_AprovarInformacion");
+$MyAjax->register("Catalog_AutorizarDatosUserMarketplace");
 ?>
