@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": ">=7.3",
         "frankyframework/module-installer-plugin" : "1.0.x-dev"
     },
     "autoload": {
