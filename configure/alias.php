@@ -13,5 +13,6 @@ return array
     "mi-cuenta/username/submit.php" => PROJECT_DIR."/modulos/catalog/controller/mi-cuenta/username/submit.php",
     "catalog/contacto.submit.php" => PROJECT_DIR."/modulos/catalog/controller/contacto.submit.php",
     "admin/catalog/catalogo_contacto/excel.php" => PROJECT_DIR."/modulos/catalog/controller/admin/catalogo_contacto/excel.php",
+    "mi-cuenta/marketplace/submit.user.php" => PROJECT_DIR."/modulos/catalog/controller/mi-cuenta/marketplace/submit.user.php",
 );
 ?>

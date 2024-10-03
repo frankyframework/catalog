@@ -1,0 +1,22 @@
+<div class="content">
+    <div class="w-xxxx-6">
+    <h2>Marketplace</h2>
+    <p><?=__("Para solicitar tu alta como vendedor es necesario llenar los siguientes datos")?></p>
+
+        <?php echo $userForm->openTag(); ?>
+        
+        <?php echo $userForm->getRow('rfc'); ?>
+                
+        <?php echo $userForm->getRow('ine_anverso'); ?>
+        <?php echo $userForm->getRow('ine_reverso'); ?>
+        <?php echo $userForm->getRow('comprobante'); ?>
+
+        <?php echo $userForm->getRow('guardar'); ?>
+        <?php echo $userForm->endTag(); ?>
+        <script >
+        $(document).ready(function(){
+            $("#frmusermarketplace").validate();
+        });
+        </script>
+    </div>
+</div>

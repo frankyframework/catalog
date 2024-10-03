@@ -55,8 +55,13 @@ class UserMarketplaceForm extends \Franky\Form\Form
             'name' => 'ine_anverso',
             'label' => _catalog('INE anverso'),
             'type'  => 'file',
+            'required'  => true,
             'atributos' => array(
-                'id' => "image_inea"
+                'id' => "image_inea",
+                'class'       => 'required'
+            ),
+            'label_atributos' => array(
+                    'class'       => 'desc_form_obligatorio'
                 )
             )
         );
@@ -64,8 +69,13 @@ class UserMarketplaceForm extends \Franky\Form\Form
             'name' => 'ine_reverso',
             'label' => _catalog('INE reverso'),
             'type'  => 'file',
+            'required'  => true,
             'atributos' => array(
-                'id' => "image_iner"
+                'id' => "image_iner",
+                'class'       => 'required'
+            ),
+            'label_atributos' => array(
+                    'class'       => 'desc_form_obligatorio'
                 )
             )
         );
@@ -73,8 +83,13 @@ class UserMarketplaceForm extends \Franky\Form\Form
             'name' => 'comprobante',
             'label' => _catalog('Comprobante de domicilio'),
             'type'  => 'file',
+            'required'  => true,
             'atributos' => array(
-                'id' => "image_comprobante"
+                'id' => "image_comprobante",
+                'class'       => 'required'
+            ),
+            'label_atributos' => array(
+                    'class'       => 'desc_form_obligatorio'
                 )
             )
         );
