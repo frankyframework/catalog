@@ -1,39 +1,34 @@
 <?php
 namespace Catalog\model;
 
-class CatalogsetattributesModel  extends \Franky\Database\Mysql\objectOperations
+class CustomattributesModel  extends \Franky\Database\Mysql\objectOperations
 {
-
     private $busca;
-
     public function __construct()
     {
       parent::__construct();
-      $this->from()->addTable('catalog_set_attributes');
+      $this->from()->addTable('catalog_custom_attributes');
     }
-
 
     public function setBusca($busca){
         $this->busca=$busca;
     }
 
-
     function getData($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["id","uid","parent_id","name","description","attributes","status","orden","createdAt"];
+        $campos = ["id","uid","icon","searchable","name","label","type","data","source","entity","createdAt","updateAt","status","required","extra"];
 
         foreach($data as $k => $v)
         {
-            $this->where()->addAnd("catalog_set_attributes.".$k,$v,'=');
+            $this->where()->addAnd("catalog_custom_attributes.".$k,$v,'=');
         }
 
         if($this->busca != "")
         {
-          $this->where()->concat('AND (');
-          $this->where()->addOr('name','%'.$this->busca.'%','like');
-          $this->where()->addOr('description','%'.$this->busca.'%','like');
-          $this->where()->concat(')');
+          
+          $this->where()->addAnd('name','%'.$this->busca.'%','like');
+          
         }
 
 
@@ -70,32 +65,18 @@ class CatalogsetattributesModel  extends \Franky\Database\Mysql\objectOperations
 
     }
 
-    public function eliminar($data)
-    {
-        $data = $this->optimizeEntity($data);
-
-
-        foreach($data as $k => $v)
-        {
-            $this->where()->addAnd("catalog_set_attributes.".$k,$v,'=');
-        }
-        
-        return $this->eliminarRegistro();
-    	
-
-    }
-
-    function existe($category,$id='',$uid='')
+    function existe($attribute,$entity,$id='',$uid='')
     {
         $campos = array("id");
-        $this->where()->addAnd('name',$category,'=');
+        $this->where()->addAnd('name',$attribute,'=');
+        $this->where()->addAnd('entity',$entity,'=');
         if(!empty($id))
         {
-            $this->where()->addAnd('id',$id,'<>');
+                $this->where()->addAnd('id',$id,'<>');
         }
         if(!empty($uid))
         {
-            $this->where()->addAnd('uid',$uid,'=');
+                $this->where()->addAnd('uid',$id,'=');
         }
         return $this->getColeccion($campos);
     }

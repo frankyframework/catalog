@@ -556,6 +556,34 @@ function ajax_getCatalogCustomAttrFrmHTML(response)
     return true;
 }
 
+function ajax_getCatalogSetAttr(id)
+{
+    
+    var var_query = {
+          "function": "ajax_getCatalogSetAttr",
+          "vars_ajax":[id,$("select[name=parent_id]").val()]
+        };
+    
+    pasarelaAjax('POST', var_query, "ajax_getCatalogSetAttrHTML",[]);
+}
+
+
+function ajax_getCatalogSetAttrHTML(response)
+{
+    var respuesta = null;
+    if (response != "null")
+    {
+        respuesta = JSON.parse(response);
+
+        if(respuesta.html)
+        {
+            $('#content_attrs').html(respuesta.html);
+        }
+    }
+
+    return true;
+}
+
 
 
 function ajax_getFrmCategpry(id,parent,store)

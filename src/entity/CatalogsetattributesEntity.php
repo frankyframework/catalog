@@ -5,6 +5,7 @@ class CatalogsetattributesEntity
 {
     private $id;
     private $uid;
+    private $parent_id;
     private $name;
     private $description;
     private $attributes;
@@ -24,6 +25,7 @@ class CatalogsetattributesEntity
     {
         $this->id = (isset($data["id"]) ? $data["id"] : null);
         $this->uid = (isset($data["uid"]) ? $data["uid"] : null);
+        $this->parent_id = (isset($data["parent_id"]) ? $data["parent_id"] : null);
         $this->name = (isset($data["name"]) ? $data["name"] : null);
         $this->description = (isset($data["description"]) ? $data["description"] : null);
         $this->attributes = (isset($data["attributes"]) ? $data["attributes"] : null);
@@ -48,6 +50,8 @@ class CatalogsetattributesEntity
     public function id($id = null){ if($id != null){ $this->id=$id; }else{ return $this->id; } }
 
     public function uid($uid = null){ if($uid != null){ $this->uid=$uid; }else{ return $this->uid; } }
+
+    public function parent_id($parent_id = null){ if($parent_id != null){ $this->parent_id=$parent_id; }else{ return $this->parent_id; } }
 
     public function name($name = null){ if($name != null){ $this->name=$name; }else{ return $this->name; } }
 

@@ -814,7 +814,7 @@ function ajax_catalog_importar_producto($id)
 
             
 
-                $custom_attr = getDataCustomAttribute(0,'catalog_products');
+                $custom_attr = getDataCatalogCustomAttribute(0,'catalog_products');
 
 
 
@@ -947,8 +947,8 @@ function ajax_catalog_importar_producto($id)
 function EliminarCatalogCustomAttribute($id,$status)
 {
     global $MySession;
-    $CustomattributesModel =  new \Base\model\CustomattributesModel();
-    $CustomattributesEntity =  new \Base\entity\CustomattributesEntity();
+    $CustomattributesModel =  new \Catalog\model\CustomattributesModel();
+    $CustomattributesEntity =  new \Catalog\entity\CustomattributesEntity();
     $Tokenizer = new \Franky\Haxor\Tokenizer;
     global $MyAccessList;
     global $MyMessageAlert;
@@ -981,9 +981,19 @@ function EliminarCatalogCustomAttribute($id,$status)
 
 function ajax_getCatalogCustomAttrFrm($id,$set)
 {
-    
+    global $MyConfigure;
+    global $MySession;
+    global $MyAccessList;
     $respuesta = null;
-    $custom_attr = getDataCustomAttribute($id,'catalog_products');
+    $uid = "";
+    if( getCoreConfig('catalog/marketplace/enabled') == 1 && 
+        $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace") &&
+        getCoreConfig('catalog/marketplace/set-global') == 0
+        )
+    {
+        $uid = $MySession->GetVar('id');
+    }
+    $custom_attr = getDataCatalogCustomAttribute($id,'catalog_products',$uid);
 
 
     if(!empty($custom_attr['custom_imputs']))
@@ -1009,6 +1019,16 @@ function ajax_getCatalogCustomAttrFrm($id,$set)
         
             $sets_data = $CatalogsetattributesModel->getRows();
             $attr_use=json_decode($sets_data['attributes']);
+
+            while(!empty( $sets_data['parent_id'])){
+                $CatalogsetattributesEntity->id($sets_data['parent_id']);
+                $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
+            
+                $sets_data = $CatalogsetattributesModel->getRows();
+                $attr_use=array_merge($attr_use,json_decode($sets_data['attributes']));
+            }
+
+
             foreach($custom_attr['custom_imputs'] as $key => $data_attrs)
             {
                 $pass = false;
@@ -1113,7 +1133,7 @@ function ajax_getCatalogCustomAttrFrm($id,$set)
         
         $adminForm->setData($data);
 
-        $respuesta['html'] = render(PROJECT_DIR.'/modulos/catalog/diseno/admin/custom_attributes/customform.phtml',['custom_attr' => $custom_attr,'adminForm' => $adminForm]);
+        $respuesta['html'] = render(PROJECT_DIR.'/modulos/catalog/diseno/admin/custom_attributes/customform.phtml',['custom_attr' => $custom_attr,'adminForm' => $adminForm,'MyConfigure' => $MyConfigure]);
     }
 
 
@@ -1347,6 +1367,62 @@ function Catalog_AutorizarDatosUserMarketplace($id,$status, $message)
 	return $respuesta;
 }
 
+function ajax_getCatalogSetAttr($id,$parent_id)
+{
+    global $MySession;
+    global $MyAccessList;
+    $respuesta = null;
+    $adminForm = new Catalog\Form\CatalogsetattributesForm("frmsetatributos");
+    $CatalogsetattributesModel = new Catalog\model\CatalogsetattributesModel;
+    $CatalogsetattributesEntity = new Catalog\entity\CatalogsetattributesEntity;
+    $uid = "";
+    if(getCoreConfig('catalog/marketplace/enabled') == 1 && 
+    $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace") &&
+    getCoreConfig('catalog/marketplace/set-global') == 0
+    )
+    {
+        $CatalogsetattributesEntity->uid($MySession->getVar('id'));
+        $uid = $MySession->GetVar('id');
+    }
+    if(!empty($id)) {
+        $CatalogsetattributesEntity->id($id);
+        $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
+
+        $data = $CatalogsetattributesModel->getRows();
+        $CatalogsetattributesEntity->id($id);
+        
+        $data["attributes"] = json_decode($data["attributes"],true);
+
+        
+    }
+    if(!empty($parent_id))
+    {
+
+        $CatalogsetattributesEntity->id($data["parent_id"]);
+        $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
+
+        $dataParent = $CatalogsetattributesModel->getRows();        
+        $dataParent["attributes"] = json_decode($dataParent["attributes"],true);
+    }
+    $custom_attribtues = getDataCatalogCustomAttribute(0,'catalog_products',$uid);
+    $_custom_attribtues = [];
+    foreach($custom_attribtues['custom_imputs'] as $attr)
+    {
+        if(!in_array($attr['id'],$dataParent["attributes"])) {
+            $_custom_attribtues[$attr['id']] = $attr['name'];
+        }
+    }
+
+    $adminForm->setOptionsInput("attributes[]",$_custom_attribtues);
+    $adminForm->setData($data);
+
+    $respuesta['html'] = render(PROJECT_DIR.'/modulos/catalog/diseno/admin/set_custom_attributes/customform.phtml',['_custom_attribtues' => $_custom_attribtues,'adminForm' => $adminForm,'data'=>$data]);
+
+    
+    return $respuesta;
+}
+
+
 
 /******************************** EJECUTA *************************/
 
@@ -1375,4 +1451,5 @@ $MyAjax->register("EliminarTienda");
 $MyAjax->register("EliminarComentarioCatalog");
 $MyAjax->register("Catalog_AprovarInformacion");
 $MyAjax->register("Catalog_AutorizarDatosUserMarketplace");
+$MyAjax->register("ajax_getCatalogSetAttr");
 ?>

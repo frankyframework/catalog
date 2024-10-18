@@ -89,6 +89,12 @@ return array(
             'data' => ['0' => 'No', '1' => 'Si'],
             'value' => 1
           ),
+          array('path' => 'catalog/marketplace/set-global',
+          'type' => 'select',
+          'label' => 'Set de atributos globales',
+          'data' => ['0' => 'No', '1' => 'Si'],
+          'value' => 0
+        ),
           array('path' => 'catalog/marketplace/moderar-publicaciones',
           'type' => 'select',
           'label' => 'Moderar publicaciones marketplace',

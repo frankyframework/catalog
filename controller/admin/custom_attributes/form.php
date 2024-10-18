@@ -1,7 +1,7 @@
 <?php
 use Catalog\Form\CustomAttributesForm;
-use Base\model\CustomattributesModel;
-use Base\entity\CustomattributesEntity;
+use Catalog\model\CustomattributesModel;
+use Catalog\entity\CustomattributesEntity;
 use Franky\Haxor\Tokenizer;
 
 $Tokenizer = new Tokenizer();
@@ -17,7 +17,9 @@ if(!empty($id))
     $CustomattributesModel = new CustomattributesModel();
     $CustomattributesEntity = new CustomattributesEntity();
     $CustomattributesEntity->id($id);
-    if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+    if(getCoreConfig('catalog/marketplace/enabled') == 1 && 
+    $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace") &&
+    getCoreConfig('catalog/marketplace/set-global') == 0 )
     {
             $CustomattributesEntity->uid($MySession->getVar('id'));
     }
@@ -33,6 +35,12 @@ if(!empty($id))
     if(empty($data['source']))
     {
         $type_option = "options_attr";
+    }
+
+    if(!empty($data["icon"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/customattr/".$data["icon"]))
+    {
+        $data['icon'] = imageResize($MyConfigure->getUploadDir()."/catalog/customattr/".$data["icon"],100,100, true);
+        
     }
     $adminForm->addId();
 }

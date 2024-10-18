@@ -26,7 +26,20 @@ class CatalogsetattributesForm extends \Franky\Form\Form
                     'type'  => 'hidden',
                 )
         );
-
+        $this->add(array(
+            'name' => 'parent_id',
+            'label' => _catalog('Parent Set'),
+            'type'  => 'select',
+            'required'  => false,
+            'atributos' => array(
+                'class'       => '',
+             ),
+            'options' => [],
+            'label_atributos' => array(
+                'class'       => 'desc_form_no_obligatorio'
+                )
+        )
+    );
 
         $this->add(array(
                 'name' => 'name',
@@ -58,7 +71,6 @@ class CatalogsetattributesForm extends \Franky\Form\Form
                 )
             )
         );
-
 
 
         $this->add(array(

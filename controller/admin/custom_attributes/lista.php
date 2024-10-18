@@ -1,7 +1,7 @@
 <?php
 use Developer\Form\filtrosForm;
-use Base\model\CustomattributesModel;
-use Base\entity\CustomattributesEntity;
+use Catalog\model\CustomattributesModel;
+use Catalog\entity\CustomattributesEntity;
 use Franky\Core\paginacion;
 use Franky\Haxor\Tokenizer;
 
@@ -21,7 +21,8 @@ $CustomattributesModel = new CustomattributesModel();
 $CustomattributesEntity = new CustomattributesEntity();
 
 $CustomattributesEntity->entity('catalog_products');  
-if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && 
+$MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
 {
         $CustomattributesEntity->uid($MySession->getVar('id'));
 }

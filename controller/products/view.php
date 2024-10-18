@@ -73,7 +73,7 @@ if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REG
         }
     }
 
-    $custom_attr = getDataCustomAttribute($data_detalle['id'],'catalog_products');
+    $custom_attr = getDataCatalogCustomAttribute($data_detalle['id'],'catalog_products');
 
     if($data_detalle['type'] == "configurable")
     {

@@ -28,6 +28,15 @@ $CatalogUsersEntity = new CatalogUsersEntity();
 $MyPaginacion = new paginacion();
 $Tokenizer = new Tokenizer();
 
+$dias = [
+  "lunes" => "Lunes", 
+  "martes" => "Martes", 
+  "miescoles" => "Miercoles", 
+  "jueves" => "Jueves",
+  "viernes" => "Viernes",
+  "sabado" => "Sabado",
+  "domingo" => "Domingo"
+];
 
 $CatalogUsersEntity->username($username);
 if($CatalogUsersModel->getData($CatalogUsersEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
@@ -37,7 +46,11 @@ if($CatalogUsersModel->getData($CatalogUsersEntity->getArrayCopy()) == REGISTRO_
     {
         $imgMArketplace  =  imageResize($MyConfigure->getUploadDir()."/catalog/marketplace/".$dataUser["image"],1920,822, true);
     }
-
+    if(!empty($dataUser["logo"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/marketplace/".$dataUser["logo"]))
+    {
+        $imgLogoMarketplace  =  imageResize($MyConfigure->getUploadDir()."/catalog/marketplace/".$dataUser["logo"],100,100, false);
+    }
+    $horarios = json_decode($data['horario'], true);
     $MyMetatag->setTitulo($dataUser['meta_title']);
     $MyMetatag->setDescripcion($dataUser['meta_description']);
     $MyMetatag->setKeywords($dataUser['meta_keywords']);

@@ -15,49 +15,26 @@ $data = $MyFlashMessage->getResponse();
 
 $adminForm = new CatalogsetattributesForm("frmsetatributos");
 
-
-
-
 $title = "Nuevo set de atributos";
-if(!empty($id))
-{
-    if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
-    {
-        $CatalogsetattributesEntity->uid($MySession->getVar('id'));
-    }
 
-    $CatalogsetattributesEntity->id($id);
-    $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
-
-    $data = $CatalogsetattributesModel->getRows();
-   
-    $CatalogsetattributesEntity->id($id);
-    $data['id'] = $Tokenizer->token('catalog_products', $data['id']);;
-  
-    $title = "Editar set de atributos";
-    
-    $data["attributes"] = json_decode($data["attributes"],true);
-
-  
-   
-    
-
-}
-//print_r($data); exit;
 $uid = '';
 if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
 {
     $uid = $MySession->GetVar('id');
 }
-$custom_attribtues = getDataCustomAttribute(0,'catalog_products',$uid);
-$_custom_attribtues = [];
-foreach($custom_attribtues['custom_imputs'] as $attr)
-{
-    $_custom_attribtues[$attr['id']] = $attr['name'];
+$set_attribute = getAttributesSet($uid);
+if(!empty($id)) {
+    $CatalogsetattributesEntity->id($id);
+    $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
+
+    $data = $CatalogsetattributesModel->getRows();
+    $CatalogsetattributesEntity->id($id);
+
+    unset($set_attribute[$id]);
+    $title = "Editar set de atributos";
 }
-
-
 $adminForm->setOptionsInput("attributes[]",$_custom_attribtues);
+$adminForm->setOptionsInput("parent_id",$set_attribute);
 $adminForm->setData($data);
 $adminForm->setAtributoInput("callback","value", urldecode($callback));
 

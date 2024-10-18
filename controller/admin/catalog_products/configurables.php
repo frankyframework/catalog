@@ -4,8 +4,8 @@ use Franky\Core\paginacion;
 use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
 use Franky\Haxor\Tokenizer;
-use Base\model\CustomattributesModel;
-use Base\entity\CustomattributesEntity;
+use Catalog\model\CustomattributesModel;
+use Catalog\entity\CustomattributesEntity;
 use Catalog\model\CatalogsetattributesModel;
 use Catalog\entity\CatalogsetattributesEntity;
 
@@ -130,7 +130,10 @@ $CatalogsetattributesModel = new CatalogsetattributesModel;
 $CatalogsetattributesEntity = new CatalogsetattributesEntity;
 
 $CatalogsetattributesEntity->id($producto_actual['set_attribute']);
-if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && 
+$MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace") && 
+getCoreConfig('catalog/marketplace/set-global') == 0
+)
 {
         $CatalogsetattributesEntity->uid($MySession->getVar('id'));
 }
@@ -141,7 +144,15 @@ $set = $CatalogsetattributesModel->getRows();
 
 $set["attributes"] = json_decode($set["attributes"],true);
 
+while(!empty($set["parent_id"])) {
+    $CatalogsetattributesEntity->id($producto_actual['parent_id']);
 
+    $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
+
+    $set = $CatalogsetattributesModel->getRows();
+
+    $set["attributes"] = array_merge($set["attributes"], json_decode($set["attributes"],true));
+}
 
 
 $CustomattributesModel = new CustomattributesModel();
@@ -149,7 +160,9 @@ $CustomattributesEntity = new CustomattributesEntity();
 
 $CustomattributesEntity->entity('catalog_products');  
 $CustomattributesEntity->status(1);  
-if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && 
+$MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace") &&
+getCoreConfig('catalog/marketplace/set-global') == 0 )
 {
         $CustomattributesEntity->uid($MySession->getVar('id'));
 }

@@ -1,8 +1,9 @@
 <?php
 use Franky\Core\validaciones; 
-use Base\model\CustomattributesModel;
-use Base\entity\CustomattributesEntity;
+use Catalog\model\CustomattributesModel;
+use Catalog\entity\CustomattributesEntity;
 use Franky\Haxor\Tokenizer;
+use Franky\Filesystem\File;
 
 $Tokenizer = new Tokenizer();
 
@@ -12,14 +13,20 @@ $CustomattributesEntity->entity('catalog_products');
 $id       = $Tokenizer->decode($MyRequest->getRequest('id'));
 $callback = $Tokenizer->decode($MyRequest->getRequest('callback'));
 $required = $MyRequest->getRequest('required',0);
+$searchable = $MyRequest->getRequest('searchable',0);
 $type_option = $MyRequest->getRequest('type_option');
 
 $CustomattributesEntity->required($required);
+
+$CustomattributesEntity->searchable($searchable);
 
 if($Tokenizer->decode($MyRequest->getRequest('id')) != false)
 {
     $CustomattributesEntity->id($id);
 }
+
+$CustomattributesEntity->name(getFriendly($CustomattributesEntity->name()));
+
 if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
 {
     $CustomattributesEntity->uid($MySession->getVar('id'));
@@ -72,6 +79,54 @@ else
     
     $CustomattributesEntity->data('');
 }
+
+
+$dir = $MyConfigure->getServerUploadDir()."/catalog/customattr/";
+$File = new File();
+$File->mkdir($dir);
+
+
+$handle = new \Franky\Filesystem\Upload($_FILES['icon']);
+if ($handle->uploaded)
+{
+    if($handle->file_is_image)
+    {
+        $handle->file_max_size = "2024288"; //1k(1024) x 512
+
+        if($handle->image_src_x > 100 || $handle->image_src_y > 100)
+        {
+            $handle->image_resize = true;
+        }
+        $handle->image_x = 100;
+        $handle->image_y = 100;
+        $handle->image_ratio           = true;
+    //    $handle->image_ratio_fill = true;
+        $handle->file_auto_rename = true;
+        $handle->file_overwrite = false;
+        $handle->image_background_color = '#FFFFFF';
+
+
+        $handle->Process($dir);
+
+        if ($handle->processed)
+        {
+            $CustomattributesEntity->icon($handle->file_dst_name);
+
+        }
+        else
+        {
+            $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("imagen_error",$handle->error));
+            $error = true;
+        }
+    }
+    else
+    {
+        $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("solo_imagen"));
+        $error = true;
+
+    }
+}
+
 
 
 

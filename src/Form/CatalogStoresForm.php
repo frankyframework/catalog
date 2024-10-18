@@ -90,6 +90,18 @@ class CatalogStoresForm extends \Franky\Form\Form
         )
         );
 
+        $this->add(array(
+            'name' => 'marketplace',
+            'type'  => 'checkbox',
+            'atributos' => array(
+                'class' => 'switch'
+            ),
+            'options' =>  array("1" => _catalog("Acepta marketplace")),
+
+
+            )
+        );
+
 
          $this->add(array(
                 'name' => 'guardar',

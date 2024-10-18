@@ -1,6 +1,6 @@
 <div class="w-xxxx-12 _catalog_result">
     <div class="content">
-        <h2><?=$dataUser['meta_title']?></h2> 
+        
         <?php if(isset($imgMArketplace) &&  !empty($imgMArketplace)): ?>
         <?= makeHTMLImg($imgMArketplace, "", "", $dataUser['nombre'],"class='image_100'")?>
         <?php endif; ?>
@@ -10,23 +10,105 @@
             <div class="cont_widget_catalog_results _no_filters">
             
             <div class="w-xxxx-12">
- 
-            <?php if(isset($image_category['description']) && !empty($image_category['description'])): ?>
-            <p class="landing_producto_descripcion"><?= $image_category['description']?></p>
-            <?php endif; ?>
+                <div class="w-xxxx-6">
+                    <?php if(isset($imgLogoMarketplace) &&  !empty($imgLogoMarketplace)): ?>
+                        <?= makeHTMLImg($imgLogoMarketplace, "100", "100", $dataUser['nombre'],"class='image_100'")?>
+                    <?php endif; ?>
+                    <h2><?=$dataUser['meta_title']?></h2> 
+                    <p>@<?=$username?></p>
+                    <p class="landing_producto_descripcion"><?= $dataUser['direccion']?></p>
+                </div>  
+                <div class="w-xxxx-6">
+                    <h3><?=$MyPaginacion->getTotal()?> Publicaciones</h3>
+                </div>
             </div>
-                <?php if(!empty($resultados_pagina)): ?>
-                    <?php foreach($resultados_pagina as $data): ?>
-                        <?=render('products/card.phtml',['data' => $data]);?>
-                    <?php endforeach ;?>
-                    <div class="w-xxxx-12 cont-paginar"><?php echo render("widget.paginar.phtml"); ?></div>
-                    <?php echo $itemListSchema->get(); ?>
-                <?php else: ?>
-                    <h2>No se encontraron productos</h2>
-                    <p>Intenta con otros términos de búsqueda.</p>
+
+            <div class="w-xxxx-12 _space_border">
+                <?php if(isset($dataUser['empresa']) && !empty($dataUser['empresa'])): ?>
+                    <h4><?=$dataUser["empresa"]?></h4> 
+                <?php endif; ?>  
+                <p class="landing_producto_descripcion"><?= $dataUser['descripcion']?></p>
+                <?php if(isset($dataUser['descripcion']) && !empty($dataUser['descripcion'])): ?>
+                    <h4><?=__("Descripcion del negocio")?></h4> 
+                <p class="landing_producto_descripcion"><?= $dataUser['descripcion']?></p>
                 <?php endif; ?>
+            </div>
+
+            <div class="w-xxxx-12 _space_border">
+             
+                <div class="w-xxxx-12 "><h4>Links reelevantes</h4> </div>
+                <div class="w-xxxx-12 ">
+                    <div class="w-xxxx-1 ">
+                    <?php if(isset($dataUser['web']) && !empty($dataUser['web'])): ?>
+                        <h4>Web</h4>
+                        <div><a href="<?=$dataUser["web"]?>" target="_blank"><?=$dataUser["web"]?></a></div>
+                    <?php endif; ?>  
+                    </div>
+                    <div class="w-xxxx-1 ">
+                        <h4>Social Media</h4>
+
+                        <?php if(isset($dataUser['fb']) && !empty($dataUser['fb'])): ?>
+                       
+                            <div><a href="<?=$dataUser["fb"]?>" target="_blank">@<?=getUsernameFb($dataUser["fb"])?></a></div>
+                        <?php endif; ?>  
+                        <?php if(isset($dataUser['ins']) && !empty($dataUser['ins'])): ?>
+                            
+                            <div><a href="<?=$dataUser["ins"]?>" target="_blank">@<?=getUsernameFb($dataUser["ins"])?></a></div>
+                        <?php endif; ?>  
+                        <?php if(isset($dataUser['ttk']) && !empty($dataUser['ttk'])): ?>
+                            
+                            <div><a href="<?=$dataUser["ttk"]?>" target="_blank"><?=getUsernameFb($dataUser["ttk"])?></a></div>
+                        <?php endif; ?>  
+                        <?php if(isset($dataUser['x']) && !empty($dataUser['x'])): ?>
+                           
+                            <div><a href="<?=$dataUser["x"]?>" target="_blank">@<?=getUsernameFb($dataUser["x"])?></a></div>
+                        <?php endif; ?> 
+                    </div>
+                    <div class="w-xxxx-1 ">
+                    <?php if(isset($dataUser['email']) && !empty($dataUser['email'])): ?>
+                        <h4>E-mail</h4>
+                        <div><a href="mailto:<?=$dataUser["email"]?>" target="_blank"><?=$dataUser["email"]?></a></div>
+                    <?php endif; ?>  
+                    </div>
+                    <div class="w-xxxx-1 ">
+                        <?php if(isset($dataUser['tel']) && !empty($dataUser['tel'])): ?>
+                        <h4>Teléfono principal</h4>
+                        <div><?=$dataUser["tel"]?></div>
+                        <?php endif; ?>  
+                    </div>
+                    <div class="w-xxxx-1 ">
+                        <?php if(isset($dataUser['wa']) && !empty($dataUser['wa'])): ?>
+                            <h4>Whatsapp</h4>
+                            <div><?=$dataUser["wa"]?></div>
+                        <?php endif; ?> 
+                    </div>
+                    <div class="w-xxxx-1 ">
+                        <h4>Ubicacion</h4>
+                            <a href="https://www.google.com.mx/maps/dir//<?=$dataUser["latitud"]?>,<?=$dataUser["longitud"]?>/" target="_blank">Ver Ubicacion</a>
+                    
+                    </div>
+                    <div class="w-xxxx-1 ">
+                    Se unio el <?=getFechaUI($dataUser['createdAt'])?> 
+                    </div>
+
+                </div>
+               
+            </div>
+            <div class="w-xxxx-12 _space_border">
+                <h4>Anuncios</h4>
+                    <?php if(!empty($resultados_pagina)): ?>
+                        <?php foreach($resultados_pagina as $data): ?>
+                            <?=render('products/card.phtml',['data' => $data]);?>
+                        <?php endforeach ;?>
+                        <div class="w-xxxx-12 cont-paginar"><?php echo render("widget.paginar.phtml"); ?></div>
+                        <?php echo $itemListSchema->get(); ?>
+                    <?php else: ?>
+                        <h2>No se encontraron productos</h2>
+                        <p>Intenta con otros términos de búsqueda.</p>
+                    <?php endif; ?>
 
 
+                </div>
             </div>
         </div>
     </div>

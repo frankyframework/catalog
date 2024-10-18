@@ -38,10 +38,10 @@
                     </div>
 
                     <div class="w-xxxx-12">
-                        <?php foreach ($custom_attr['friendly_values_attrs'] as $label => $val): ?>
-                            <?php if(!empty($val)): ?>
-                                <h2 class="_h2_description"><?=$label?></h2>
-                                <div class="_description"><?=$val?></div>
+                        <?php foreach ($custom_attr['friendly_values_attrs'] as $attrData): ?>
+                            <?php if(!empty($attrData['value'])): ?>
+                                <h2 class="_h2_description"><?=makeHTMLImg($attrData['icon'],"15","15",$attrData['value'])?><?=$attrData['label']?></h2>
+                                <div class="_description"><?=$attrData['value']?></div>
                         <?php endif; ?>
                         <?php endforeach ?>
                     </div>

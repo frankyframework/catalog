@@ -167,7 +167,7 @@ if(!$error)
             
         }
 
-        saveDataCustomAttribute($id,'catalog_products');
+        saveDataCatalogCustomAttribute($id,'catalog_products',$CatalogproductsEntity->set_attribute());
 
 
         
@@ -197,7 +197,7 @@ if(!$error)
                 $CatalogproductsModel->getData(["id" => $id]);
                 $productData = $CatalogproductsModel->getRows();
 
-                $productData['custom_attr'] = getDataCustomAttribute($id,'catalog_products');
+                $productData['custom_attr'] = getDataCatalogCustomAttribute($id,'catalog_products');
 
                 $CatalogCatalogReviewsEntity->data(addslashes(json_encode($productData)));
                 $CatalogCatalogReviewsModel->save($CatalogCatalogReviewsEntity->getArrayCopy());

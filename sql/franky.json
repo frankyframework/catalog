@@ -303,7 +303,7 @@
             "constante":"ADMIN_FRM_CATALOG_SET_CUSTOM_ATTRIBUTES",
             "url":"admin/catalog-set-custom-attributes/frm/",
             "nombre":"Administrar Set de  Atributos",
-            "ajax":["base/ajax.admin.js"],
+            "ajax":["base/ajax.admin.js","catalog/ajax.admin.js"],
             "status":1,
             "editable":0,
             "modulo":"catalog"
@@ -471,14 +471,14 @@
             "constante":"ADMIN_FRM_CATALOG_SET_CUSTOM_ATTRIBUTES_MARKETPLACE",
             "url":"mi-cuenta/catalog-set-custom-attributes/frm/",
             "nombre":"Administrar Set de  Atributos",
-            "ajax":["base/ajax.admin.js"],
+            "ajax":["base/ajax.admin.js","catalog/ajax.admin.js"],
             "status":1,
             "editable":0,
             "modulo":"catalog"
         },
         {
             "php":"mi-cuenta/username/form.php",
-            "css":[],
+            "css":"",
             "js":[],
             "jquery":["jquery-validate","tags"],
             "resources":"administrar_urlbanity_marketplace",

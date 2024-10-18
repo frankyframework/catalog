@@ -1,7 +1,7 @@
 <?php
 
 
-$custom_attr = getDataCustomAttribute(0,'catalog_products');
+$custom_attr = getDataCatalogCustomAttribute(0,'catalog_products');
 
 
 

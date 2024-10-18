@@ -12,6 +12,7 @@ class CatalogStoresEntity
     private $status;
     private $createdAt;
     private $updateAt;
+    private $marketplace;
 
     
     public function __construct($data = null)
@@ -32,6 +33,7 @@ class CatalogStoresEntity
         $this->status = (isset($data["status"]) ? $data["status"] : null);
         $this->createdAt = (isset($data["createdAt"]) ? $data["createdAt"] : null);
         $this->updateAt = (isset($data["updateAt"]) ? $data["updateAt"] : null);
+        $this->marketplace = (isset($data["marketplace"]) ? $data["marketplace"] : null);
 
     }
     
@@ -63,7 +65,7 @@ class CatalogStoresEntity
     
     public function updateAt($updateAt = null){ if($updateAt != null){ $this->updateAt=$updateAt; }else{ return $this->updateAt; } }
 
-
+    public function marketplace($marketplace = null){ if($marketplace != null){ $this->marketplace=$marketplace; }else{ return $this->marketplace; } }
   
 }
 ?>

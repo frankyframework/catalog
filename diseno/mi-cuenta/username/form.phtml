@@ -9,16 +9,65 @@
         <div class="w-xxxx-6">
             <?php echo $adminForm->openTag(); ?>
             <?php  echo $adminForm->getRow("username"); ?>
+
+            <div class="form-group"><h3>Datos generales</h3></div>
+            <?php  echo $adminForm->getRow("tipo_persona"); ?>
+            <?php  echo $adminForm->getRow("empresa"); ?>
+            <?php  echo $adminForm->getRow("rfc"); ?>
+            <?php  echo $adminForm->getRow("sector"); ?>
+            <?php  echo $adminForm->getRow("direccion"); ?>
+            <?php  echo $adminForm->getRow("latitud"); ?>
+            <?php  echo $adminForm->getRow("longitud"); ?>
             <div id="imagen_previa">
             <?php if(!empty($data['image'])): ?>
               <?=makeHTMLImg($data['image'], "", "", "");?>
             <?php endif; ?>
-        </div>
-        <?php echo $adminForm->getRow('image'); ?>
-        <div class="form-group"><h3>SEO</h3></div>
-        <?php echo $adminForm->getRow('meta_title'); ?>
-        <?php echo $adminForm->getRow('meta_description'); ?>
-        <?php echo $adminForm->getRow('meta_keywords'); ?>
+            <?php echo $adminForm->getRow('image'); ?>
+            </div>
+            <div id="imagen_previa_logo">
+            <?php if(!empty($data['logo'])): ?>
+              <?=makeHTMLImg($data['logo'], "", "", "");?>
+            <?php endif; ?>
+            </div>
+            <?php echo $adminForm->getRow('logo'); ?>
+            <?php echo $adminForm->getRow('descripcion'); ?>
+            <div class="form-group"><h3>Horario</h3></div>
+            <?php
+            $dias = [
+                "lunes" => "Lunes", 
+                "martes" => "Martes", 
+                "miescoles" => "Miercoles", 
+                "jueves" => "Jueves",
+                "viernes" => "Viernes",
+                "sabado" => "Sabado",
+                "domingo" => "Domingo"
+            ];
+            $horarios = [];
+            $count =0;
+            foreach ($dias as $dia => $diaF) {
+                ?>
+                <div class="w-xxxx-12 w-xxx-12  w-xx-12  w-x-12" >
+                    <div class="w-xxxx-4 w-xxx-4  w-xx-4  w-x-4"><?=$adminForm->getRow($dia);?></div>
+                    <div class="w-xxxx-4 w-xxx-4  w-xx-4  w-x-4">Abre: <?=$adminForm->get('hora_i_'.$dia);?></div>
+                    <div class="w-xxxx-4 w-xxx-4  w-xx-4  w-x-4">Cierra: <?=$adminForm->get('hora_f_'.$dia);?></div>
+                </div>
+                
+                <?
+            }
+            ?>
+            <div class="form-group"><h3>Social</h3></div>
+            <?php echo $adminForm->getRow('web'); ?>
+            <?php echo $adminForm->getRow('email'); ?>
+            <?php echo $adminForm->getRow('tel'); ?>
+            <?php echo $adminForm->getRow('wa'); ?>
+            <?php echo $adminForm->getRow('fb'); ?>
+            <?php echo $adminForm->getRow('ins'); ?>
+            <?php echo $adminForm->getRow('ttk'); ?>
+            <?php echo $adminForm->getRow('x'); ?>
+            <div class="form-group"><h3>SEO</h3></div>
+            <?php echo $adminForm->getRow('meta_title'); ?>
+            <?php echo $adminForm->getRow('meta_description'); ?>
+            <?php echo $adminForm->getRow('meta_keywords'); ?>
             <?php  echo $adminForm->getRow("guardar"); ?>
             <?php echo $adminForm->endTag(); ?>
         </div>
@@ -31,5 +80,16 @@
 <script >
 $(document).ready(function(){
          $("#frmusername").validate();
+         $("select[name=tipo_persona]").change(function(){
+            if($(this).val() != 1)
+            {
+                $(".form_empresa").hide();
+                $(".form_rfc").hide();
+            } else {
+                $(".form_empresa").show();
+                $(".form_rfc").show();
+            }
+         });
+         $("select[name=tipo_persona]").trigger("change");
 });
 </script>

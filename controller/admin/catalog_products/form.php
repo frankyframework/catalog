@@ -104,7 +104,9 @@ if($CatalogCategoryModel->getTotal() > 0)
     }
 }
 $uid = '';
-if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+if(getCoreConfig('catalog/marketplace/enabled') == 1 && 
+$MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace") && 
+getCoreConfig('catalog/marketplace/set-global') == 0)
 {
     $uid = $MySession->getVar('id');
 }

@@ -25,7 +25,7 @@ class CatalogStoresModel  extends \Franky\Database\Mysql\objectOperations
     function getData($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["catalog_stores.id","catalog_stores.nombre","catalog_stores.idioma","catalog_stores.url","catalog_stores.moneda","createdAt","updateAt","catalog_monedas.nombre as moneda_nombre","abreviatura","simbolo","status"];
+        $campos = ["catalog_stores.id","marketplace","catalog_stores.nombre","catalog_stores.idioma","catalog_stores.url","catalog_stores.moneda","createdAt","updateAt","catalog_monedas.nombre as moneda_nombre","abreviatura","simbolo","status"];
 
         foreach($data as $k => $v)
         {

@@ -46,7 +46,7 @@ if($CatalogCategoryModel->existe($nombre,$id) == REGISTRO_SUCCESS)
     $error = true;
 }
 
-if(!$MyAccessList->MeDasChancePasar("administrar_category_catalog") && (getCoreConfig('catalog/marketplace/enabled') == 0 || !$MyAccessList->MeDasChancePasar("administrar_category_catalog_marketplace")))
+if(!$MyAccessList->MeDasChancePasar("administrar_category_catalog") )
 {
     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("sin_privilegios"));
     $error = true;

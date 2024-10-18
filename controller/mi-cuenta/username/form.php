@@ -27,9 +27,20 @@ if($CatalogUsersModel->getData($CatalogUsersEntity->getArrayCopy()) == REGISTRO_
         $data['image'] = imageResize($MyConfigure->getUploadDir()."/catalog/marketplace/".$data["image"],150,150, true);
         
     }
+    if(!empty($data["logo"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/marketplace/".$data["logo"]))
+    {
+        $data['logo'] = imageResize($MyConfigure->getUploadDir()."/catalog/marketplace/".$data["logo"],150,150, true);
+        
+    }
+    $horarios = json_decode($data['horario'], true);
+    foreach ($horarios as $dia => $horario) {
+        $data[$dia] = 1;
+        $data['hora_i_'.$dia] = $horario['open'];
+        $data['hora_f_'.$dia] = $horario['close'];
+    }
 }
 
-
+$adminForm->setMobile($Mobile_detect->isMobile());
 $adminForm->setData($data);
 
 $title_form = $title;

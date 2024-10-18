@@ -2,9 +2,9 @@
 use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
 use Base\model\CustomattributesModel;
-use Base\entity\CustomattributesEntity;
-use Base\model\CustomattributesvaluesModel;
-use  Base\entity\CustomattributesvaluesEntity;
+use Catalog\entity\CustomattributesEntity;
+use Catalog\model\CustomattributesvaluesModel;
+use Catalog\entity\CustomattributesvaluesEntity;
 
 ini_set('memory_limit',-1);
 ini_set('max_execution_time',0);
@@ -20,7 +20,7 @@ $CustomattributesvaluesEntity       = new CustomattributesvaluesEntity();
 
 
 $values_attrs = [];
-$custom_attr = getDataCustomAttribute(0,'catalog_products');
+$custom_attr = getDataCatalogCustomAttribute(0,'catalog_products');
 
 
 $CustomattributesvaluesEntity->entity('catalog_products');

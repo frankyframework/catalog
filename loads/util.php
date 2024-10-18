@@ -306,6 +306,7 @@ function catalog_validaStockCompra()
 {
     global $MyRequest;
     global $MyMessageAlert;
+    global $MyFlashMessage;
     $Tokenizer = new \Franky\Haxor\Tokenizer;
     $productos_comprados = getCarrito();
 
@@ -694,7 +695,7 @@ function getDataConfigurables($id_product)
        $i = 0;
         while($registro = $CatalogproductsModel->getRows())
         {
-            $custom_attr = getDataCustomAttribute($registro['id'],'catalog_products');
+            $custom_attr = getDataCatalogCustomAttribute($registro['id'],'catalog_products');
             
             foreach($attrs as $key => $input_id)
             {
@@ -724,11 +725,17 @@ function getDataConfigurables($id_product)
 
 function getCatalogStores()
 {
+    global $MyAccessList;
     $CatalogStoresModel = new Catalog\model\CatalogStoresModel();
     $CatalogStoresEntity = new Catalog\entity\CatalogStoresEntity();
     $CatalogStoresModel->setTampag(1000);
     $CatalogStoresModel->setOrdensql("id ASC");
     $CatalogStoresEntity->status(1);
+
+    if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+    {
+        $CatalogStoresEntity->marketplace(1);
+    }
     $CatalogStoresModel->getData($CatalogStoresEntity->getArrayCopy());
    
     $total			= $CatalogStoresModel->getTotal();
@@ -801,5 +808,280 @@ function statusUserMArketplace(){
         }
     }
     return $dataUM;
+}
+
+function getDataCatalogCustomAttribute($id_ref,$entity,$uid='')
+{
+    global $MyConfigure;
+    $CustomattributesModel              = new Catalog\model\CustomattributesModel();
+    $CustomattributesEntity             = new Catalog\entity\CustomattributesEntity();
+    $CustomattributesvaluesModel        = new Catalog\model\CustomattributesvaluesModel();
+    $CustomattributesvaluesEntity       = new Catalog\entity\CustomattributesvaluesEntity();
+
+
+    $custom_imputs = [];
+    $values_attrs = [];
+    $friendly_values_attrs = [];
+    $CustomattributesEntity->entity($entity);
+    $CustomattributesEntity->status(1);
+    if(!empty($uid)){
+        $CustomattributesEntity->uid($uid);
+    }
+
+    $CustomattributesModel->setTampag(100);
+    $CustomattributesModel->getData($CustomattributesEntity->getArrayCopy());
+
+    if($CustomattributesModel->getTotal() > 0)
+    {
+        while($data_attrs = $CustomattributesModel->getRows()){
+            
+            
+            $data_attrs['data'] = json_decode($data_attrs['data'],true);
+            $data_attrs['extra'] = json_decode($data_attrs['extra'],true);
+
+            if(!empty($data_attrs['source'])){
+                $objData = new $data_attrs['source'];
+                $data_attrs['data'] = $objData->getCollection();
+            }
+
+            if(!empty($data_attrs["icon"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/customattr/".$data_attrs["icon"]))
+            {
+                $data_attrs['icon'] = imageResize($MyConfigure->getUploadDir()."/catalog/customattr/".$data_attrs["icon"],100,100, true);   
+            }
+
+            $custom_imputs[$data_attrs['id']] = $data_attrs;
+        }
+    
+
+        $CustomattributesvaluesEntity->id_ref($id_ref);
+        $CustomattributesvaluesEntity->entity($entity);
+        $CustomattributesvaluesModel->setTampag(100);
+        if($CustomattributesvaluesModel->getData($CustomattributesvaluesEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+            
+            
+            while($_values_attrs = $CustomattributesvaluesModel->getRows()){
+            
+                $value =json_decode($_values_attrs['value'],true);
+        
+                if($value == null)
+                {
+                    $value = $_values_attrs['value'];
+                }
+                $values_attrs[$custom_imputs[$_values_attrs['id_attribute']]['name']] = $value;
+                $friendly_values_attrs[$_values_attrs['id_attribute']]['label'] = $custom_imputs[$_values_attrs['id_attribute']]['label'];
+                $friendly_values_attrs[$_values_attrs['id_attribute']]['icon'] = $custom_imputs[$_values_attrs['id_attribute']]['icon'];
+                $friendly_values_attrs[$_values_attrs['id_attribute']]['value'] =  (!in_array($custom_imputs[$_values_attrs['id_attribute']]['type'],["textarea","text","file","multifile"]) ? $custom_imputs[$_values_attrs['id_attribute']]['data'][$value] : $value);
+
+            }
+            
+        }
+    }
+
+    return ['custom_imputs' => $custom_imputs,'custom_values'=>$values_attrs,'friendly_values_attrs'=>$friendly_values_attrs];
+
+
+}
+
+function saveDataCatalogCustomAttribute($id_ref,$entity,$set)
+{
+    global $MyRequest;
+    global $MyConfigure;
+    $File                               = new Franky\Filesystem\File();
+    $CustomattributesModel              = new Catalog\model\CustomattributesModel();
+    $CustomattributesEntity             = new Catalog\entity\CustomattributesEntity();
+    $CustomattributesvaluesModel        = new Catalog\model\CustomattributesvaluesModel();
+    $CustomattributesvaluesEntity       = new Catalog\entity\CustomattributesvaluesEntity();
+
+    $CatalogsetattributesModel = new Catalog\model\CatalogsetattributesModel();
+    $CatalogsetattributesEntity = new Catalog\entity\CatalogsetattributesEntity();
+    $CatalogsetattributesModel->setTampag(1000);
+    $CatalogsetattributesModel->setOrdensql("name ASC");
+    $CatalogsetattributesEntity->status(1);
+    
+    $CatalogsetattributesEntity->id($set);
+
+    $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
+    $total			= $CatalogsetattributesModel->getTotal();
+    $attributes = array();
+    if($total > 0)
+    {
+     
+        $registro = $CatalogsetattributesModel->getRows();
+        $attributes = json_decode($registro['attributes'],true);
+        while(!empty($registro["parent_id"])){
+            $CatalogsetattributesEntity->id($registro["parent_id"]);
+            $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
+            $total			= $CatalogsetattributesModel->getTotal();
+            if($total > 0)
+            {
+                $registro = $CatalogsetattributesModel->getRows();
+                $attributes = array_merge($attributes,json_decode($registro['attributes'],true));
+            }
+        }
+    }
+
+    $custom_imputs = [];
+    $CustomattributesEntity->entity("catalog_products");
+    $CustomattributesEntity->status(1);
+    $CustomattributesModel->setTampag(100);
+    $CustomattributesModel->getData($CustomattributesEntity->getArrayCopy());
+    while($data_attrs = $CustomattributesModel->getRows()){
+        if(in_array($data_attrs['id'],$attributes)) {
+        $custom_imputs[] = ['id' => $data_attrs['id'],'name' => $data_attrs['name'],'type' => $data_attrs['type']];
+        }
+    }
+
+   
+    //print_r($custom_imputs);
+    //print_r($MyRequest->getRequest());
+    //die;
+    foreach($custom_imputs as $input)
+    {
+        
+        $name = str_replace("[]", "", $input['name']);
+        if($input['type'] == 'file')
+        {
+           
+            $dir = $MyConfigure->getServerUploadDir()."/$entity/".$id_ref."/";
+          
+            $File->mkdir($dir);
+            $handle = new \Franky\Filesystem\Upload($_FILES[$input['name']]);
+            if ($handle->uploaded)
+            {
+                
+                if  (!in_array(strtolower(pathinfo($_FILES[$input['name']]["name"], PATHINFO_EXTENSION)),array("php","phtml")))
+                {
+                    $fileinfo = @getimagesize($_FILES[$input['name']]["tmp_name"]);
+                    //$width = $fileinfo[0];
+                    //$height = $fileinfo[1];
+                    
+                    //$handle->image_resize= false;
+                    //$handle->image_ratio_fill = true;
+                    //$handle->image_background_color = '#FFFFFF';
+                    $handle->file_auto_rename = true;
+                    $handle->file_overwrite = false;
+                    $handle->file_max_size = "22024288"; 
+
+                    $handle->Process($dir);
+
+                    if ($handle->processed)
+                    {
+                        $value = "/$entity/".$id_ref."/".$handle->file_dst_name;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }else
+                {
+                    continue;
+                }
+                
+            }
+            else{
+                if($MyRequest->getRequest('file__'.$input['name'],0) == 1){
+                    continue;
+                }
+                else{
+                    $value = "";
+                }
+
+                
+            }
+            
+
+        }
+        else if($input['type'] == 'multifile')
+        {
+           
+            $multifiles = $MyRequest->getRequest('file__'.$name,[]);
+
+            $dir = $MyConfigure->getServerUploadDir()."/$entity/".$id_ref."/";
+          
+            $File->mkdir($dir);
+
+            $files = array();
+           // print_r($_FILES);
+           if(!empty($_FILES) && isset($_FILES[$name]))
+           {
+                foreach ($_FILES[$name] as $k => $l) {
+            
+                    foreach ($l as $i => $v) {
+                        
+                        $files[$i][$k] = $v;
+                    }
+                }
+            }
+           //print_r($files);
+           //die;
+
+            foreach ($files as $file)
+            {
+              
+                $handle = new \Franky\Filesystem\Upload($file);
+                if ($handle->uploaded)
+                {
+                    if  (!in_array(strtolower(pathinfo($file["name"], PATHINFO_EXTENSION)),array("php","phtml")))
+                    {
+                        $fileinfo = @getimagesize($file["tmp_name"]);
+                        //$width = $fileinfo[0];
+                        //$height = $fileinfo[1];
+                        
+                        //$handle->image_resize= false;
+                        //$handle->image_ratio_fill = true;
+                        //$handle->image_background_color = '#FFFFFF';
+                        $handle->file_auto_rename = true;
+                        $handle->file_overwrite = false;
+                        $handle->file_max_size = "22024288"; 
+
+                        $handle->Process($dir);
+
+                        if ($handle->processed)
+                        {
+                            $multifiles[] = "/$entity/".$id_ref."/".$handle->file_dst_name;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }else
+                    {
+                        continue;
+                    }
+                    
+                }
+            }
+            $value = "";
+            if(!empty($multifiles)) 
+            {
+                $value = json_encode($multifiles);
+            }
+            
+            
+            
+        }
+        else{
+            $value = (is_array($MyRequest->getRequest($name)) ? json_encode($MyRequest->getRequest($name)) : $MyRequest->getRequest($name,'',true));
+        }
+        $CustomattributesvaluesEntity->exchangeArray([]);
+        $CustomattributesvaluesEntity->id_attribute($input['id']);
+        $CustomattributesvaluesEntity->id_ref($id_ref);
+        $CustomattributesvaluesEntity->entity($entity);
+        $CustomattributesvaluesModel->remove($CustomattributesvaluesEntity->getArrayCopy());
+
+
+        $CustomattributesvaluesEntity->value($value);
+        $CustomattributesvaluesModel->save($CustomattributesvaluesEntity->getArrayCopy());
+
+
+    }
+    
+}
+
+function getUsernameFb($url)
+{
+    $url = parse_url($url);
+    return str_replace("/", "", $url["path"]);
 }
 ?>

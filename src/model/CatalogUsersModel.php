@@ -13,7 +13,35 @@ class CatalogUsersModel  extends \Franky\Database\Mysql\objectOperations
     function getData($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["id","username","id_user","image","meta_title","meta_description","meta_keywords","createdAt","updateAt"];
+        $campos = [
+            "id",
+            "username",
+            "id_user",
+            "image",
+            "meta_title",
+            "meta_description",
+            "meta_keywords",
+            "createdAt",
+            "updateAt",
+            "tipo_persona",
+            "empresa",
+            "rfc",
+            "sector",
+            "direccion",
+            "latitud",
+            "longitud",
+            "logo",
+            "descripcion",
+            "horario",
+            "web",
+            "email",
+            "tel",
+            "wa",
+            "fb",
+            "ins",
+            "x",
+            "ttk"
+        ];
 
         foreach($data as $k => $v)
         {
