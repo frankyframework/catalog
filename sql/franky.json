@@ -481,7 +481,7 @@
             "css":"",
             "js":[],
             "jquery":["jquery-validate","tags"],
-            "resources":"administrar_urlbanity_marketplace",
+            "resource":"administrar_urlbanity_marketplace",
             "constante":"ADMIN_USERNAME",
             "url":"mi-cuenta/username/",
             "nombre":"Username",
