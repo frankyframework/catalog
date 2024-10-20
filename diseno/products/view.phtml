@@ -155,7 +155,7 @@
                     <div class="w-xxxx-12">
                         <?php foreach ($custom_attr['friendly_values_attrs'] as $attrData): ?>
                             <?php if(!empty($attrData['value'])): ?>
-                                <h2 class="_h2_description"><?=makeHTMLImg($attrData['icon'],"15","15",$attrData['value'])?><?=$attrData['label']?></h2>
+                                <h2 class="_h2_description"><?=(!empty($attrData['icon']) ? makeHTMLImg($attrData['icon'],"15","15",$attrData['value']) : "")?><?=$attrData['label']?></h2>
                                 <div class="_description"><?=$attrData['value']?></div>
                         <?php endif; ?>
                         <?php endforeach ?>
