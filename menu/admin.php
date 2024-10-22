@@ -55,6 +55,11 @@ if(getCoreConfig('catalog/marketplace/enabled') == 1){
         "permiso" =>   "administrar_solicitud_user_marketplace",
         "url" => $MyRequest->url(ADMIN_SOLICITUD_USER_MARKETPLACE),
         "etiqueta" => _("Solicitudes usuario marketplace")
+      ),
+      array(
+        "permiso" =>   "administrar_solicitud_user_marketplace",
+        "url" => $MyRequest->url(ADMIN_CATALOG_LIST_USERS),
+        "etiqueta" => _("Marketplaces")
        )
     ]
   );

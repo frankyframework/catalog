@@ -1423,6 +1423,40 @@ function ajax_getCatalogSetAttr($id,$parent_id)
 }
 
 
+function verificarTienda($id,$status)
+{
+    global $MySession;
+    $CatalogUsersModel = new \Catalog\model\CatalogUsersModel;
+    $CatalogUsersEntity = new \Catalog\entity\CatalogUsersEntity;
+    $Tokenizer = new \Franky\Haxor\Tokenizer;
+    global $MyAccessList;
+    global $MyMessageAlert;
+
+    $respuesta = null;
+
+    if($MyAccessList->MeDasChancePasar("administrar_solicitud_user_marketplace"))
+    {
+        $CatalogUsersEntity->id(addslashes($Tokenizer->decode($id)));
+        $CatalogUsersEntity->verificado($status);
+        if($CatalogUsersModel->save($CatalogUsersEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+        {
+
+        }
+        else
+        {
+              $respuesta["message"] = $MyMessageAlert->Message("catalog_marketplace_verificado_error");
+              $respuesta["error"] = true;
+        }
+    }
+    else
+    {
+         $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
+         $respuesta["error"] = true;
+    }
+
+    return $respuesta;
+}
+
 
 /******************************** EJECUTA *************************/
 
@@ -1452,4 +1486,5 @@ $MyAjax->register("EliminarComentarioCatalog");
 $MyAjax->register("Catalog_AprovarInformacion");
 $MyAjax->register("Catalog_AutorizarDatosUserMarketplace");
 $MyAjax->register("ajax_getCatalogSetAttr");
+$MyAjax->register("verificarTienda");
 ?>

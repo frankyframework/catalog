@@ -30,6 +30,7 @@ class CatalogUsersEntity
     private $ins;
     private $x;
     private $ttk;
+    private $verificado;
 
     public function __construct($data = null)
     {
@@ -68,6 +69,7 @@ class CatalogUsersEntity
         $this->ins = (isset($data["ins"]) ? $data["ins"] : null);
         $this->x = (isset($data["x"]) ? $data["x"] : null);
         $this->ttk = (isset($data["ttk"]) ? $data["ttk"] : null);
+        $this->verificado = (isset($data["verificado"]) ? $data["verificado"] : null);
     }
 
     public function getArrayCopy()
@@ -134,5 +136,7 @@ class CatalogUsersEntity
     public function ttk($ttk = null){ if($ttk !== null){ $this->ttk=$ttk; }else{ return $this->ttk; } }
 
     public function updateAt($updateAt = null){ if($updateAt !== null){ $this->updateAt=$updateAt; }else{ return $this->updateAt; } }
+
+    public function verificado($verificado = null){ if($verificado !== null){ $this->verificado=$verificado; }else{ return $this->verificado; } }
 }
 ?>

@@ -601,6 +601,34 @@
             "status":1,
             "editable":1,
             "modulo":"catalog"
+        },
+        {
+            "php":"admin/catalogo_users/lista.php",
+            "css":"",
+            "js":"",
+            "jquery":"",
+            "resource":"administrar_solicitud_user_marketplace",
+            "constante":"ADMIN_CATALOG_LIST_USERS",
+            "url":"admin/catalogo_users/",
+            "nombre":"Marketplaces",
+            "ajax":["base/ajax.admin.js"],
+            "status":1,
+            "editable":1,
+            "modulo":"catalog"
+        },
+        {
+            "php":"admin/catalogo_users/form.php",
+            "css":"",
+            "js":[],
+            "jquery":["jquery-validate","tags"],
+            "resource":"administrar_solicitud_user_marketplace",
+            "constante":"ADMIN_CATALOG_FORM_USERS",
+            "url":"admin/catalogo_users/form/",
+            "nombre":"Editar marketplace",
+            "ajax":[],
+            "status":1,
+            "editable":1,
+            "modulo":"catalog"
         }
     ]
 }

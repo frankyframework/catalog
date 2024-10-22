@@ -119,4 +119,8 @@
         <llave>declinar_user_marketplace</llave>
         <valor>Error al intentar declinar la solicitud del usuario</valor>
     </mensaje>
+    <mensaje>
+        <llave>marketplace_verificado_error</llave>
+        <valor>Error al cambiar el estado de verificacion de la tienda</valor>
+    </mensaje>
 </mensajes>

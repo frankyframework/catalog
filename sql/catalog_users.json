@@ -150,6 +150,13 @@
                 "null":1
             },
             {
+                "name":"verificado",
+                "type":"int",
+                "null":0,
+                "default" : 0
+
+            },
+            {
                 "name":"createdAt",
                 "type":"datetime",
                 "null":0

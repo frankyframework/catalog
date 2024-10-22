@@ -32,6 +32,23 @@
                     <h4><?=__("Descripcion del negocio")?></h4> 
                 <p class="landing_producto_descripcion"><?= $dataUser['descripcion']?></p>
                 <?php endif; ?>
+                <?php
+                $horarios = json_decode($dataUser['horario'], true);
+                if(!empty($horarios)) {
+                    ?>
+                    <h4>Horario de atencion</h4>
+                    <ul class="horario_marketplace">
+                    <?php
+                    foreach ($horarios as $dia => $horario) {
+                        ?>
+                        <li><?=$dias[$dia]?> de <?=$horario['open']?> Hrs. a <?=$horario['close']?> Hrs.</li>
+                        <?php
+                    }
+                    ?>
+                    </ul>
+                    <?php
+                }
+                ?>
             </div>
 
             <div class="w-xxxx-12 _space_border">
@@ -88,6 +105,9 @@
                     
                     </div>
                     <div class="w-xxxx-1 ">
+                    <?php if($dataUser['verificado'] == 1): ?>
+                        <h4>Esta tienda esta verificada</h4>
+                    <?php endif; ?>
                     Se unio el <?=getFechaUI($dataUser['createdAt'])?> 
                     </div>
 

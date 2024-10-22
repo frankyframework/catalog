@@ -5,10 +5,7 @@ class CatalogStoresModel  extends \Franky\Database\Mysql\objectOperations
 {
 
     private $busca;
-    private $precio;
-    private $categoria_array;
-    private $excludeId;
-    private $search_ids;
+   
     public function __construct()
     {
       parent::__construct();

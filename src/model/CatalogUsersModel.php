@@ -3,12 +3,18 @@ namespace Catalog\model;
 
 class CatalogUsersModel  extends \Franky\Database\Mysql\objectOperations
 {
+    private $busca;
 
     public function __construct()
     {
       parent::__construct();
       $this->from()->addTable('catalog_users');
     }
+
+    public function setBusca($busca){
+        $this->busca=$busca;
+    }
+
 
     function getData($data = array())
     {
@@ -40,13 +46,23 @@ class CatalogUsersModel  extends \Franky\Database\Mysql\objectOperations
             "fb",
             "ins",
             "x",
-            "ttk"
+            "ttk",
+            "verificado"
         ];
 
         foreach($data as $k => $v)
         {
             $this->where()->addAnd("catalog_users.".$k,$v,'=');
         }
+
+        if($this->busca != "")
+        {
+          $this->where()->concat('AND (');
+          $this->where()->addOr('empresa','%'.$this->busca.'%','like');
+          $this->where()->addOr('descripcion','%'.$this->busca.'%','like');
+          $this->where()->concat(')');
+        }
+
 
         return $this->getColeccion($campos);
 

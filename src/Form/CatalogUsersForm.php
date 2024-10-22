@@ -15,7 +15,16 @@ class CatalogUsersForm extends \Franky\Form\Form
            'enctype' => "multipart/form-data"
         ));
 
-
+        $this->add(array(
+            'name' => 'id',
+            'type'  => 'hidden',
+        )
+        );
+        $this->add(array(
+            'name' => 'callback',
+            'type'  => 'hidden',
+        )
+        );
         $this->add(array(
                 'name' => 'username',
                 'label' => 'Usuario de marketplace:',
