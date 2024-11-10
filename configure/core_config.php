@@ -127,8 +127,20 @@ return array(
               'validation' => array('required' => true),
               'data' => getTemplatesEmail(),
               'value' => '1'
-            ),
-          )
+          ),
+          array('path' => 'catalog/marketplace/placeholder',
+            'type' => 'file',
+            'label' => 'Placeholder de portada',
+            'validation' => array('image' => true),
+            'value' => ''
+          ),
+          array('path' => 'catalog/marketplace/placeholderlogo',
+            'type' => 'file',
+            'label' => 'Placeholder del logo',
+            'validation' => array('image' => true),
+            'value' => ''
+          ),
+      )
 ),
 );
 

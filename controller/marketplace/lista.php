@@ -42,6 +42,19 @@ $CatalogUsersEntity->username($username);
 if($CatalogUsersModel->getData($CatalogUsersEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
     $dataUser = $CatalogUsersModel->getRows();
     $imgMArketplace = "";
+    $imgLogoMarketplace = "";
+    $_imgMArketplace = getCoreConfig('catalog/marketplace/placeholder');
+    if($_imgMArketplace != "" && file_exists(PROJECT_DIR.$_imgMArketplace))
+    {
+      $imgMArketplace = $_imgMArketplace;
+    }
+    $_imgLogoMarketplace = getCoreConfig('catalog/marketplace/placeholderlogo');
+    if($_imgLogoMarketplace != "" && file_exists(PROJECT_DIR.$_imgLogoMarketplace))
+    {
+      $imgLogoMarketplace = imageResize($_imgLogoMarketplace,100,100, false);
+    }
+
+
     if(!empty($dataUser["image"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/marketplace/".$dataUser["image"]))
     {
         $imgMArketplace  =  imageResize($MyConfigure->getUploadDir()."/catalog/marketplace/".$dataUser["image"],1920,822, true);
