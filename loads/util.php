@@ -838,7 +838,7 @@ function getDataCatalogCustomAttribute($id_ref,$entity,$uid='')
             
             
             $data_attrs['data'] = json_decode($data_attrs['data'],true);
-            $data_attrs['extra'] = json_decode($data_attrs['extra'],true);
+            $data_attrs['extra'] = (!empty($data_attrs['extra']) ? json_decode($data_attrs['extra'],true) : []);
 
             if(!empty($data_attrs['source'])){
                 $objData = new $data_attrs['source'];

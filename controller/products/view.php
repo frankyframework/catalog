@@ -81,24 +81,26 @@ if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REG
         
         $default_product = true;
         $token = "";
-        foreach($configurables['config'] as $key => $val)
-        {
-            $token .= $custom_attr['custom_values'][$val['name']];
-        }
+        if(!empty($configurables['config'])) {
+            foreach($configurables['config'] as $key => $val)
+            {
+                $token .= $custom_attr['custom_values'][$val['name']];
+            }    
+        
         
        
-        foreach($configurables['config'] as $key => $val)
-        {
-            foreach($configurables['productos'] as $_key => $opt):
-                $tokens[$_key] .= $opt[$val['name']];
+            foreach($configurables['config'] as $key => $val)
+            {
+                foreach($configurables['productos'] as $_key => $opt):
+                    $tokens[$_key] .= $opt[$val['name']];
 
-                if($token == $tokens[$_key])
-                {
-                    $MyRequest->redirect($opt['url'],"302");           
-                }
-            endforeach;
+                    if($token == $tokens[$_key])
+                    {
+                        $MyRequest->redirect($opt['url'],"302");           
+                    }
+                endforeach;
+            }
         }
-       
     }
     if(!empty($data_detalle['parent_id']) )
     {
@@ -119,7 +121,7 @@ if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REG
   
   $MyMetatag->setTitulo($data_detalle['meta_title']);
   $MyMetatag->setDescripcion($data_detalle['meta_description']);
-  $MyMetatag->setKeywords($data_detalle['meta_keywords']);
+  $MyMetatag->setKeywords($data_detalle['meta_keyword']);
   $MyMetatag->setCode('<link rel="canonical" href="'. $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $friendly],true).'" />');
 
 }
