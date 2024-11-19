@@ -434,8 +434,8 @@ function getCatalogVitrina($clave)
     global $MyRequest;
 
     $uiCommand = $MyFrankyMonster->getUiCommand($MyFrankyMonster->MySeccion());
-  
-    if (is_array($uiCommand[3])) {
+
+    if (isset($uiCommand[3]) && is_array($uiCommand[3])) {
         if (!in_array('slick',$uiCommand[3])) 
         {
             $MyFrankyMonster->addJquery('slick');
@@ -536,8 +536,9 @@ function getCatalogVitrina($clave)
 
                 $resultados_pagina[] = $registro;
             }  
+         
             
-            return render(PROJECT_DIR.'/modulos/catalog/diseno/widget.vitrina.phtml',['resultados_pagina' => $resultados_pagina,'titulo'=>$vitrina['titulo'],'clave'=>$clave['titulo']]);
+            return render(PROJECT_DIR.'/modulos/catalog/diseno/widget.vitrina.phtml',['resultados_pagina' => $resultados_pagina,'titulo'=>$vitrina['titulo'],'clave'=>$clave]);
         }
       
         
@@ -778,8 +779,8 @@ function getFriendlyMarketplace($string)
         $string = trim($string,"?");
         $a = 'ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýýþÿŔŕ';
         $b = 'aaaaaaaceeeeiiiidnoooooouuuuybsaaaaaaaceeeeiiiidnoooooouuuyybyRr';
-        $string = utf8_decode($string);
-        $string = strtr($string, utf8_decode($a), $b);
+        $string = utf8decode($string);
+        $string = strtr($string, utf8decode($a), $b);
         $string = strtolower($string);
 	    $string = preg_replace('#([^a-z0-9_]+)#i', '-', $string);
         $string = preg_replace('#-{2,}#','-',$string);

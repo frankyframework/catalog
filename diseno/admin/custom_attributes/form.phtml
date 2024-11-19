@@ -127,7 +127,7 @@ $(document).ready(function(){
                 <?php endif; ?>
                     
                 $('.opt_<?= $count_option ?>').find('input[name="option_value[]"]').val('<?=$k?>');
-                $('.opt_<?= $count_option ?>').find('input[name="option_label[]"]').val('<?=utf8_decode($v)?>');
+                $('.opt_<?= $count_option ?>').find('input[name="option_label[]"]').val('<?=utf8decode($v,'ISO-8859-1', 'UTF-8')?>');
         
         <?php 
                 $count_option++;

@@ -746,7 +746,7 @@ function ajax_catalog_importar_producto($id)
 
             
             foreach($_xls[$id] as $_key => $_val){
-                $_POST[$atributos_xls[$_key]] = utf8_encode($_val); 
+                $_POST[$atributos_xls[$_key]] = utf8encode($_val); 
             }
             $_POST['sku'] = getFriendly($_POST['sku']);
             $_POST['url_key'] = getFriendly($_POST['url_key']);
@@ -834,7 +834,7 @@ function ajax_catalog_importar_producto($id)
 
                     
                     foreach($_xls[$id] as $_key => $_val){
-                        $_POST[$atributos_xls[$_key]] = utf8_encode($_val); 
+                        $_POST[$atributos_xls[$_key]] = utf8encode($_val); 
                     }
                     
                     // print_r($_POST); die;
