@@ -19,15 +19,15 @@
             <?php  echo $adminForm->getRow("latitud"); ?>
             <?php  echo $adminForm->getRow("longitud"); ?>
             <div id="imagen_previa">
-            <?php if(!empty($data['image'])): ?>
+            <?php if(!empty($data['image'])){ ?>
               <?=makeHTMLImg($data['image'], "", "", "");?>
-            <?php endif; ?>
+            <?php } ?>
             <?php echo $adminForm->getRow('image'); ?>
             </div>
             <div id="imagen_previa_logo">
-            <?php if(!empty($data['logo'])): ?>
+            <?php if(!empty($data['logo'])){ ?>
               <?=makeHTMLImg($data['logo'], "", "", "");?>
-            <?php endif; ?>
+            <?php } ?>
             </div>
             <?php echo $adminForm->getRow('logo'); ?>
             <?php echo $adminForm->getRow('descripcion'); ?>
