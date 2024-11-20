@@ -49,9 +49,13 @@ if($total > 0)
     {
         if($registro['idioma'] == $_SESSION['lang'] && $registro['url'] == $MyRequest->getSERVER()){
             define('DATA_STORE_CONFIG', $registro); 
+        } else {
+            define('DATA_STORE_CONFIG', []); 
         }
 
     }
+} else {
+    define('DATA_STORE_CONFIG', []); 
 }
 
 $urlBanity =  "";
