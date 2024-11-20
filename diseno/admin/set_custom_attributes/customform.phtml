@@ -10,7 +10,7 @@
             <?php foreach($_custom_attribtues as $key => $attr): ?>
             
                 
-                <li id="cat_<?=$key; ?>"   <?=(in_array($key, $data["attributes"] ) ? "data-jstree='{ \"selected\" : true }'": '')?>> <?=$attr; ?>
+                <li id="cat_<?=$key; ?>"   <?=(!empty($data["attributes"]) && in_array($key, $data["attributes"] ) ? "data-jstree='{ \"selected\" : true }'": '')?>> <?=$attr; ?>
                 </li>
                 
             <?php endforeach; ?>
