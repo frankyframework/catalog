@@ -1125,6 +1125,9 @@ function ajax_getCatalogCustomAttrFrm($id,$set)
 
             }
         }
+        if(empty($data)) {
+            $data = [];
+        }
         if(!empty($custom_attr['custom_values']))
         {
             $data = array_merge($data,$custom_attr['custom_values']);
@@ -1371,6 +1374,7 @@ function ajax_getCatalogSetAttr($id,$parent_id)
 {
     global $MySession;
     global $MyAccessList;
+    $dataParent["attributes"] = [];
     $respuesta = null;
     $adminForm = new Catalog\Form\CatalogsetattributesForm("frmsetatributos");
     $CatalogsetattributesModel = new Catalog\model\CatalogsetattributesModel;
@@ -1402,7 +1406,7 @@ function ajax_getCatalogSetAttr($id,$parent_id)
         $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
 
         $dataParent = $CatalogsetattributesModel->getRows();        
-        $dataParent["attributes"] = json_decode($dataParent["attributes"],true);
+        $dataParent["attributes"] = (!empty($dataParent["attributes"]) ? json_decode($dataParent["attributes"],true) : []);
     }
     $custom_attribtues = getDataCatalogCustomAttribute(0,'catalog_products',$uid);
     $_custom_attribtues = [];
