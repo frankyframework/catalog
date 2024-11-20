@@ -40,7 +40,7 @@ $adminForm = new ProductsForm("frmproduct");
 
 
 
-
+$data["category"] = [];
 $title = "Nuevo producto";
 if(!empty($id))
 {
