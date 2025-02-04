@@ -19,6 +19,8 @@ class CustomattributesEntity
     private $extra;
     private $icon;
     private $searchable;
+    private $position;
+    private $visible;
 
 
     public function __construct($data = null)
@@ -46,6 +48,8 @@ class CustomattributesEntity
         $this->status = (isset($data["status"]) ? $data["status"] : null);
         $this->required = (isset($data["required"]) ? $data["required"] : null);
         $this->extra = (isset($data["extra"]) ? $data["extra"] : null);
+        $this->position = (isset($data["position"]) ? $data["position"] : null);
+        $this->visible = (isset($data["visible"]) ? $data["visible"] : null);
 
     }
 
@@ -96,6 +100,9 @@ class CustomattributesEntity
     public function extra($extra = null){ if($extra !== null){ $this->extra=$extra; }else{ return $this->extra; } }
 
     public function searchable($searchable = null){ if($searchable !== null){ $this->searchable=$searchable; }else{ return $this->searchable; } }
+
+    public function position($position = null){ if($position !== null){ $this->position=$position; }else{ return $this->position; } }
     
+    public function visible($visible = null){ if($visible !== null){ $this->visible=$visible; }else{ return $this->visible; } }
 }
 ?>

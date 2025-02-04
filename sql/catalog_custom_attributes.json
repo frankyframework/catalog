@@ -90,7 +90,21 @@
                 "length":1,
                 "null":0,
                 "default": 0
-            }
+            },
+            {
+                "name":"position",
+                "type":"int",
+                "length":5,
+                "null":0,
+                "default": 0
+            },
+            {
+                "name":"visible",
+                "type":"int",
+                "length":1,
+                "null":0,
+                "default": 0
+            },
         ],
         "config":{
             "primary":"id",

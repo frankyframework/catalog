@@ -830,6 +830,7 @@ function getDataCatalogCustomAttribute($id_ref,$entity,$uid='')
     }
 
     $CustomattributesModel->setTampag(100);
+    $CustomattributesModel->setOrdensql("position ASC");
     $CustomattributesModel->getData($CustomattributesEntity->getArrayCopy());
 
     if($CustomattributesModel->getTotal() > 0)

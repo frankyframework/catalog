@@ -17,7 +17,7 @@ class CustomattributesModel  extends \Franky\Database\Mysql\objectOperations
     function getData($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["id","uid","icon","searchable","name","label","type","data","source","entity","createdAt","updateAt","status","required","extra"];
+        $campos = ["id","uid","icon","searchable","name","label","type","data","source","entity","createdAt","updateAt","status","required","extra", "position", "visible"];
 
         foreach($data as $k => $v)
         {

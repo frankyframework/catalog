@@ -156,15 +156,22 @@ class CustomAttributesForm extends \Franky\Form\Form
             )
         );
 
-        $this->add(array(
+    $this->add(array(
             'name' => 'searchable',
             'type'  => 'checkbox',
             'atributos' => array(
                 'class' => ''
              ),
             'options' =>  array("1" => _catalog("Este campo se puede filtrar")),
-
-
+        )
+    );
+    $this->add(array(
+        'name' => 'visible',
+        'type'  => 'checkbox',
+        'atributos' => array(
+            'class' => ''
+         ),
+        'options' =>  array("1" => _catalog("Visible en catalogo")),
         )
     );
 
@@ -174,6 +181,21 @@ class CustomAttributesForm extends \Franky\Form\Form
         'type'  => 'file',
         'atributos' => array(
             'id' => "icon_attr"
+            )
+        )
+    );
+
+    $this->add(array(
+            'name' => 'position',
+            'label' => _catalog('Orden'),
+            'type'  => 'text',
+            'required'  => true,
+            'atributos' => array(
+                'class'       => 'required',
+                'maxlength' => 5
+            ),
+            'label_atributos' => array(
+                'class'       => 'desc_form_obligatorio'
             )
         )
     );

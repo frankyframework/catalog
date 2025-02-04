@@ -168,7 +168,7 @@ getCoreConfig('catalog/marketplace/set-global') == 0 )
 }
 $CustomattributesModel->setPage(1);
 $CustomattributesModel->setTampag(100);
-$CustomattributesModel->setOrdensql('id ASC');
+$CustomattributesModel->setOrdensql('position ASC');
 $CustomattributesEntity->required(1);
 
 $result	 = $CustomattributesModel->getData($CustomattributesEntity->getArrayCopy());
