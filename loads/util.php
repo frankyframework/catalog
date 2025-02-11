@@ -26,7 +26,7 @@ function getImageCategorys($id)
            $img  =  imageResize($MyConfigure->getUploadDir()."/catalog/category/".$data["image"],1920,822, true);
         }
 
-        return ['img' =>$img,'description' => $data['description']];
+        return ['img' =>$img,'description' => $data['description'],'name' => $data['name']];
 
 
     }

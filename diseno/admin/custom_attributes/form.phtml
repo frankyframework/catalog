@@ -58,13 +58,14 @@
         
         <?php echo $adminForm->getRow('required'); ?>
         <?php echo $adminForm->getRow('searchable'); ?>
+        <?php echo $adminForm->getRow('visible'); ?>
         <div id="imagen_previa">
             <?php if(!empty($data['icon'])): ?>
               <?=makeHTMLImg($data['icon'], "", "", "");?>
             <?php endif; ?>
         </div>
         <?php echo $adminForm->getRow('icon'); ?>
-  
+        <?php echo $adminForm->getRow('position'); ?>
         <?php echo $adminForm->getRow('guardar'); ?>
         <?php echo $adminForm->endTag(); ?>
         </div>
