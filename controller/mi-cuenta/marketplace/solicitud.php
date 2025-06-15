@@ -72,7 +72,7 @@ if($CatalogCatalogReviewsModel->getTotal() > 0)
         $iRow++;
     }
 }
-$title_grid = _catalog("Moderacion de catalogo");
+$title_grid = _catalog("Moderación de catálogo");
 $class_grid = "catalog_reviews";
 $error_grid = _catalog("No hay productos registrados");
 
