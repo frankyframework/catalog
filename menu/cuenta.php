@@ -54,7 +54,7 @@ if(getCoreConfig('catalog/marketplace/enabled') == 1){
     $menucatalog[1]['children'][] = array(
       "permiso" =>   "administrar_products_catalog_marketplace",
       "url" => $MyRequest->url(SOLICITUDES_PUBLICACIONES_CATALOG),
-      "etiqueta" => "Mis aprovaciones pendientes"
+      "etiqueta" => "Mis aprobaciones pendientes"
     );
   endif;
   if(getCoreConfig('catalog/calificaciones/enabled') == 1){
