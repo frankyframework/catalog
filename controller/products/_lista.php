@@ -73,6 +73,7 @@ if(!empty($departamento))
     $MyMetatag->setTitulo($data['meta_title']);
     $MyMetatag->setDescripcion($data['meta_description']);
     $MyMetatag->setKeywords($data['meta_keywords']);
+    $MyMetatag->setVars($data);
   }
 
 }
@@ -93,6 +94,7 @@ if(!empty($categoria))
     $MyMetatag->setTitulo($data['meta_title']);
     $MyMetatag->setDescripcion($data['meta_description']);
     $MyMetatag->setKeywords($data['meta_keywords']);
+    $MyMetatag->setVars($data);
   }
 
 }
@@ -113,6 +115,7 @@ if(!empty($subcategoria))
     $MyMetatag->setTitulo($data['meta_title']);
     $MyMetatag->setDescripcion($data['meta_description']);
     $MyMetatag->setKeywords($data['meta_keywords']);
+    $MyMetatag->setVars($data);
 
   }
 
