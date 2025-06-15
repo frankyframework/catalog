@@ -58,7 +58,7 @@ class filtrosForm extends \Base\Form\filtrosForm
             ),
             'options' => array(
                 "0" => "En validacion",
-                "1" => "Aprovado",
+                "1" => "Aprobado",
                 "2" => "Declinado",
             ),
             'label_atributos' => array(
