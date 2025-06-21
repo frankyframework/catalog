@@ -82,7 +82,7 @@ if(!empty($id))
 
 $CatalogCategoryModel->setPage(1);
 $CatalogCategoryModel->setTampag(1000);
-$CatalogCategoryModel->setOrdensql("catalog_category.orden ASC");
+$CatalogCategoryModel->setOrdensql("catalog_category.name ASC");
 
 $CatalogCategoryEntity->status(1);
 $CatalogCategoryEntity->store($store);

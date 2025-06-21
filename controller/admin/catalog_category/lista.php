@@ -19,7 +19,7 @@ $CatalogCategoryModel = new CatalogcategoryModel();
 $CatalogcategoryEntity = new CatalogcategoryEntity();
 $CatalogCategoryModel->setPage(1);
 $CatalogCategoryModel->setTampag(1000);
-$CatalogCategoryModel->setOrdensql("catalog_category.orden ASC");
+$CatalogCategoryModel->setOrdensql("catalog_category.name ASC");
 $CatalogcategoryEntity->store($store_b);
 
 $result	 = $CatalogCategoryModel->getData($CatalogcategoryEntity->getArrayCopy());
