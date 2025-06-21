@@ -126,7 +126,10 @@
 </div>
 
 
-
+<script type="text/javascript">
+window.productId = "<?= $id ?>";
+window.album = "<?= $album; ?>";
+</script>
 <script >
 $(document).ready(function()
 {
@@ -136,9 +139,9 @@ $(document).ready(function()
 
 
   $('select[name="set_attribute"]').change(function(){
-      ajax_getCatalogCustomAttrFrm('<?= $id ?>');
+      ajax_getCatalogCustomAttrFrm(window.productId );
   });
-  ajax_getCatalogCustomAttrFrm('<?= $id ?>');
+  ajax_getCatalogCustomAttrFrm(window.productId );
 });
 </script>
 <script>
@@ -246,7 +249,7 @@ var sortGaleria = function() {
           connectWith: ".fondo_galeria",
           update: function(event, ui){
               var newOrder = $(this).sortable('toArray').toString();
-              setOrdenImagesProducts('<?php echo $album; ?>',newOrder);  
+              setOrdenImagesProducts(window.album,newOrder);  
           }  ,
           placeholder: 'ui-state-default'
       });
