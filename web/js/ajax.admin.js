@@ -647,7 +647,7 @@ function AutorizarDatosProducto(id,nuevo_estado)
 {
     if(nuevo_estado == 1) {
         var var_query = {
-            "function": "Catalog_AprovarInformacion",
+            "function": "Catalog_AprobarInformacion",
             "vars_ajax":[id,nuevo_estado,""]
         };
       
@@ -665,7 +665,7 @@ function DeclinarDatosProducto()
     var id = $("form[name=frmdecline]").find("input[name=id]").val();
     var message = $("form[name=frmdecline]").find("textarea[name=message]").val(); 
     var var_query = {
-        "function": "Catalog_AprovarInformacion",
+        "function": "Catalog_AprobarInformacion",
         "vars_ajax":[id,2,message]
     };
   

@@ -127,7 +127,7 @@
             "modulo":"catalog"
         },
         {
-            "php":"admin/calificaciones/aprovar.php",
+            "php":"admin/calificaciones/aprobar.php",
             "css":"",
             "js":[],
             "jquery":[],
@@ -365,7 +365,7 @@
             "modulo":"catalog"
         },
         {
-            "php":"mi-cuenta/calificaciones/aprovar.php",
+            "php":"mi-cuenta/calificaciones/aprobar.php",
             "css":"",
             "js":[],
             "jquery":[],
@@ -568,7 +568,7 @@
             "resource":"administrar_products_catalog_marketplace",
             "constante":"SOLICITUDES_PUBLICACIONES_CATALOG",
             "url":"mi-cuenta/marketplace/catalog/",
-            "nombre":"Aprovacion de productos pendientes",
+            "nombre":"Aprobacion de productos pendientes",
             "ajax":["base/ajax.admin.js"],
             "status":1,
             "editable":1,

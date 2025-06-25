@@ -96,8 +96,8 @@
         <valor>La información de tu producto se guardo correctamente, en breve sera revisada por un moderador para su publicación</valor>
     </mensaje>
     <mensaje>
-        <llave>aprovar_info</llave>
-        <valor>Error al intentar aprovar la información</valor>
+        <llave>aprobar_info</llave>
+        <valor>Error al intentar aprobar la información</valor>
     </mensaje>
     <mensaje>
         <llave>declinar_info</llave>
@@ -112,8 +112,8 @@
         <valor>Parece que hubo un problema al guardar tu información, intenta mas tarde</valor>
     </mensaje>
     <mensaje>
-        <llave>aprovar_user_marketplace</llave>
-        <valor>Error al intentar aprovar la solicitud del usuario</valor>
+        <llave>aprobar_user_marketplace</llave>
+        <valor>Error al intentar aprobar la solicitud del usuario</valor>
     </mensaje>
     <mensaje>
         <llave>declinar_user_marketplace</llave>

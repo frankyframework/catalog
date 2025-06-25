@@ -1288,7 +1288,7 @@ function EliminarComentarioCatalog($id,$status)
 	return $respuesta;
 }
 
-function Catalog_AprovarInformacion($id,$status, $message)
+function Catalog_AprobarInformacion($id,$status, $message)
 {
 
 	$CatalogCatalogReviewsModel = new Catalog\model\CatalogCatalogReviewsModel;
@@ -1318,7 +1318,7 @@ function Catalog_AprovarInformacion($id,$status, $message)
         }
         else
         {
-            $respuesta[] = array("message" => $MyMessageAlert->Message("catalog_".($status == 1 ? "aprovar" : "declinar")."_info"));
+            $respuesta[] = array("message" => $MyMessageAlert->Message("catalog_".($status == 1 ? "aprobar" : "declinar")."_info"));
         }
     }
     else
@@ -1359,7 +1359,7 @@ function Catalog_AutorizarDatosUserMarketplace($id,$status, $message)
         }
         else
         {
-            $respuesta[] = array("message" => $MyMessageAlert->Message("catalog_".($status == 1 ? "aprovar" : "declinar")."_user_marketplace"));
+            $respuesta[] = array("message" => $MyMessageAlert->Message("catalog_".($status == 1 ? "aprobar" : "declinar")."_user_marketplace"));
         }
     }
     else
@@ -1487,7 +1487,7 @@ $MyAjax->register("ajax_getFrmCategpry");
 $MyAjax->register("EliminarCatalogSetAttribute");
 $MyAjax->register("EliminarTienda");
 $MyAjax->register("EliminarComentarioCatalog");
-$MyAjax->register("Catalog_AprovarInformacion");
+$MyAjax->register("Catalog_AprobarInformacion");
 $MyAjax->register("Catalog_AutorizarDatosUserMarketplace");
 $MyAjax->register("ajax_getCatalogSetAttr");
 $MyAjax->register("verificarTienda");

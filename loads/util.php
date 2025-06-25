@@ -801,7 +801,7 @@ function statusUserMArketplace(){
         $dataUM['statusF'] = "En revición";
         switch($dataUM['status']) {
             case 1:
-                $dataUM['statusF'] = "Aprovada";
+                $dataUM['statusF'] = "Aprobada";
                 break;
             case 2:
                 $dataUM['statusF'] = "Rechazada";

@@ -66,10 +66,10 @@ if($CalificacionesModel->getTotal() > 0)
 $title_grid = _calificaciones("Calificaciones y comentarios");
 $class_grid = "calificaciones";
 $error_grid = _calificaciones("No hay calificaciones y/o comentarios registrados");
-$deleteFunction = "Calificaciones_AprovarCalificacion";
+$deleteFunction = "Calificaciones_AprobarCalificacion";
 
 $frm_constante_link = "";
-$MyFrankyMonster->setPHPFile(PROJECT_DIR."/modulos/calificaciones/diseno/admin/calificaciones/aprovar.phtml");
+$MyFrankyMonster->setPHPFile(PROJECT_DIR."/modulos/calificaciones/diseno/admin/calificaciones/aprobar.phtml");
 
 $titulo_columnas_grid = array("createdAt" => _("Fecha"),'item' => _("Item"), "nombre" =>  _("Nombre"),"titulo" => _("Titulo"),"calificacion" => _("Calificacion"));
 $value_columnas_grid = array("createdAt" ,'item', "nombre","titulo","calificacion");

@@ -48,16 +48,16 @@ if($CatalogUsersReviewsModel->getTotal() > 0)
         $thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
         $status = "En validacion";
         $declinar = '<a class="btn_adm_eliminar" data-id="'.$Tokenizer->token('catalog',$registro["id"]).'" href="#desactivar" ></a>';
-        $aprovar = '<a class="btn_adm_aceptar" data-id="'.$Tokenizer->token('catalog',$registro["id"]).'" href="#activar" ><i class="icon icon-valido"></i></a>';
+        $aprobar = '<a class="btn_adm_aceptar" data-id="'.$Tokenizer->token('catalog',$registro["id"]).'" href="#activar" ><i class="icon icon-valido"></i></a>';
         switch($registro["status"]) {
             case 1:
-                $status = "Aprovado";
-                $aprovar = "";
+                $status = "Aprobado";
+                $aprobar = "";
                 $declinar = "";
                 break;
             case 2:
                 $status = "Declinado";
-                $aprovar = "";
+                $aprobar = "";
                 $declinar = "";
                 break;
         }
@@ -85,7 +85,7 @@ if($CatalogUsersReviewsModel->getTotal() > 0)
                 "id" => $Tokenizer->token('catalog',$registro["id"]),
                 "status" => $status,
                 "declinar" => $declinar,
-                "aprovar" => $aprovar,
+                "aprobar" => $aprobar,
                 "ine_anverso" => $ine_anverso,
                 "ine_reverso" => $ine_reverso,
                 "comprobante" => $comprobante,
