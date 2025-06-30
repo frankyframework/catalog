@@ -34,6 +34,12 @@
                 "null":0
             },
             {
+                "name":"iva",
+                "type":"int",
+                "length":11,
+                "null":0
+            },
+            {
                 "name":"marketplace",
                 "type":"int",
                 "length":1,

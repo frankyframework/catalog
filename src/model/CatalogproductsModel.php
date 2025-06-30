@@ -45,7 +45,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     function getData($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["id","uid","parent_id","catalog_products.store","type","set_attribute","name","sku","category","visible_in_search","description","images","videos","url_key","meta_title","meta_keyword","meta_description","price","stock","iva","incluye_iva","createdAt","updateAt","status",
+        $campos = ["id","uid","parent_id","catalog_products.store","type","set_attribute","name","sku","category","visible_in_search","description","images","videos","url_key","meta_title","meta_keyword","meta_description","price","stock","incluye_iva","createdAt","updateAt","status",
         "in_stock","saleable","min_qty","stock_infinito","envio_requerido","configurable","in_validation","validate"];
 
         foreach($data as $k => $v)
@@ -82,7 +82,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
         "catalog_products.visible_in_search","catalog_products.description",
         "images","videos","catalog_products.url_key","catalog_products.meta_title",
         "catalog_products.meta_keyword","catalog_products.meta_description",
-        "price","stock","iva","incluye_iva","catalog_products.createdAt",
+        "price","stock","incluye_iva","catalog_products.createdAt",
         "catalog_products.updateAt","catalog_products.status",
         "in_stock","saleable","min_qty","stock_infinito","envio_requerido","configurable","in_validation","validate"];
 
@@ -160,7 +160,7 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
         "catalog_products.visible_in_search","catalog_products.description",
         "images","videos","catalog_products.url_key","catalog_products.meta_title",
         "catalog_products.meta_keyword","catalog_products.meta_description",
-        "price","stock","iva","incluye_iva","catalog_products.createdAt",
+        "price","stock","incluye_iva","catalog_products.createdAt",
         "catalog_products.updateAt","catalog_products.status",
         "in_stock","saleable","min_qty","stock_infinito","envio_requerido","configurable","in_validation","validate"];
 
@@ -241,11 +241,9 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
     function getInfoProducto($id)
     {
 
-        $campos = ["catalog_products.id","catalog_products.uid","catalog_products.store","precio","sku","ecommerce_precios.incluye_iva","ecommerce_precios.iva","name as nombre","images as imagen","stock","url_key","min_qty","stock_infinito","saleable","in_stock","min_qty","envio_requerido"];
+        $campos = ["catalog_products.id","catalog_products.uid","catalog_products.store","price","sku","incluye_iva","name as nombre","images as imagen","stock","url_key","min_qty","stock_infinito","saleable","in_stock","min_qty","envio_requerido"];
 
         $this->where()->addAnd("catalog_products.id",$id,'=');
-
-        $this->from()->addLeft('ecommerce_precios','catalog_products.id','ecommerce_precios.id_producto');
 
         return $this->getColeccion($campos);
     }

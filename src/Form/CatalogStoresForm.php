@@ -91,6 +91,21 @@ class CatalogStoresForm extends \Franky\Form\Form
         );
 
         $this->add(array(
+            'name' => 'iva',
+            'label' => _catalog('IVA'),
+            'type'  => 'text',
+            'required'  => true,
+            'atributos' => array(
+                'class'       => 'required',
+                'maxlength' => 2
+            ),
+            'label_atributos' => array(
+                'class'       => 'desc_form_obligatorio'
+            )
+        )
+    );
+
+        $this->add(array(
             'name' => 'marketplace',
             'type'  => 'checkbox',
             'atributos' => array(

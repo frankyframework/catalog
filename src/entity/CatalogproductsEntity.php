@@ -23,7 +23,6 @@ class CatalogproductsEntity
     private $meta_description;
     private $price;
     private $stock;
-    private $iva;
     private $incluye_iva;
     private $createdAt;
     private $updateAt;
@@ -66,7 +65,6 @@ class CatalogproductsEntity
         $this->meta_description = (isset($data["meta_description"]) ? $data["meta_description"] : null);
         $this->price = (isset($data["price"]) ? $data["price"] : null);
         $this->stock = (isset($data["stock"]) ? $data["stock"] : null);
-        $this->iva = (isset($data["iva"]) ? $data["iva"] : null);
         $this->incluye_iva = (isset($data["incluye_iva"]) ? $data["incluye_iva"] : null);
         $this->createdAt = (isset($data["createdAt"]) ? $data["createdAt"] : null);
         $this->updateAt = (isset($data["updateAt"]) ? $data["updateAt"] : null);
@@ -132,8 +130,6 @@ class CatalogproductsEntity
     public function price($price = null){ if($price !== null){ $this->price=$price; }else{ return $this->price; } }
 
     public function stock($stock = null){ if($stock !== null){ $this->stock=$stock; }else{ return $this->stock; } }
-
-    public function iva($iva = null){ if($iva !== null){ $this->iva=$iva; }else{ return $this->iva; } }
 
     public function incluye_iva($incluye_iva = null){ if($incluye_iva !== null){ $this->incluye_iva=$incluye_iva; }else{ return $this->incluye_iva; } }
 

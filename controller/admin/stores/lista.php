@@ -69,10 +69,10 @@ $class_grid = "cont_categorias_blog";
 $error_grid = _catalog("No hay tiendas registradas");
 $deleteFunction = "EliminarTienda";
 $frm_constante_link = ADMIN_FRM_CATALOG_STORES;
-$titulo_columnas_grid = array("_id" => _catalog("ID"),"nombre" => _catalog("Nombre"),"idioma" => _catalog("Idioma"),"moneda_nombre" => _catalog("Moneda"),"url" => _catalog("URL"));
-$value_columnas_grid = array("_id", "nombre","idioma","moneda_nombre","url");
+$titulo_columnas_grid = array("_id" => _catalog("ID"),"nombre" => _catalog("Nombre"),"idioma" => _catalog("Idioma"),"moneda_nombre" => _catalog("Moneda"),"iva" => _catalog("IVA"),"url" => _catalog("URL"));
+$value_columnas_grid = array("_id", "nombre","idioma","moneda_nombre","iva","url");
 
-$css_columnas_grid = array("_id" => "w-xxxx-2" ,"nombre" => "w-xxxx-3" ,"idioma" => "w-xxxx-1" ,"moneda_nombre" => "w-xxxx-2","url" => "w-xxxx-2" );
+$css_columnas_grid = array("_id" => "w-xxxx-2" ,"nombre" => "w-xxxx-3" ,"idioma" => "w-xxxx-1" ,"moneda_nombre" => "w-xxxx-1","iva" => "w-xxxx-1","url" => "w-xxxx-2" );
 
 $permisos_grid = "administrar_stores_catalog";
 $MyFiltrosForm = new filtrosForm('paginar');

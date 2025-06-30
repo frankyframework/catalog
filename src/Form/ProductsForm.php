@@ -147,23 +147,6 @@ class ProductsForm  extends \Franky\Form\Form
             )
         );
 
-
-        $this->add(array(
-                'name' => 'iva',
-                'label' => _catalog('IVA'),
-                'type'  => 'text',
-                'required'  => false,
-                'atributos' => array(
-                'class'   => "",
-                    'maxlength' => 2,
-                    'placeholder'=>'IVA'
-                ),
-                'label_atributos' => array(
-                    'class'       => 'desc_form_obligatorio'
-                )
-            )
-        );
-
         $this->add(array(
             'name' => 'incluye_iva',
             'type'  => 'checkbox',

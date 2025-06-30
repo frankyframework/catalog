@@ -97,12 +97,6 @@
                 "null":1
             },
             {
-                "name":"iva",
-                "type":"int",
-                "length":3,
-                "null":1
-            },
-            {
                 "name":"incluye_iva",
                 "type":"int",
                 "length":1,

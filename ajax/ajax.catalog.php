@@ -735,7 +735,7 @@ function ajax_catalog_importar_producto($id)
       
         $atributos_xls = [
             "type","store","set_attribute","configurable","parent_id","name","sku","category","description","visible_in_search","stock","in_stock","stock_infinito","saleable","min_qty","price",
-            "iva","incluye_iva","envio_requerido","meta_title","meta_description","meta_keyword","url_key","status","new_images"
+            "incluye_iva","envio_requerido","meta_title","meta_description","meta_keyword","url_key","status","new_images"
         ];
 
         $_xls = $xls->rows();

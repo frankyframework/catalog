@@ -24,8 +24,7 @@ $modulos = getModulos();
 
 if(in_array('ecommerce',$modulos))
 {
-    $ObserverManager->addObserver('save_catalog_product','catalog_setPriceEcommerce');
-    $ObserverManager->addObserver('edit_catalog_product','catalog_setPriceEcommerce');
+  
     $ObserverManager->addObserver('prepara_producto_carrito','catalog_validaStockCarrito');
     $ObserverManager->addObserver('prepara_orden_ajax_ecommerce','catalog_validaStockCompra');
     $ObserverManager->addObserver('prepara_orden_ecommerce','catalog_validaStockCompras');

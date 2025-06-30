@@ -22,7 +22,7 @@ class CatalogproductrelatedModel  extends \Franky\Database\Mysql\objectOperation
     {
         $data = $this->optimizeEntity($data);
         $campos = ["id_parent","id_product","name","sku",'images','url_key',
-            "price","stock","iva","incluye_iva","saleable","in_stock","min_qty","stock_infinito"];
+            "price","stock","incluye_iva","saleable","in_stock","min_qty","stock_infinito"];
 
         foreach($data as $k => $v)
         {

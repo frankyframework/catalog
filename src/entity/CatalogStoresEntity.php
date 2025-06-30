@@ -13,6 +13,7 @@ class CatalogStoresEntity
     private $createdAt;
     private $updateAt;
     private $marketplace;
+    private $iva;
 
     
     public function __construct($data = null)
@@ -34,6 +35,7 @@ class CatalogStoresEntity
         $this->createdAt = (isset($data["createdAt"]) ? $data["createdAt"] : null);
         $this->updateAt = (isset($data["updateAt"]) ? $data["updateAt"] : null);
         $this->marketplace = (isset($data["marketplace"]) ? $data["marketplace"] : null);
+        $this->iva = (isset($data["iva"]) ? $data["iva"] : null);
 
     }
     
@@ -66,6 +68,8 @@ class CatalogStoresEntity
     public function updateAt($updateAt = null){ if($updateAt != null){ $this->updateAt=$updateAt; }else{ return $this->updateAt; } }
 
     public function marketplace($marketplace = null){ if($marketplace != null){ $this->marketplace=$marketplace; }else{ return $this->marketplace; } }
+
+    public function iva($iva = null){ if($iva != null){ $this->iva=$iva; }else{ return $this->iva; } }
   
 }
 ?>

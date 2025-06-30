@@ -239,34 +239,6 @@ function catalog_getPriceMaxMinProduct()
     return $precio;
 }
 
-function catalog_setPriceEcommerce($data)
-{
-
-
-    $PreciosModel   = new \Ecommerce\model\PreciosModel();
-    $PreciosEntity  = new \Ecommerce\entity\PreciosEntity();
-    $PreciosEntity2  = new \Ecommerce\entity\PreciosEntity();
-
-    if($data['saleable'] == 1)
-    {
-        $PreciosEntity->precio($data['price']);
-        $PreciosEntity->iva($data['iva']);
-        $PreciosEntity->incluye_iva($data['incluye_iva']);
-        $PreciosEntity2->id_producto($data['id']);
-        $PreciosEntity->id_moneda(1);
-        $PreciosEntity->id_producto($data['id']);
-
-        if($PreciosModel->getData($PreciosEntity2->getArrayCopy()) == REGISTRO_SUCCESS)
-        {
-            $result2 = $PreciosModel->updateByIdProducto($PreciosEntity->getArrayCopy());
-        }
-        else {
-            $result2 = $PreciosModel->save($PreciosEntity->getArrayCopy());
-        }
-
-    }
-}
-
 function catalog_validaStockCarrito($id,$n)
 {
     global $MyRequest;
