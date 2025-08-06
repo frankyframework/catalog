@@ -24,8 +24,9 @@ $category  = $MyRequest->getRequest('category');
 $description  = $MyRequest->getRequest('description','',true);
 $principal  = $MyRequest->getRequest('principal');
 $stock  = $MyRequest->getRequest('stock');
+$stock_infinito  = $MyRequest->getRequest('stock_infinito');
 $price  = $MyRequest->getRequest('price');
-$iva  = $MyRequest->getRequest('iva');
+
 $visible_in_search  = $MyRequest->getRequest('visible_in_search');
 $CatalogproductsEntity->description($description);
 $CatalogproductsEntity->sku(getFriendly($CatalogproductsEntity->sku()));
@@ -40,10 +41,7 @@ if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChan
     $CatalogproductsEntity->validate(0);
 
 }
-if(empty($iva))
-{
-    $CatalogproductsEntity->iva(0);
-}
+
 if(empty($price))
 {
     $CatalogproductsEntity->price(0);
@@ -52,6 +50,11 @@ if(empty($stock))
 {
     $CatalogproductsEntity->stock(0);
 }
+if(empty($stock_infinito))
+{
+    $CatalogproductsEntity->stock_infinito(0);
+}
+
 if(empty($visible_in_search))
 {
     $CatalogproductsEntity->visible_in_search(0);

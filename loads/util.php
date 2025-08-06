@@ -322,37 +322,25 @@ function catalog_validaStockCompra()
 
 }
 
-function catalog_restaStock($pedido)
+function catalogRestaStock($idProduct,$qty)
 {
-    global $MySession;
     $CatalogproductsModel          = new \Catalog\model\CatalogproductsModel();
     $CatalogproductsEntity         = new \Catalog\entity\CatalogproductsEntity();
-    $USERS =  new \Base\model\USERS;
-    $entityUser = new \Base\entity\users;
 
-    $detalle_pedido = getPedido($pedido);
+    $CatalogproductsModel->getInfoProducto($idProduct);
+    $registro = $CatalogproductsModel->getRows();
 
-    foreach($detalle_pedido['productos'] as $producto)
+    if($registro['stock_infinito'] == 0)
     {
-        $CatalogproductsEntity->exchangeArray([]);
-
-        $CatalogproductsModel->getInfoProducto($producto['id']);
-        $registro = $CatalogproductsModel->getRows();
-
-        if($registro['stock_infinito'] == 0)
+        $stock = $registro['stock'] - $qty;
+        $CatalogproductsEntity->stock($stock);
+        if($stock == 0)
         {
-            $stock = $registro['stock'] - $producto['qty'];
-            $CatalogproductsEntity->stock($stock);
-            if($stock == 0)
-            {
-                $CatalogproductsEntity->in_stock(0);
-            }
-            $CatalogproductsEntity->id($producto['id']);
-
-            $CatalogproductsModel->save($CatalogproductsEntity->getArrayCopy());
+            $CatalogproductsEntity->in_stock(0);
         }
+        $CatalogproductsEntity->id($idProduct);
 
-
+        $CatalogproductsModel->save($CatalogproductsEntity->getArrayCopy());
     }
 }
 
