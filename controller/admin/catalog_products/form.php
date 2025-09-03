@@ -22,7 +22,7 @@ $data = $MyFlashMessage->getResponse();
 $galeria_frm = "";
 
 $tiendas = getCatalogStores();	
-if(empty($store)){
+if(empty($store) || !isset($tiendas[$store])){
         foreach($tiendas as $k => $v)
         {
                 $store = $k;
