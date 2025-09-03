@@ -110,7 +110,7 @@ getCoreConfig('catalog/marketplace/set-global') == 0)
 {
     $uid = $MySession->getVar('id');
 }
-$set_attribute = getAttributesSet($uid);
+$set_attribute = getAttributesSet($uid,$store);
 
 $adminForm->setOptionsInput("set_attribute",$set_attribute);
 $adminForm->setOptionsInput("category[]",$categorys);

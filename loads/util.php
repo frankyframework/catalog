@@ -125,7 +125,7 @@ function getCatalogCategorys($search = [])
 
 
 
-function getAttributesSet($uid='')
+function getAttributesSet($uid='', $store='')
 {
     $CatalogsetattributesModel = new Catalog\model\CatalogsetattributesModel();
     $CatalogsetattributesEntity = new Catalog\entity\CatalogsetattributesEntity();
@@ -134,6 +134,9 @@ function getAttributesSet($uid='')
     $CatalogsetattributesEntity->status(1);
     if(!empty($uid)) {
         $CatalogsetattributesEntity->uid($uid);
+    }
+    if(!empty($store)) {
+        $CatalogsetattributesEntity->store($store);
     }
     $CatalogsetattributesModel->getData($CatalogsetattributesEntity->getArrayCopy());
     $total			= $CatalogsetattributesModel->getTotal();
