@@ -106,6 +106,16 @@ $(document).ready(function(){
              else{
                   $('.taps').hide();
              }
+
+             if($(this).val() == "radio" || $(this).val() == "select")
+             {
+                $('input[name="searchable"]').prop('disabled',false);
+
+             }
+             else{
+                $('input[name="searchable"]').prop('disabled',true);
+                $('input[name="searchable"]').prop('checked',false);
+             }
          });
          
          $('.add_option').click(function(e){

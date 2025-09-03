@@ -1,0 +1,38 @@
+<?php
+use Catalog\model\CatalogproductsModel;
+use Catalog\entity\CatalogproductsEntity;
+
+$CatalogproductsModel = new CatalogproductsModel();
+$CatalogproductsEntity = new CatalogproductsEntity();
+
+$CatalogproductsModel->setTampag(99999999999);
+
+$result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
+
+
+if($CatalogproductsModel->getTotal() > 0)
+{
+
+   
+
+    while($registro = $CatalogproductsModel->getRows())
+    {
+        $dataAttrs = json_encode(getCustomAttrsResolver($registro['id']));
+        saveCustomAttrsDatainShell($registro['id'],$dataAttrs);
+    }
+}
+
+function saveCustomAttrsDatainShell($id, $data) {
+
+    $CatalogproductsModel = new CatalogproductsModel();
+    $CatalogproductsEntity = new CatalogproductsEntity();
+
+    $CatalogproductsEntity->id($id);
+    $CatalogproductsEntity->updateAt(date('Y-m-d H:i:s'));
+    $CatalogproductsEntity->custom_attributes($data);
+    if($CatalogproductsModel->save($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
+        shellFontColor("[+] ".$id." --> ".$data,"verde");
+    } else {
+        shellFontColor("[+] ".$id." --> ".$data,"rojo");
+    }
+}
