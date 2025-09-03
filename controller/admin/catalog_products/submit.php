@@ -67,6 +67,14 @@ else{
     $CatalogproductsEntity->url_key(getFriendly($CatalogproductsEntity->url_key()));
 }
 
+$tiendas = getCatalogStores();	
+if(empty($CatalogproductsEntity->store()) || !isset($tiendas[$CatalogproductsEntity->store()])){
+        foreach($tiendas as $k => $v)
+        {
+            $CatalogproductsEntity->store($k);
+            break;
+        }   
+}
 
 $album = $MySession->GetVar('addProduct');
 
