@@ -1041,6 +1041,51 @@ function saveDataCatalogCustomAttribute($id_ref,$entity,$set)
     
 }
 
+function getCustomAttrsResolver($id_ref)
+{
+
+    $CustomattributesModel              = new Catalog\model\CustomattributesModel();
+    $CustomattributesEntity             = new Catalog\entity\CustomattributesEntity();
+    $CustomattributesvaluesModel        = new Catalog\model\CustomattributesvaluesModel();
+    $CustomattributesvaluesEntity       = new Catalog\entity\CustomattributesvaluesEntity();
+
+    $custom_imputs = [];
+    $CustomattributesEntity->entity("catalog_products");
+    $CustomattributesEntity->status(1);
+    $CustomattributesEntity->visible(1);
+    $CustomattributesModel->setTampag(100);
+    $CustomattributesModel->getData($CustomattributesEntity->getArrayCopy());
+    while($data_attrs = $CustomattributesModel->getRows()){
+        $data_attrs['data'] = json_decode($data_attrs['data'],true);
+        $custom_imputs[$data_attrs['id']] = $data_attrs;
+    }
+    $CustomattributesEntity->exchangeArray([]);
+    $CustomattributesEntity->entity("catalog_products");
+    $CustomattributesEntity->status(1);
+    $CustomattributesEntity->searchable(1);
+    $CustomattributesModel->setTampag(100);
+    $CustomattributesModel->getData($CustomattributesEntity->getArrayCopy());
+    while($data_attrs = $CustomattributesModel->getRows()){
+        $data_attrs['data'] = json_decode($data_attrs['data'],true);
+        $custom_imputs[$data_attrs['id']] = $data_attrs;
+    }
+
+    $customAttrs = [];
+    $CustomattributesvaluesEntity->entity("catalog_products");
+    $CustomattributesvaluesEntity->id_ref($id_ref);
+    $CustomattributesvaluesModel->setTampag(100);
+    $CustomattributesvaluesModel->getData($CustomattributesvaluesEntity->getArrayCopy());
+    while($values = $CustomattributesvaluesModel->getRows()) {
+        if(isset($custom_imputs[$values['id_attribute']])) {
+            $customAttrs['values'][$custom_imputs[$values['id_attribute']]['name']] = $values['value'];
+            $customAttrs['front_values'][$custom_imputs[$values['id_attribute']]['name']] = (!in_array($custom_imputs[$values['id_attribute']]['type'],["textarea","text","file","multifile"]) ? $custom_imputs[$values['id_attribute']]['data'][$values['value']] : $values['value']);
+        }
+        
+    }
+
+    return $customAttrs;
+}
+
 function getUsernameFb($url)
 {
     $url = parse_url($url);

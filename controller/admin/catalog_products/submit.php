@@ -172,7 +172,10 @@ if(!$error)
 
         saveDataCatalogCustomAttribute($id,'catalog_products',$CatalogproductsEntity->set_attribute());
 
-
+        $CatalogproductsEntity->exchangeArray([]);
+        $CatalogproductsEntity->id($id);
+        $CatalogproductsEntity->custom_attributes(json_encode(getCustomAttrsResolver($id)));
+        $CatalogproductsModel->save($CatalogproductsEntity->getArrayCopy());
         
         $MySession->UnsetVar('album_'.$album);
         $MySession->UnsetVar('addProduct');

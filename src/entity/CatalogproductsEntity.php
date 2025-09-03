@@ -35,6 +35,7 @@ class CatalogproductsEntity
     private $configurable;
     private $in_validation;
     private $validate;
+    private $custom_attributes;
 
 
     public function __construct($data = null)
@@ -78,6 +79,7 @@ class CatalogproductsEntity
         $this->store = (isset($data["store"]) ? $data["store"] : null);
         $this->in_validation = (isset($data["in_validation"]) ? $data["in_validation"] : null);
         $this->validate = (isset($data["validate"]) ? $data["validate"] : null);
+        $this->custom_attributes = (isset($data["custom_attributes"]) ? $data["custom_attributes"] : null);
     }
 
     public function getArrayCopy()
@@ -157,5 +159,6 @@ class CatalogproductsEntity
 
     public function validate($validate = null){ if($validate != null){ $this->validate=$validate; }else{ return $this->validate; } }
 
+    public function custom_attributes($custom_attributes = null){ if($custom_attributes != null){ $this->custom_attributes=$custom_attributes; }else{ return $this->custom_attributes; } }
 }
 ?>

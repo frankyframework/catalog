@@ -180,6 +180,12 @@
                 "null":0
             },
             {
+                "name":"custom_attributes",
+                "type":"text",
+                "null":0,
+                "defaukt" : ""
+            },
+            {
                 "name":"createdAt",
                 "type":"datetime",
                 "null":0
