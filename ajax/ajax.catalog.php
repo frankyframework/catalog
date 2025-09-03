@@ -1370,7 +1370,7 @@ function Catalog_AutorizarDatosUserMarketplace($id,$status, $message)
 	return $respuesta;
 }
 
-function ajax_getCatalogSetAttr($id,$parent_id)
+function ajax_getCatalogSetAttr($id,$store,$parent_id)
 {
     global $MySession;
     global $MyAccessList;
@@ -1408,7 +1408,7 @@ function ajax_getCatalogSetAttr($id,$parent_id)
         $dataParent = $CatalogsetattributesModel->getRows();        
         $dataParent["attributes"] = (!empty($dataParent["attributes"]) ? json_decode($dataParent["attributes"],true) : []);
     }
-    $custom_attribtues = getDataCatalogCustomAttribute(0,'catalog_products',$uid);
+    $custom_attribtues = getDataCatalogCustomAttribute(0,'catalog_products',$uid,$store);
     $_custom_attribtues = [];
     foreach($custom_attribtues['custom_imputs'] as $attr)
     {

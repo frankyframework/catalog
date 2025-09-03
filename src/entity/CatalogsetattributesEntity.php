@@ -13,6 +13,7 @@ class CatalogsetattributesEntity
     private $orden;
     private $createdAt;
     private $updateAt;
+    private $store;
 
     public function __construct($data = null)
     {
@@ -33,6 +34,7 @@ class CatalogsetattributesEntity
         $this->orden = (isset($data["orden"]) ? $data["orden"] : null);
         $this->createdAt = (isset($data["createdAt"]) ? $data["createdAt"] : null);
         $this->updateAt = (isset($data["updateAt"]) ? $data["updateAt"] : null);
+        $this->store = (isset($data["store"]) ? $data["store"] : null);
     }
 
     public function getArrayCopy()
@@ -44,6 +46,7 @@ class CatalogsetattributesEntity
     {
         return array(
             "name" => array("valor" => $this->name,"required"),
+            "Store" => array("valor" => $this->store,"required"),
         );
     }
 
@@ -66,5 +69,7 @@ class CatalogsetattributesEntity
     public function createdAt($createdAt = null){ if($createdAt != null){ $this->createdAt=$createdAt; }else{ return $this->createdAt; } }
 
     public function updateAt($updateAt = null){ if($updateAt != null){ $this->updateAt=$updateAt; }else{ return $this->updateAt; } }
+
+    public function store($store = null){ if($store != null){ $this->store=$store; }else{ return $this->store; } }
 }
 ?>

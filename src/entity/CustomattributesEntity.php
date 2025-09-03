@@ -6,6 +6,7 @@ class CustomattributesEntity
 {
     private $id;
     private $uid;
+    private $store;
     private $name;
     private $label;
     private $type;
@@ -35,6 +36,7 @@ class CustomattributesEntity
     {
         $this->id = (isset($data["id"]) ? $data["id"] : null);
         $this->uid = (isset($data["uid"]) ? $data["uid"] : null);
+        $this->store = (isset($data["store"]) ? $data["store"] : null);
         $this->name = (isset($data["name"]) ? $data["name"] : null);
         $this->label = (isset($data["label"]) ? $data["label"] : null);
         $this->type = (isset($data["type"]) ? $data["type"] : null);
@@ -61,6 +63,7 @@ class CustomattributesEntity
     public function setValidation()
     {
         return array( "Nombre" => array("valor" => $this->name,"required"),
+        "Store" => array("valor" => $this->store,"required"),
         "Etiqueta" => array("valor" => $this->label,"required"),
         "Tipo campo" => array("valor" => $this->type,"required"),
         "Entidad" => array("valor" => $this->entity,"required")
@@ -71,9 +74,9 @@ class CustomattributesEntity
 
     public function id($id = null){ if($id != null){ $this->id=$id; }else{ return $this->id; } }
 
-    public function parent_id($parent_id = null){ if($parent_id != null){ $this->parent_id=$parent_id; }else{ return $this->parent_id; } }
-
     public function uid($uid = null){ if($uid != null){ $this->uid=$uid; }else{ return $this->uid; } }
+
+    public function store($store = null){ if($store != null){ $this->store=$store; }else{ return $this->store; } } 
 
     public function name($name = null){ if($name != null){ $this->name=$name; }else{ return $this->name; } }
 

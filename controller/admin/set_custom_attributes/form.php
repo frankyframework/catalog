@@ -35,6 +35,7 @@ if(!empty($id)) {
 }
 $adminForm->setOptionsInput("attributes[]",$_custom_attribtues);
 $adminForm->setOptionsInput("parent_id",$set_attribute);
+$adminForm->setOptionsInput("store", getCatalogStores());
 $adminForm->setData($data);
 $adminForm->setAtributoInput("callback","value", urldecode($callback));
 

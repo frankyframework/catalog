@@ -22,6 +22,13 @@
                 "null":1
             },
             {
+                "name":"store",
+                "type":"int",
+                "length":11,
+                "null":0,
+                "default":1
+            },
+            {
                 "name":"name",
                 "type":"varchar",
                 "length":255,

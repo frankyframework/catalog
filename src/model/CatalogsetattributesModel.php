@@ -21,7 +21,7 @@ class CatalogsetattributesModel  extends \Franky\Database\Mysql\objectOperations
     function getData($data = array())
     {
         $data = $this->optimizeEntity($data);
-        $campos = ["id","uid","parent_id","name","description","attributes","status","orden","createdAt"];
+        $campos = ["id","uid","parent_id","name","description","attributes","status","orden","createdAt","store"];
 
         foreach($data as $k => $v)
         {

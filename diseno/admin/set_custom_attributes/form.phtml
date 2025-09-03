@@ -10,6 +10,7 @@
         <?php if(!empty($id)): ?>
         <?php  echo $adminForm->get("id"); ?>
           <?php endif; ?>
+          <?php  echo $adminForm->getRow("store"); ?>
           <?php  echo $adminForm->getRow("parent_id"); ?>
           <?php  echo $adminForm->getRow("name"); ?>
           <?php  echo $adminForm->getRow("description"); ?>
@@ -29,6 +30,9 @@ $(document).ready(function()
 
 
 $('select[name="parent_id"]').change(function(){
+  ajax_getCatalogSetAttr('<?= $id ?>');
+});
+$('select[name="store"]').change(function(){
   ajax_getCatalogSetAttr('<?= $id ?>');
 });
 ajax_getCatalogSetAttr('<?= $id ?>');

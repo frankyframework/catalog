@@ -561,7 +561,7 @@ function ajax_getCatalogSetAttr(id)
     
     var var_query = {
           "function": "ajax_getCatalogSetAttr",
-          "vars_ajax":[id,$("select[name=parent_id]").val()]
+          "vars_ajax":[id,$("select[name=store]").val(),$("select[name=parent_id]").val()]
         };
     
     pasarelaAjax('POST', var_query, "ajax_getCatalogSetAttrHTML",[]);

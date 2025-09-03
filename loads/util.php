@@ -771,7 +771,7 @@ function statusUserMArketplace(){
     return $dataUM;
 }
 
-function getDataCatalogCustomAttribute($id_ref,$entity,$uid='')
+function getDataCatalogCustomAttribute($id_ref,$entity,$uid='',$store='')
 {
     global $MyConfigure;
     $CustomattributesModel              = new Catalog\model\CustomattributesModel();
@@ -787,6 +787,9 @@ function getDataCatalogCustomAttribute($id_ref,$entity,$uid='')
     $CustomattributesEntity->status(1);
     if(!empty($uid)){
         $CustomattributesEntity->uid($uid);
+    }
+    if(!empty($store)){
+        $CustomattributesEntity->store($store);
     }
 
     $CustomattributesModel->setTampag(100);

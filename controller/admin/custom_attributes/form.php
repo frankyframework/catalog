@@ -55,6 +55,7 @@ if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChan
     ];
     $adminForm->setOptionsInput("type", $typesInput);
 }
+$adminForm->setOptionsInput("store", getCatalogStores());
 $adminForm->setData($data);
 $categorias = getCatalogCategorys('sql',['status' => 1]);
 $adminForm->setAtributoInput("callback","value", urldecode($callback));
