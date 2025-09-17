@@ -42,9 +42,14 @@ else{
     $orden = $MyPaginacion->getCampoOrden();
 }
 
-if(getCoreConfig('catalog/product/showdelete') == 0){
-    $CatalogproductsEntity->status(1);
+
+if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+{
+    if(getCoreConfig('catalog/product/showdelete') == 0){
+        $CatalogproductsEntity->status(1);
+    }
 }
+
 $CatalogproductsEntity->store($store_b);
 $CatalogproductsModel->setPage($MyPaginacion->getPage());
 $CatalogproductsModel->setTampag($MyPaginacion->getTampageDefault());
@@ -71,7 +76,7 @@ if($CatalogproductsModel->getTotal() > 0)
         $thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
 
         
-        $img = "";
+        $img = "&nbsp;";
         $_img = getCoreConfig('catalog/product/placeholder');
         if($_img != "" && file_exists(PROJECT_DIR.$_img))
         {
