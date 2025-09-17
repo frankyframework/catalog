@@ -77,7 +77,8 @@
 </div>
 <script type="text/javascript">
 window.admingrid = <?php echo json_encode($lista_admin_data); ?>;
-window.showDelete = <?= getCoreConfig('catalog/product/showdelete'); ?>;
+window.showDelete = <?=(getCoreConfig('catalog/product/showdelete') == 1 ? 1 : 0) ?>;
+
 </script>
 <script >
 $(window).load(function(){
