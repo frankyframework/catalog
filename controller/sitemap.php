@@ -1,10 +1,13 @@
 <?php
 use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
+use Catalog\model\CatalogUsersModel;
+use Catalog\entity\CatalogUsersEntity;
 
 $CatalogproductsModel = new CatalogproductsModel();
 $CatalogproductsEntity = new CatalogproductsEntity();
-
+$CatalogUsersModel  = new CatalogUsersModel();
+$CatalogUsersEntity = new CatalogUsersEntity();
 
 $CatalogproductsModel->setPage(1);
 $CatalogproductsModel->setTampag(100000);
@@ -27,5 +30,13 @@ if($CatalogproductsModel->getDataSearch($CatalogproductsEntity->getArrayCopy()) 
 
         }
   }
+}
+
+$CatalogUsersEntity->verificado(1);
+if($CatalogUsersModel->getData($CatalogUsersEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
+  while ($dataUser = $CatalogUsersModel->getRows()){
+    $catalogo[] = ["loc" => MARKETPLACE, "vars" =>['username' => $dataUser['username']],"priority" => "0.8","changefreq" => "daily"];  
+  }
+
 }
 return $catalogo;
