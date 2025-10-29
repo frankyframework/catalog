@@ -32,6 +32,12 @@ if($CatalogproductsModel->getDataSearch($CatalogproductsEntity->getArrayCopy()) 
   }
 }
 
+$CatalogUsersModel->setPage(1);
+$CatalogUsersModel->setTampag(100000);
+$CatalogUsersModel->setOrdensql("catalog_users.username ASC");
+
+
+
 $CatalogUsersEntity->verificado(1);
 if($CatalogUsersModel->getData($CatalogUsersEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
   while ($dataUser = $CatalogUsersModel->getRows()){
