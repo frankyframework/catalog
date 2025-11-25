@@ -3,7 +3,8 @@ $_img = getCoreConfig('catalog/product/placeholder');
 $principal = "";
 if($_img != "" && file_exists(PROJECT_DIR.$_img))
 {
-    $principal =  makeHTMLImg(imageResize($_img,700,700, true),"","",$data_detalle['name'],"id='img_zoom'");;
+    $img = imageResize($_img,700,700, true);
+    $principal =  makeHTMLImg($img,"","",$data_detalle['name'],'id="img_zoom"');
 }
 ?>
 
@@ -18,7 +19,9 @@ if(!empty($data_detalle['images']))
         {
             if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img']))
             {
-                    echo makeHTMLImg(imageResize($MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'],700,700, true),"","",$data_detalle['name'],"id='img_zoom'");
+                $img = imageResize($MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'],700,700, true);
+                $imgori = $MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'];
+                echo makeHTMLImg($img,"","",$data_detalle['name'],'id="img_zoom" data-large="'.$imgori.'" data-scale="2" data-share="" class="thumb_gal" ');
             }
             else
             {
@@ -47,8 +50,8 @@ if(!empty($data_detalle['images'])   && count($data_detalle['images']) > 1)
         if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img']))
         { ?>
             <div>
-            <a href="javascript:void(0);" onclick="setImgZoom('<?=imageResize($MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'],700,700, true)?>')">
-            <?=makeHTMLImg(imageResize($MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'],100,100, true),"","",$data_detalle['name'],'');?>
+            <a href="javascript:void(0);" onclick="setImgZoom('<?=imageResize($MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'],700,700, true)?>','<?= $MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img']?>')">
+            <?=makeHTMLImg(imageResize($MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'],100,100, true),"","",$data_detalle['name']);?>
             </a>
             </div>
         <?php
@@ -73,8 +76,12 @@ if(!empty($data_detalle['images'])   && count($data_detalle['images']) > 1)
             focusOnSelect: true
           });
   });
-  var setImgZoom = function(img)
+  var  setImgZoom= function(img, large)
   {
       $('#img_zoom').attr('src',img);
+      $('#img_zoom').attr('data-large',large);
+      
   }
+  $('img.thumb_gal').fullscreenimage()
+    
 </script>

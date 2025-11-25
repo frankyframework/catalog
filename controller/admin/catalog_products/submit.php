@@ -132,7 +132,7 @@ if(!$error)
     
     if(empty($id))
     {
-
+        $CatalogproductsEntity->custom_attributes("");
         $CatalogproductsEntity->createdAt(date('Y-m-d H:i:s'));
         $CatalogproductsEntity->status(1);
     }

@@ -178,17 +178,17 @@ if($CatalogproductsModel->getDataSearch($CatalogproductsEntity->getArrayCopy()) 
 
         if(in_array($MyFrankyMonster->MySeccion(),[CATALOG_SEARCH_DEPARTAMENTO])):
 
-          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_CATEGORY,['departamento' => $departamento,'categoria'   => $registro['url_key']]);
+          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_CATEGORY,['departamento' => $departamento,'categoria'   => $registro[getCoreConfig('catalog/product/urlkey')]]);
         
         elseif(in_array($MyFrankyMonster->MySeccion(),[CATALOG_SEARCH_CATEGORY])):
 
-          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['departamento' => $departamento,'categoria'  =>$categoria,'subcategoria'  => $registro['url_key']]);
+          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_SUBCATEGORY,['departamento' => $departamento,'categoria'  =>$categoria,'subcategoria'  => $registro[getCoreConfig('catalog/product/urlkey')]]);
         elseif(in_array($MyFrankyMonster->MySeccion(),[CATALOG_SEARCH_SUBCATEGORY])):
 
-            $registro['link'] = $MyRequest->url(CATALOG_VIEW_SUBCAT,['departamento' => $departamento,'categoria'  =>$categoria,'subcategoria'  =>$subcategoria, 'friendly' => $registro['url_key']]);
+            $registro['link'] = $MyRequest->url(CATALOG_VIEW_SUBCAT,['departamento' => $departamento,'categoria'  =>$categoria,'subcategoria'  =>$subcategoria, 'friendly' => $registro[getCoreConfig('catalog/product/urlkey')]]);
 
         else:
-          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro['url_key']]);
+          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro[getCoreConfig('catalog/product/urlkey')]]);
 
         endif;
           $registro['thumb_resize'] =  "";

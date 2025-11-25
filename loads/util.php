@@ -297,7 +297,7 @@ function catalog_validaStockCompra()
                 if(!$MyRequest->isAjax())
                 {
                     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("catalog_produt_no_saleable",$registro['nombre']));
-                    $MyRequest->redirect($MyRequest->url(CATALOG_VIEW_SUBCAT,['friendly' => $registro['url_key']]));
+                    $MyRequest->redirect($MyRequest->url(CATALOG_VIEW_SUBCAT,['friendly' => $registro[getCoreConfig('catalog/product/urlkey')]]));
 
                 }else{
                     echo json_encode(array("error" => true,"message" => $MyMessageAlert->Message("catalog_produt_no_saleables",$registro['nombre'])));
@@ -311,7 +311,7 @@ function catalog_validaStockCompra()
                 if(!$MyRequest->isAjax())
                 {
                     $MyFlashMessage->setMsg("error",$MyMessageAlert->Message("catalog_stock_no_disponible",$registro['nombre']));
-                    $MyRequest->redirect($MyRequest->url(CATALOG_VIEW_SUBCAT,['friendly' => $registro['url_key']]));
+                    $MyRequest->redirect($MyRequest->url(CATALOG_VIEW_SUBCAT,['friendly' => $registro[getCoreConfig('catalog/product/urlkey')]]));
 
                 }else{
                     echo json_encode(array("error" => true,"message" => $MyMessageAlert->Message("catalog_stock_no_disponible",$registro['nombre'])));
@@ -463,7 +463,7 @@ function getCatalogVitrina($clave)
         
             while($registro = $CatalogproductsModel->getRows())
             {
-                $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro['url_key']]);
+                $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro[getCoreConfig('catalog/product/urlkey')]]);
 
                 $registro['thumb_resize'] =  "";
                 $img = "";
@@ -676,7 +676,7 @@ function getDataConfigurables($id_product)
         
         
                 $configurables['productos'][$i]['url_key'] = $registro['url_key'];
-                $configurables['productos'][$i]['url'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro['url_key']]);
+                $configurables['productos'][$i]['url'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro[getCoreConfig('catalog/product/urlkey')]]);
             $i++;
         }
  

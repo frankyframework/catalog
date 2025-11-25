@@ -54,7 +54,7 @@ class CatalogsetattributesEntity
 
     public function uid($uid = null){ if($uid != null){ $this->uid=$uid; }else{ return $this->uid; } }
 
-    public function parent_id($parent_id = null){ if($parent_id != null){ $this->parent_id=$parent_id; }else{ return $this->parent_id; } }
+    public function parent_id($parent_id = null){ if($parent_id !== null){ $this->parent_id=$parent_id; }else{ return $this->parent_id; } }
 
     public function name($name = null){ if($name != null){ $this->name=$name; }else{ return $this->name; } }
 
@@ -64,7 +64,7 @@ class CatalogsetattributesEntity
 
     public function status($status = null){ if($status !== null){ $this->status=$status; }else{ return $this->status; } }
 
-    public function orden($orden = null){ if($orden != null){ $this->orden=$orden; }else{ return $this->orden; } }
+    public function orden($orden = null){ if($orden !== null){ $this->orden=$orden; }else{ return $this->orden; } }
 
     public function createdAt($createdAt = null){ if($createdAt != null){ $this->createdAt=$createdAt; }else{ return $this->createdAt; } }
 

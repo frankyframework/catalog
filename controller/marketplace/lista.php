@@ -117,7 +117,7 @@ if($CatalogproductsModel->getDataSearch($CatalogproductsEntity->getArrayCopy()) 
     	{
 
 
-          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro['url_key']]);
+          $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro[getCoreConfig('catalog/product/urlkey')]]);
 
        
           $registro['thumb_resize'] =  "";

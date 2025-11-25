@@ -15,8 +15,13 @@ $CatalogsetattributesEntity->id($Tokenizer->decode($MyRequest->getRequest('id'))
 $id = $CatalogsetattributesEntity->id();
 $attributes  = $MyRequest->getRequest('attributes');
 $description  = $MyRequest->getRequest('description','',true);
+$parent_id  = $MyRequest->getRequest('parent_id');
+if (empty($parent_id)) {
+    $CatalogsetattributesEntity->parent_id(0);
+}
 
 $CatalogsetattributesEntity->description($description);
+
 $error = false;
 
 if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))

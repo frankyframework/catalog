@@ -30,6 +30,12 @@ return array(
                         'data' => ['0' => 'No', '1' => 'Si'],
                         'value' => '0'
                       ),
+                  array('path' => 'catalog/product/urlkey',
+                      'type' => 'select',
+                      'label' => 'Atributo para url key de producto',
+                      'data' => ['id' => 'id', 'url_key' => 'url_key'],
+                      'value' => 'url_key'
+                  ),
           )
   ),
     'catalog-calificaciones' => array(

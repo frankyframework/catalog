@@ -12,19 +12,19 @@
             {
                 "name":"nombre",
                 "type":"varchar",
-                "length":11,
+                "length":20,
                 "null":1
             },
             {
                 "name":"simbolo",
                 "type":"varchar",
-                "length":11,
+                "length":20,
                 "null":1
             },
             {
                 "name":"abreviatura",
                 "type":"varchar",
-                "length":255,
+                "length":20,
                 "null":0
             }
 

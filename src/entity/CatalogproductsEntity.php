@@ -159,6 +159,6 @@ class CatalogproductsEntity
 
     public function validate($validate = null){ if($validate != null){ $this->validate=$validate; }else{ return $this->validate; } }
 
-    public function custom_attributes($custom_attributes = null){ if($custom_attributes != null){ $this->custom_attributes=$custom_attributes; }else{ return $this->custom_attributes; } }
+    public function custom_attributes($custom_attributes = null){ if($custom_attributes !== null){ $this->custom_attributes=$custom_attributes; }else{ return $this->custom_attributes; } }
 }
 ?>

@@ -13,6 +13,8 @@ $CatalogCategoryEntity = new CatalogcategoryEntity($MyRequest->getRequest());
 $id       = $Tokenizer->decode($MyRequest->getRequest('id'));
 $callback = $Tokenizer->decode($MyRequest->getRequest('callback'));
 $status = $MyRequest->getRequest('status',0);
+$parent_id = $MyRequest->getRequest('parent_id');
+
 $visible_in_search = $MyRequest->getRequest('visible_in_search',0);
 $CatalogCategoryEntity->users(json_encode($MyRequest->getRequest('users',array())));
 
@@ -20,7 +22,9 @@ if($Tokenizer->decode($MyRequest->getRequest('id')) != false)
 {
     $CatalogCategoryEntity->id($id);
 }
-
+if(empty($parent_id)) {
+    $CatalogCategoryEntity->parent_id(0);
+}
 
 $error = false;
 
@@ -105,7 +109,7 @@ if($error == false)
     $CatalogCategoryEntity->visible_in_search($visible_in_search);
     if(empty($id))
     {
-
+        $CatalogCategoryEntity->orden(0);
         $CatalogCategoryEntity->createdAt(date('Y-m-d H:i:s'));
        
     }

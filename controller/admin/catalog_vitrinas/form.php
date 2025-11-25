@@ -30,7 +30,7 @@ if(empty($store)){
 }
 
 $data['store'] = $store;
-
+$data['category'] = [];
 
 $data_category = [];
 $data_subcategory = [];

@@ -54,7 +54,8 @@
                 "name":"orden",
                 "type":"int",
                 "length":1,
-                "null":0
+                "null":0,
+                "default":0
             },
             {
                 "name":"createdAt",

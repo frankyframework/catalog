@@ -31,7 +31,7 @@ while(empty($friendly))
 
 
 
-$CatalogproductsEntity->url_key($friendly);
+$CatalogproductsEntity->{getCoreConfig('catalog/product/urlkey')}($friendly);
 $CatalogproductsEntity->status(1);
 $CatalogproductsEntity->in_validation(0);
 $CatalogproductsEntity->validate(1);
@@ -163,7 +163,7 @@ if($CatalogproductrelatedModel->getData($CatalogproductrelatedEntity->getArrayCo
     while($registro = $CatalogproductrelatedModel->getRows())
     {
         
-        $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro['url_key']]);
+        $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro[getCoreConfig('catalog/product/urlkey')]]);
         
         $registro['thumb_resize'] =  "";
         $img = "";

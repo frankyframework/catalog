@@ -125,7 +125,20 @@ class CatalogsetattributesForm extends \Franky\Form\Form
         );
 
 
-
+        $this->add(array(
+            'name' => 'orden',
+            'label' => _catalog('Orden'),
+            'type'  => 'text',
+            'required'  => true,
+            'atributos' => array(
+                'class'       => 'required',
+                'maxlength' => 5
+            ),
+            'label_atributos' => array(
+                'class'       => 'desc_form_obligatorio'
+            )
+        )
+    );
 
          $this->add(array(
                 'name' => 'guardar',
