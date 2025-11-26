@@ -139,21 +139,10 @@ function eliminarFotoCatalogProduct($token,$status)
         }
 
         $dir = $MyConfigure->getServerUploadDir()."/catalog/products/".$album."/$img";
-        if(file_exists($dir))
-        {
-            //unlink($dir);
-
-            //if(!file_exists($dir))
-            //{
-              unset($_SESSION['album_'.$album][$id]);
-              $respuesta[] = array("message" => "success","id" => $token);
-            //}
-
-        }
-        else{
-            $respuesta[] = array("message" =>  $MyMessageAlert->Message("eliminar_generico_error"));
-        }
-
+      
+        unset($_SESSION['album_'.$album][$id]);
+        $respuesta[] = array("message" => "success","id" => $token);
+ 
 	return $respuesta;
 }
 

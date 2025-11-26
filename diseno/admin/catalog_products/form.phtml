@@ -155,7 +155,7 @@ function uploadMultiGaleria(e)
 
     var fd = new FormData();
 
-
+    fd.append('album',window.album); 
     for (var i = 0; i < files.length; i++) { // Loop all files
             fd.append('images[]', files[i]); // Create an append() method, one for each file dropped
     }

@@ -7,7 +7,7 @@ if(!$MyRequest->isAjax() || !$MyAccessList->MeDasChancePasar("administrar_produc
 }
 
 $respuesta = array("error" => false);
-$album = $MySession->GetVar('addProduct');
+$album = $MyRequest->getRequest('album');
 $usadas = 0;
 $principal = 1;
 if(!empty($_SESSION['album_'.$album]))
@@ -26,7 +26,6 @@ if($usadas >= 12)
 }
 
 
-$album = $MySession->GetVar('addProduct');
 
 $dir = $MyConfigure->getServerUploadDir()."/catalog/products/$album/";
 $File = new File();

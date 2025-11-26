@@ -77,7 +77,10 @@ if(empty($CatalogproductsEntity->store()) || !isset($tiendas[$CatalogproductsEnt
 }
 
 $album = $MySession->GetVar('addProduct');
-
+if(empty($id))
+{
+    $album = $id;
+}
 $validaciones =  new validaciones();
 
 
