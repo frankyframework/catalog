@@ -21,7 +21,7 @@ if(!empty($data_detalle['images']))
             {
                 $img = imageResize($MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'],700,700, true);
                 $imgori = $MyConfigure->getUploadDir()."/catalog/products/".$data_detalle["id_ori"].'/'.$foto['img'];
-                echo makeHTMLImg($img,"","",$data_detalle['name'],'id="img_zoom" data-large="'.$imgori.'" data-scale="2" data-share="" class="thumb_gal" ');
+                echo makeHTMLImg($img,"","",$data_detalle['name'],'id="img_zoom" data-large="'.$imgori.'" data-scale="2" data-share="" class="thumb_gal" ',0,1);
             }
             else
             {

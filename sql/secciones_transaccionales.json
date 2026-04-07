@@ -11,6 +11,12 @@
             "nombre" : "Notificacion de contactanos de producto para usuario",
             "friendly": "contactanos-producto-user-notification",
             "status" : 1
+        },
+        {
+            "id" : 32,
+            "nombre" : "Notificacion de status de solicitud de usuario marketplace",
+            "friendly": "catalog-marketplace-user-notification",
+            "status" : 1
         }
     ]
 }
