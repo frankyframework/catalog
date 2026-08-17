@@ -23,7 +23,7 @@ class CatalogCatalogReviewsEntity
 
     public function exchangeArray($data)
     {
-        $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->id = (isset($data["id"]) && !empty($data["id"]) ? $data["id"] : null);
         $this->parent_id = (isset($data["parent_id"]) ? $data["parent_id"] : null);
         $this->message = (isset($data["message"]) ? $data["message"] : null);
         $this->data = (isset($data["data"]) ? $data["data"] : null);

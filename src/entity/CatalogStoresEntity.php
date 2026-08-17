@@ -26,7 +26,7 @@ class CatalogStoresEntity
 
     public function exchangeArray($data)
     {
-        $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->id = (isset($data["id"]) && !empty($data["id"]) ? $data["id"] : null);
         $this->nombre = (isset($data["nombre"]) ? $data["nombre"] : null);
         $this->idioma = (isset($data["idioma"]) ? $data["idioma"] : null);
         $this->url = (isset($data["url"]) ? $data["url"] : null);

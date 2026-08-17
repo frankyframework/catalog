@@ -20,7 +20,7 @@ class CatalogMonedasEntity
 
     public function exchangeArray($data)
     {
-        $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->id = (isset($data["id"]) && !empty($data["id"]) ? $data["id"] : null);
         $this->nombre = (isset($data["nombre"]) ? $data["nombre"] : null);
         $this->simbolo = (isset($data["simbolo"]) ? $data["simbolo"] : null);
         $this->abreviatura = (isset($data["abreviatura"]) ? $data["abreviatura"] : null);

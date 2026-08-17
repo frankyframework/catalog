@@ -28,7 +28,7 @@ class CatalogvitrinaEntity
 
     public function exchangeArray($data)
     {
-        $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->id = (isset($data["id"]) && !empty($data["id"]) ? $data["id"] : null);
         $this->store = (isset($data["store"]) ? $data["store"] : null);
         $this->nombre = (isset($data["nombre"]) ? $data["nombre"] : null);
         $this->titulo = (isset($data["titulo"]) ? $data["titulo"] : null);

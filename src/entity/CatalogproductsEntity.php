@@ -48,7 +48,7 @@ class CatalogproductsEntity
 
     public function exchangeArray($data)
     {
-        $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->id = (isset($data["id"]) && !empty($data["id"]) ? $data["id"] : null);
         $this->uid = (isset($data["uid"]) ? $data["uid"] : null);
         $this->parent_id = (isset($data["parent_id"]) ? $data["parent_id"] : null);
         $this->set_attribute = (isset($data["set_attribute"]) ? $data["set_attribute"] : null);

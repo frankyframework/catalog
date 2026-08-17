@@ -42,7 +42,7 @@ class CatalogUsersEntity
 
     public function exchangeArray($data)
     {
-        $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->id = (isset($data["id"]) && !empty($data["id"]) ? $data["id"] : null);
         $this->id_user = (isset($data["id_user"]) ? $data["id_user"] : null);
         $this->username = (isset($data["username"]) ? $data["username"] : null);
         $this->image = (isset($data["image"]) ? $data["image"] : null);

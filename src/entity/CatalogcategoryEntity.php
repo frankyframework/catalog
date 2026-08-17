@@ -32,7 +32,7 @@ class CatalogcategoryEntity
 
     public function exchangeArray($data)
     {
-        $this->id = (isset($data["id"]) ? $data["id"] : null);
+        $this->id = (isset($data["id"]) && !empty($data["id"]) ? $data["id"] : null);
         $this->parent_id = (isset($data["parent_id"]) ? $data["parent_id"] : null);
         $this->name = (isset($data["name"]) ? $data["name"] : null);
         $this->description = (isset($data["description"]) ? $data["description"] : null);
