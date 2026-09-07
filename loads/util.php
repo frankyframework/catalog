@@ -448,61 +448,103 @@ function getCatalogVitrina($clave)
                 
             }
         }
-        
-        $CatalogproductsModel->setCategoriaArray($categorias);
-        
-        
-        if(isset($filtro_items['productos'])):
-            $CatalogproductsModel->setsearchIds($filtro_items['productos']);
-        endif;
-        
         $resultados_pagina = [];
-       
-        if( $CatalogproductsModel->getDataVitrina($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
-        {
-        
-            while($registro = $CatalogproductsModel->getRows())
+        if(!empty($categorias)) {
+            $CatalogproductsModel->setCategoriaArray($categorias);
+            
+            if( $CatalogproductsModel->getDataVitrina($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
             {
-                $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro[getCoreConfig('catalog/product/urlkey')]]);
-
-                $registro['thumb_resize'] =  "";
-                $img = "";
-                $_img = getCoreConfig('catalog/product/placeholder');
-                if($_img != "" && file_exists(PROJECT_DIR.$_img))
+            
+                while($registro = $CatalogproductsModel->getRows())
                 {
-                  $registro['thumb_resize'] = imageResize($_img,500,500, false);
-                }
-                $registro["images"] = json_decode($registro["images"],true);
+                    $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro[getCoreConfig('catalog/product/urlkey')]]);
 
-                if(!empty($registro['images']))
-                {
-                    foreach($registro["images"] as $foto)
+                    $registro['thumb_resize'] =  "";
+                    $img = "";
+                    $_img = getCoreConfig('catalog/product/placeholder');
+                    if($_img != "" && file_exists(PROJECT_DIR.$_img))
                     {
+                    $registro['thumb_resize'] = imageResize($_img,500,500, false);
+                    }
+                    $registro["images"] = json_decode($registro["images"],true);
 
-                        if($foto['principal'] == 1)
+                    if(!empty($registro['images']))
+                    {
+                        foreach($registro["images"] as $foto)
                         {
 
-                            if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img']))
+                            if($foto['principal'] == 1)
                             {
 
-                                  $registro['thumb_resize'] = imageResize($MyConfigure->getUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img'],500,500, false);
+                                if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img']))
+                                {
 
+                                    $registro['thumb_resize'] = imageResize($MyConfigure->getUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img'],500,500, false);
+
+                                }
                             }
+
                         }
-
                     }
-                }
 
-                $registro['id_wishlist'] = $Tokenizer->token('wishlist',$registro["id"]);
+                    $registro['id_wishlist'] = $Tokenizer->token('wishlist',$registro["id"]);
 
-                $registro['id'] = $Tokenizer->token('catalog_products',$registro["id"]);
+                    $registro['id'] = $Tokenizer->token('catalog_products',$registro["id"]);
 
-                $resultados_pagina[] = $registro;
-            }  
-         
-            
-            return render(PROJECT_DIR.'/modulos/catalog/diseno/widget.vitrina.phtml',['resultados_pagina' => $resultados_pagina,'titulo'=>$vitrina['titulo'],'clave'=>$clave]);
+                    $resultados_pagina[] = $registro;
+                }  
+            }
         }
+        if(isset($filtro_items['productos'])){
+            $CatalogproductsModel->setCategoriaArray([]);
+            $CatalogproductsModel->setsearchIds($filtro_items['productos']);
+
+            if( $CatalogproductsModel->getDataVitrina($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+            {
+            
+                while($registro = $CatalogproductsModel->getRows())
+                {
+                    $registro['link'] = $MyRequest->url(CATALOG_SEARCH_DEPARTAMENTO,['departamento' => $registro[getCoreConfig('catalog/product/urlkey')]]);
+
+                    $registro['thumb_resize'] =  "";
+                    $img = "";
+                    $_img = getCoreConfig('catalog/product/placeholder');
+                    if($_img != "" && file_exists(PROJECT_DIR.$_img))
+                    {
+                    $registro['thumb_resize'] = imageResize($_img,500,500, false);
+                    }
+                    $registro["images"] = json_decode($registro["images"],true);
+
+                    if(!empty($registro['images']))
+                    {
+                        foreach($registro["images"] as $foto)
+                        {
+
+                            if($foto['principal'] == 1)
+                            {
+
+                                if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img']))
+                                {
+
+                                    $registro['thumb_resize'] = imageResize($MyConfigure->getUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img'],500,500, false);
+
+                                }
+                            }
+
+                        }
+                    }
+
+                    $registro['id_wishlist'] = $Tokenizer->token('wishlist',$registro["id"]);
+
+                    $registro['id'] = $Tokenizer->token('catalog_products',$registro["id"]);
+
+                    $resultados_pagina[] = $registro;
+                }  
+            }
+        }
+        
+        return render(PROJECT_DIR.'/modulos/catalog/diseno/widget.vitrina.phtml',['resultados_pagina' => $resultados_pagina,'titulo'=>$vitrina['titulo'],'clave'=>$clave]);
+        
       
         
     }

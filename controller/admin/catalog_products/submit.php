@@ -26,7 +26,7 @@ $principal  = $MyRequest->getRequest('principal');
 $stock  = $MyRequest->getRequest('stock');
 $stock_infinito  = $MyRequest->getRequest('stock_infinito');
 $price  = $MyRequest->getRequest('price');
-
+$envio_requerido  = $MyRequest->getRequest('envio_requerido');
 $visible_in_search  = $MyRequest->getRequest('visible_in_search');
 $CatalogproductsEntity->description($description);
 $CatalogproductsEntity->sku(getFriendly($CatalogproductsEntity->sku()));
@@ -59,6 +59,10 @@ if(empty($visible_in_search))
 {
     $CatalogproductsEntity->visible_in_search(0);
 }
+if(empty($envio_requerido))
+{
+    $CatalogproductsEntity->envio_requerido(0);
+}
 if($CatalogproductsEntity->url_key() === "")
 {
     $CatalogproductsEntity->url_key(getFriendly($CatalogproductsEntity->name()));
@@ -68,17 +72,21 @@ else{
 }
 
 $tiendas = getCatalogStores();	
-if(empty($CatalogproductsEntity->store()) || !isset($tiendas[$CatalogproductsEntity->store()])){
+
+$album = $MySession->GetVar('addProduct');
+if(empty($id))
+{
+    $album =  $MySession->GetVar('addProduct');
+
+    if(empty($CatalogproductsEntity->store()) || !isset($tiendas[$CatalogproductsEntity->store()])){
         foreach($tiendas as $k => $v)
         {
             $CatalogproductsEntity->store($k);
             break;
         }   
-}
+    }
 
-$album = $MySession->GetVar('addProduct');
-if(empty($id))
-{
+} else {
     $album = $id;
 }
 $validaciones =  new validaciones();

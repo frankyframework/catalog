@@ -55,13 +55,15 @@ class ProductsForm  extends \Franky\Form\Form
 
         $this->add(array(
             'name' => 'store',
-            'type'  => 'hidden',
+            'label' => _catalog('Tienda'),
+            'type'  => 'select',
             'required'  => true,
+            'options' => array(),
             'atributos' => array(
-                'class'       => ''
+                'class'       => 'required'
              ),
             'label_atributos' => array(
-                'class'       => ''
+                'class'       => 'desc_form_obligatorio'
                 )
         )
         );
@@ -154,6 +156,18 @@ class ProductsForm  extends \Franky\Form\Form
                 'class' => 'switch'
             ),
             'options' =>  array("1" => _catalog("Incluye IVA")),
+
+
+            )
+        );
+
+        $this->add(array(
+            'name' => 'envio_requerido',
+            'type'  => 'checkbox',
+            'atributos' => array(
+                'class' => 'switch'
+            ),
+            'options' =>  array("1" => _catalog("Requiere envio")),
 
 
             )

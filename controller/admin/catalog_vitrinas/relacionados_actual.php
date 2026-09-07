@@ -15,6 +15,7 @@ if(!empty($Tokenizer->decode($id)))
 
     $CatalogvitrinaEntity->id($Tokenizer->decode($id));
     $CatalogvitrinaModel->setTampag(10000);
+
     if($CatalogvitrinaModel->getData($CatalogvitrinaEntity->getArrayCopy()) == REGISTRO_SUCCESS)
     {
         while($registro = $CatalogvitrinaModel->getRows())
@@ -24,10 +25,19 @@ if(!empty($Tokenizer->decode($id)))
         }
     }
 }
+
+$callback	= $MyRequest->getRequest('callback');
 $vitrina = $MySession->GetVar('vitrina');
 $relacionados = array_merge($relacionados,$vitrina);
-$callback	= $MyRequest->getRequest('callback');
 
+$MySession->SetVar('productsVitrina', $relacionados);
+if(empty($relacionados)) {
+    $dataRows = ["rows" => [], "total" => 0, "page" => 1,"records" => 0];
+
+    header('Content-Type: application/json; charset=utf-8');
+    echo $callback . '(' . json_encode($dataRows). ');';
+    die;
+}
 $filters = $MyRequest->getRequest('filters');
 $dataPost = json_decode(stripslashes($filters),true);
 if(isset($dataPost['rules'])) {
@@ -65,6 +75,7 @@ $CatalogproductsModel->setTampag($MyRequest->getRequest('rows',12));
 $CatalogproductsModel->setOrdensql($sortInput." ".$MyRequest->getRequest('sord',"ASC"));
 $CatalogproductsEntity->status(1);
 $CatalogproductsEntity->visible_in_search(1);
+$CatalogproductsModel->setsearchIds($relacionados);
 $result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
 $dataRows = ["rows" => [], "total" => ceil($CatalogproductsModel->getTotal() / $MyRequest->getRequest('rows',12)), "page" => (int)$MyRequest->getRequest('page',1),"records" => $CatalogproductsModel->getTotal()];
 
@@ -105,7 +116,7 @@ if($CatalogproductsModel->getTotal() > 0)
             "store"     => $tiendas[$registro['store']],
             "store_id"     => $registro['store'],
             "images"     => $img,
-            "status"     => !empty($relacionados) && in_array($registro['id'],$relacionados) ? 'desactivar':'activar'
+            "status"     => 'desactivar'
         ));
 
     }

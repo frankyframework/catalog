@@ -14,29 +14,21 @@ $CatalogvitrinaEntity = new CatalogvitrinaEntity();
 $CatalogcategoryEntity = new CatalogcategoryEntity();
 $id         = $Tokenizer->decode($MyRequest->getRequest('id'));
 $callback   = $MyRequest->getRequest('callback');
-$store   = $MyRequest->getRequest('store');
+
 $data = $MyFlashMessage->getResponse();
 $galeria_frm = "";
 $_callback = $Tokenizer->token('catalog_vitrina',$MyRequest->getURI());
 
 
 $tiendas = getCatalogStores();	
-if(empty($store)){
-        foreach($tiendas as $k => $v)
-        {
-                $store = $k;
-                break;
-        }   
-}
 
-$data['store'] = $store;
 $data['category'] = [];
 
 $data_category = [];
 $data_subcategory = [];
 $adminForm = new CatalogVitrinaForm("frmvitrina");
 
-
+$MySession->SetVar('productsVitrina', []);
 $title = "Nuevo producto";
 if(!empty($id))
 {
@@ -52,9 +44,10 @@ if(!empty($id))
     $data["items"] = json_decode($data["items"],true);
    
     
-    $data['category'] =  $data["items"]["category"];
+    $data['category'] =  !empty($data["items"]["category"])  ? $data["items"]["category"] : [];
+    $data['productos'] =  !empty($data["items"]["productos"])  ? $data["items"]["productos"] : [];
        
-    
+    $MySession->SetVar('productsVitrina', $data['productos']);
     
 }
 
@@ -68,10 +61,15 @@ foreach($categorias as $parent => $categoria){
     }
    
 }
+$MySession->SetVar('vitrina',[]);
 
 $adminForm->setOptionsInput("category[]", $_categorias);
-
+$adminForm->setOptionsInput("store",$tiendas);
 $adminForm->setData($data);
 $adminForm->setAtributoInput("callback","value", urldecode($callback));
 
 $title_form = "$title";
+
+$MyMetatag->setJs("/public/plugins/jqGrid/js/jquery.jqGrid.js");
+$MyMetatag->setJs("/public/plugins/jqGrid/js/i18n/grid.locale-$lang_root.js");
+$MyMetatag->setCSS("/public/plugins/jqGrid/css/ui.jqgrid.css");

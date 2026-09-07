@@ -6,11 +6,12 @@ use Franky\Haxor\Tokenizer;
 use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
 use Base\model\USERS;
-
+use Base\entity\users as UserEntity;
 
 $CatalogproductsModel  = new CatalogproductsModel();
 $CatalogproductsEntity = new CatalogproductsEntity();
 $MyUser             = new USERS();
+$MyUserEntity       = new UserEntity();
 $Tokenizer = new Tokenizer();
 $MyContacto         = new CatalogComentariosModel();
 $MyContactoEntity         = new CatalogComentariosEntity($MyRequest->getRequest());
@@ -56,7 +57,8 @@ if($error== false)
                     if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
                     {
                         $data_detalle = $CatalogproductsModel->getRows();
-                        $MyUser->getData($id);
+                        $MyUserEntity->setId($data_detalle['uid']);
+                        $MyUser->getData($MyUserEntity->getArrayCopy());
                         $dataUser = $MyUser->getRows();
                         $campos["email_marketplace"] = $dataUser['email'];
                     }

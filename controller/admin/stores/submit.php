@@ -11,7 +11,11 @@ $CatalogStoresEntity = new CatalogStoresEntity($MyRequest->getRequest());
 
 $id       = $Tokenizer->decode($MyRequest->getRequest('id'));
 $callback = $Tokenizer->decode($MyRequest->getRequest('callback'));
+$marketplace = $MyRequest->getRequest('marketplace');
+
 $CatalogStoresEntity->id($id);
+
+$CatalogStoresEntity->marketplace((int)$marketplace);
 
 
 

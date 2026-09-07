@@ -1,97 +1,100 @@
 <?php
-use Catalog\Form\filtrosForm;
-use Franky\Core\paginacion;
 use Catalog\model\CatalogvitrinaModel;
 use Catalog\entity\CatalogvitrinaEntity;
 use Franky\Haxor\Tokenizer;
 
-$CatalogvitrinaModel = new CatalogvitrinaModel();
-$CatalogvitrinaEntity = new CatalogvitrinaEntity();
-$Tokenizer = new Tokenizer();
+if ($MyRequest->isAjax()) {
+    $callback	= $MyRequest->getRequest('callback');
+    $filters = $MyRequest->getRequest('filters');
+    $dataPost = json_decode(stripslashes($filters),true);
+    if(isset($dataPost['rules'])) {
+        $dataPost = $dataPost['rules'];
+    }
+    $requestFranky = [];
+    $request = [];
+    if(!empty($dataPost)) {
+        foreach($dataPost as $data) {
+            $request[$data['field']] = $MyRequest->Sanitizacion($data['data']);
+          }
+    }
+   
+    $tiendas = getCatalogStores();
 
-$MyPaginacion = new paginacion();
-
-
-$tiendas = getCatalogStores();
-$store_b	= $MyRequest->getRequest('store_b');	
-if(empty($store_b)){
-        foreach($tiendas as $k => $v)
-        {
-                $store_b = $k;
-                break;
-        }
-        
-}
-
-$MySession->UnsetVar('vitrina');
-$MyPaginacion->setPage($MyRequest->getRequest('page',1));
-$MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"catalog_vitrinas.id"));
-$MyPaginacion->setOrden($MyRequest->getRequest('order',"DESC"));
-$MyPaginacion->setTampageDefault($MyRequest->getRequest('tampag',25));
-$busca_b	= $MyRequest->getRequest('busca_b');
-
-$alias = ['_id' => "catalog_vitrinas.id",'store_nombre' => "catalog_vitrinas.store"];
-if(isset($alias[$MyRequest->getRequest('por')]))
-{
-
-  $orden = $alias[$MyRequest->getRequest('por')];
-}
-else{
-    $orden = $MyPaginacion->getCampoOrden();
-}
-
-$CatalogvitrinaEntity->store($store_b);
-$CatalogvitrinaModel->setPage($MyPaginacion->getPage());
-$CatalogvitrinaModel->setTampag($MyPaginacion->getTampageDefault());
-$CatalogvitrinaModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
-$result	 		= $CatalogvitrinaModel->getData($CatalogvitrinaEntity->getArrayCopy(),$busca_b);
-$MyPaginacion->setTotal($CatalogvitrinaModel->getTotal());
-$lista_admin_data = array();
-
-
-if($CatalogvitrinaModel->getTotal() > 0)
-{
-
-    $iRow = 0;
-
-    while($registro = $CatalogvitrinaModel->getRows())
+    $alias = ['_id' => "catalog_vitrinas.id",'store_nombre' => "catalog_vitrinas.store"];
+    if(isset($alias[$MyRequest->getRequest('sidx')]))
     {
-        $thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
+        $sortInput = $alias[$MyRequest->getRequest('sidx')];
+    }
+    else{
+        $sortInput  = (!empty($MyRequest->getRequest('sidx',"catalog_vitrinas.id")) ? : "catalog_vitrinas.id");
+    }
+    if(isset($request['_id']))
+    {
+        $request['id'] = $request['_id']; 
+    }
+    if(isset($request['store_nombre']))
+    {
+        $request['store'] = $request['store_nombre'];
+    }
+    $CatalogvitrinaModel = new CatalogvitrinaModel();
+    $CatalogvitrinaEntity = new CatalogvitrinaEntity($request);
+    $Tokenizer = new Tokenizer();
 
-        $lista_admin_data[$iRow] = array_merge($registro,array(
-                "thisClass"     => $thisClass,
-                "_id" =>$registro["id"],
-                "id" => $Tokenizer->token('catalog_vitrina',$registro["id"]),
-                "callback" => $Tokenizer->token('catalog_vitrina',$MyRequest->getURI()),
-                "nuevo_estado"  => ($registro["status"] == 1 ?"desactivar" : "activar"),
-              
-        ));
+    if(empty($request['store'])) {
+        foreach($tiendas as $k => $v) {
+            $request['store'] = $k;
+            $CatalogvitrinaEntity->store($request['store']);
+            break;
+        }
+    }
+
+    $MySession->UnsetVar('vitrina');
+  
+    $CatalogvitrinaModel->setPage($MyRequest->getRequest('page',1));
+    $CatalogvitrinaModel->setTampag($MyRequest->getRequest('rows',12));
+    $CatalogvitrinaModel->setOrdensql($sortInput." ".$MyRequest->getRequest('sord',"ASC"));
+    $result	 		= $CatalogvitrinaModel->getData($CatalogvitrinaEntity->getArrayCopy());
+
+    $dataRows = ["rows" => [], "total" => ceil($CatalogvitrinaModel->getTotal() / $MyRequest->getRequest('rows',12)), "page" => (int)$MyRequest->getRequest('page',1),"records" => $CatalogvitrinaModel->getTotal()];
 
 
-        $iRow++;
+    if($CatalogvitrinaModel->getTotal() > 0)
+    {
+
+        while($registro = $CatalogvitrinaModel->getRows())
+        {
+            $registro = array_filter($registro, function($llave) {
+                return !is_numeric($llave);
+            }, ARRAY_FILTER_USE_KEY);
+
+            $dataRows['rows'][] =   array_merge($registro,array(
+                    "store"     => $tiendas[$registro['store']],
+                    "store_id"     => $registro['store'],
+                    "_id" =>$registro["id"],
+                    "id" => $Tokenizer->token('catalog_vitrina',$registro["id"]),
+                    "callback" => $Tokenizer->token('catalog_vitrina',$MyRequest->getURI()),
+                    "status"  => ($registro["status"] == 1 ?"desactivar" : "activar"),  
+            ));
+
+        }
+    }
+    header('Content-Type: application/json; charset=utf-8');
+    echo $callback . '(' . json_encode($dataRows). ');';
+    die;
+} else {
+
+    $MyMetatag->setJs("/public/plugins/jqGrid/js/jquery.jqGrid.js");
+    $MyMetatag->setJs("/public/plugins/jqGrid/js/i18n/grid.locale-$lang_root.js");
+    $MyMetatag->setCSS("/public/plugins/jqGrid/css/ui.jqgrid.css");
+
+    $frm_constante_link = "";
+    $permisos_grid = "";
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+    {
+        $frm_constante_link = FRM_CATALOG_VITRINA;
+        $permisos_grid = "administrar_products_catalog";
     }
 }
 
-$title_grid = _catalog("Vitrinas");
-$class_grid = "vitrinas";
-$error_grid = _catalog("No hay vitrinas registradas");
-$deleteFunction = "DeleteCatalogVitrina";
 
-$frm_constante_link = FRM_CATALOG_VITRINA;
-
-$titulo_columnas_grid = array("_id" => _catalog("ID"),"titulo" =>  _catalog("Titulo"),"nombre" =>  _catalog("Nombre"),"store" => _catalog("Tienda"),"clave" => _catalog("Clave"));
-$value_columnas_grid = array("_id" ,'titulo', "nombre","store","clave");
-
-$css_columnas_grid = array("_id" => "w-xxxx-1" , "titulo" => "w-xxxx-3","nombre" => "w-xxxx-2", "store" => "w-xxxx-2", "clave" => "w-xxxx-2");
-
-
-$permisos_grid = "administrar_products_catalog";
-
-$MyFiltrosForm = new filtrosForm('paginar');
-$MyFiltrosForm->setMobile($Mobile_detect->isMobile());
-$MyFiltrosForm->addStore();
-$MyFiltrosForm->addSubmit();
-
-$MyFiltrosForm->setOptionsInput("store_b", $tiendas);
-$MyFiltrosForm->setAtributoInput("store_b", "value",$store_b);
 ?>

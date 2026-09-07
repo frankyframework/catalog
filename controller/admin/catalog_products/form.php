@@ -114,6 +114,7 @@ $set_attribute = getAttributesSet($uid,$store);
 
 $adminForm->setOptionsInput("set_attribute",$set_attribute);
 $adminForm->setOptionsInput("category[]",$categorys);
+$adminForm->setOptionsInput("store",$tiendas);
 $adminForm->setData($data);
 $adminForm->setAtributoInput("callback","value", urldecode($callback));
 if(!empty($data['parent_id']))

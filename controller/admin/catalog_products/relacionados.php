@@ -1,148 +1,184 @@
 <?php
-use Catalog\Form\filtrosForm;
-use Franky\Core\paginacion;
 use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
 use Franky\Haxor\Tokenizer;
+use Catalog\model\CatalogproductrelatedModel;
+use Catalog\entity\CatalogproductrelatedEntity;
 
-
-$CatalogproductsModel = new CatalogproductsModel();
-$CatalogproductsEntity = new CatalogproductsEntity();
 $Tokenizer = new Tokenizer();
-
-$MyPaginacion = new paginacion();
-
+$CatalogproductsModel = new CatalogproductsModel();
 $id		= $MyRequest->getRequest('id');
-$callback	= $MyRequest->getRequest('callback');
-$tiendas = getCatalogStores();
-$store	= $MyRequest->getRequest('store');	
-if(empty($store)){
-        foreach($tiendas as $k => $v)
-        {
-                $store = $k;
-                break;
-        }
-        
-}
-if(empty($Tokenizer->decode($id)))
+$_callback	= $MyRequest->getRequest('_callback');
+
+
+$producto_actual = [];
+if(!empty($Tokenizer->decode($id)))
 {
-    $MyRequest->redirect($Tokenizer->decode($callback));
-}
-$MyPaginacion->setPage($MyRequest->getRequest('page',1));
-$MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"catalog_products.createdAt"));
-$MyPaginacion->setOrden($MyRequest->getRequest('order',"DESC"));
-$MyPaginacion->setTampageDefault($MyRequest->getRequest('tampag',25));
-$busca_b	= $MyRequest->getRequest('busca_b');
-
-
-$alias = ['_id' => "catalog_products.id"];
-if(isset($alias[$MyRequest->getRequest('por')]))
-{
-
-  $orden = $alias[$MyRequest->getRequest('por')];
-}
-else{
-    $orden = $MyPaginacion->getCampoOrden();
-}
-
-$CatalogproductsModel->setExcludeId($Tokenizer->decode($id));
-$CatalogproductsModel->setPage($MyPaginacion->getPage());
-$CatalogproductsModel->setTampag($MyPaginacion->getTampageDefault());
-$CatalogproductsModel->setOrdensql($orden." ".$MyPaginacion->getOrden());
-$CatalogproductsModel->setBusca($busca_b);
-$CatalogproductsEntity->status(1);
-$CatalogproductsEntity->store($store);
-$CatalogproductsEntity->visible_in_search(1);
-
-if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
-{
-        $CatalogproductsEntity->uid($MySession->getVar('id'));
-}
-
-$result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
-$MyPaginacion->setTotal($CatalogproductsModel->getTotal());
-$lista_admin_data = array();
-
-
-if($CatalogproductsModel->getTotal() > 0)
-{
-
-    $iRow = 0;
-
-    while($registro = $CatalogproductsModel->getRows())
+    $CatalogproductsEntity = new CatalogproductsEntity();
+    $CatalogproductsModel->setExcludeId('');
+    $CatalogproductsEntity->exchangeArray([]);
+    $CatalogproductsEntity->id($Tokenizer->decode($id));
+    $CatalogproductsModel->setBusca("");
+    if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
     {
-        $thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
-
-        
-        $img = "";
-        $_img = getCoreConfig('catalog/product/placeholder');
-        if($_img != "" && file_exists(PROJECT_DIR.$_img))
-        {
-            $img = makeHTMLImg(imageResize($_img,50,50, true),50,50,$registro['name']);
-        }
-        $registro["images"] = json_decode($registro["images"],true);
-        if(!empty($registro['images']))
-        {
-            foreach($registro["images"] as $foto)
-            {
-                if($foto['principal'] == 1)
-                {
-                     if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img']))
-                    {
-                        $img = imageResize($MyConfigure->getUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img'],50,50, true);
-                        $img = makeHTMLImg($img,50,50,$registro['name']);
-                    }
-                }
-
-            }
-        }
-       
-        $lista_admin_data[$iRow] = array_merge($registro,array(
-                "thisClass"     => $thisClass,
-                "id" => $Tokenizer->token('catalog_products',$registro["id"]),
-                "_id" => $registro["id"],
-                "images"     => $img,
-        ));
-
-
-        $iRow++;
+        $producto_actual = $CatalogproductsModel->getRows();
     }
 }
 
+if ($MyRequest->isAjax()) {
+
+    $callback	= $MyRequest->getRequest('callback');
+    if(empty($producto_actual)) {
+
+        $dataRows = ["rows" => [], "total" => 0, "page" => 1,"records" => 0];
+
+        header('Content-Type: application/json; charset=utf-8');
+        echo $callback . '(' . json_encode($dataRows). ');';
+        die;
+    }
+    $CatalogproductrelatedModel =  new CatalogproductrelatedModel();
+    $CatalogproductrelatedEntity =  new CatalogproductrelatedEntity();
+    $CatalogproductrelatedEntity->id_parent($Tokenizer->decode($id));
+    $CatalogproductrelatedModel->setTampag(10000);
+    $relacionados =[];
+    if($CatalogproductrelatedModel->getData($CatalogproductrelatedEntity->getArrayCopy()) == REGISTRO_SUCCESS)
+    {
+        while($registro = $CatalogproductrelatedModel->getRows())
+        {
+            $relacionados[] = $registro['id_product'];
+        }
+    }
+   
+    $filters = $MyRequest->getRequest('filters');
+    $dataPost = json_decode(stripslashes($filters),true);
+    if(isset($dataPost['rules'])) {
+        $dataPost = $dataPost['rules'];
+    }
+    $request = [];
+    if(!empty($dataPost)) {
+        foreach($dataPost as $data) {
+            $request[$data['field']] = $MyRequest->Sanitizacion($data['data']);
+          }
+    }
 
 
-$CatalogproductsModel->setExcludeId('');
-$CatalogproductsEntity->exchangeArray([]);
-$CatalogproductsEntity->id($Tokenizer->decode($id));
-$CatalogproductsModel->setBusca("");
-if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
-{
-    $producto_actual = $CatalogproductsModel->getRows();
+    $alias = ['_id' => "catalog_products.id"];
+    if(isset($alias[$MyRequest->getRequest('sidx')]))
+    {
+        $sortInput = $alias[$MyRequest->getRequest('sidx')];
+    }
+    else{
+        $sortInput  = (!empty($MyRequest->getRequest('sidx',"catalog_products.id")) ? : "catalog_products.id");
+    }
+    if(isset($request['_id']))
+    {
+        $request['id'] = $request['_id'];
+
+    }
+
+   
+    $CatalogproductsEntity = new CatalogproductsEntity($request);
+    
+
+    $tiendas = getCatalogStores();
+
+    if(empty($store)) {
+        foreach($tiendas as $k => $v) {
+            $store =  $k;
+            break;
+        }
+    }
+
+    $CatalogproductsModel->setExcludeId($Tokenizer->decode($id));
+    $CatalogproductsModel->setPage($MyRequest->getRequest('page',1));
+    $CatalogproductsModel->setTampag($MyRequest->getRequest('rows',12));
+    $CatalogproductsModel->setOrdensql($sortInput." ".$MyRequest->getRequest('sord',"ASC"));
+    $CatalogproductsEntity->status(1);
+    $CatalogproductsEntity->store($producto_actual['store']);
+    $CatalogproductsEntity->visible_in_search(1);
+
+    if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+    {
+        $CatalogproductsEntity->uid($MySession->getVar('id'));
+    }
+    if(!empty($producto_actual['uid'])) {
+        $CatalogproductsEntity->uid($producto_actual['uid']);
+    }
+
+    $result	 		= $CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy());
+    $dataRows = ["rows" => [], "total" => ceil($CatalogproductsModel->getTotal() / $MyRequest->getRequest('rows',12)), "page" => (int)$MyRequest->getRequest('page',1),"records" => $CatalogproductsModel->getTotal()];
+
+
+    if($CatalogproductsModel->getTotal() > 0)
+    {
+
+        while($registro = $CatalogproductsModel->getRows())
+        {
+            $registro = array_filter($registro, function($llave) {
+                return !is_numeric($llave);
+            }, ARRAY_FILTER_USE_KEY);
+            $img = "";
+            $_img = getCoreConfig('catalog/product/placeholder');
+            if($_img != "" && file_exists(PROJECT_DIR.$_img))
+            {
+                $img = makeHTMLImg(imageResize($_img,50,50, true),50,50,$registro['name']);
+            }
+            $registro["images"] = json_decode($registro["images"],true);
+            if(!empty($registro['images']))
+            {
+                foreach($registro["images"] as $foto)
+                {
+                    if($foto['principal'] == 1)
+                    {
+                        if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img']))
+                        {
+                            $img = imageResize($MyConfigure->getUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img'],50,50, true);
+                            $img = makeHTMLImg($img,50,50,$registro['name']);
+                        }
+                    }
+
+                }
+            }
+        
+            $dataRows['rows'][] = array_merge($registro,array(
+                    "id" => $Tokenizer->token('catalog_products',$registro["id"]),
+                    "_id" => $registro["id"],
+                    "images"     => $img,
+                    "status"     => in_array($registro['id'],$relacionados) ? 'desactivar':'activar',
+            ));
+        }
+    }
+
+    header('Content-Type: application/json; charset=utf-8');
+    echo $callback . '(' . json_encode($dataRows). ');';
+    die;
+} else {
+   
+    if(empty($producto_actual)) {
+        $MyRequest->redirect($Tokenizer->decode($_callback));
+    }
+
+    $MyMetatag->setJs("/public/plugins/jqGrid/js/jquery.jqGrid.js");
+    $MyMetatag->setJs("/public/plugins/jqGrid/js/i18n/grid.locale-$lang_root.js");
+    $MyMetatag->setCSS("/public/plugins/jqGrid/css/ui.jqgrid.css");
+
+    $permisos_grid = "";
+    $path = "";
+    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
+    {
+        $permisos_grid = "administrar_products_catalog";
+        $path = ADMIN_CATALOG_PRODUCTS_RELATED;
+    }
+    if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
+    {
+        $permisos_grid = "administrar_products_catalog_marketplace";
+        $path = ADMIN_CATALOG_PRODUCTS_RELATED_MARKETPLACE;
+    }
+  
 }
-
-
-//$MyFrankyMonster->setPHPFile(getVista("admin/template/grid.phtml"));
-$title_grid = _catalog("Productos Relacionados");
-$class_grid = "products_related";
-$error_grid = _catalog("No hay productos registrados");
-
-
-$titulo_columnas_grid = array("_id" => _catalog("ID"),_catalog("images") => _catalog("Thumb"), "name" =>  _catalog("Nombre"),"sku" => _catalog("SKU"));
-$value_columnas_grid = array("_id" ,"images", "name","sku");
-
-$css_columnas_grid = array("_id" => "w-xxxx-1" ,"images" => "w-xxxx-1" , "name" => "w-xxxx-3", "sku" => "w-xxxx-3");
-
-
-$permisos_grid = "administrar_products_catalog";
-if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
-{
-    $permisos_grid = "administrar_products_catalog_marketplace";
-}
-$MyFiltrosForm = new filtrosForm('paginar');
-$MyFiltrosForm->setMobile($Mobile_detect->isMobile());
-$MyFiltrosForm->addBusca();
-$MyFiltrosForm->addSubmit();
-$MyFiltrosForm->addId();
-$MyFiltrosForm->setAtributoInput("id", "value",$id);
-$MyFiltrosForm->setAtributoInput("busca_b", "value",$busca_b);
 ?>
+
+
+
+
+

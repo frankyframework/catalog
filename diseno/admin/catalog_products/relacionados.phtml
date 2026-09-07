@@ -1,78 +1,179 @@
 <div class="content">
     <div class="w-xxxx-12"><?php echo breadcrumbs(); ?> </div>
         <div class="w-xxxx-12 cont_global_admin">
-        <h1 class="titulo_seccion_admin"><?php echo $title_grid; ?> de <?=$producto_actual['name']?></h1>
-        
-        <div  class="w-xxxx-12 cont_productos_relacionados">
-            
+            <div class="w-xxxx-12 cont_header_panel">
+                <div class="_wrapp_form_serch">
+                  
+                    <a href="<?=$Tokenizer->decode($_callback)?>" class="_btn_new">Regresar</a>
+                </div>
+            </div>
+            <h1 class="titulo_seccion_admin"><?= _('Productos relacionados')?> de <?=$producto_actual['name']?></h1>
+
+            <div  class="w-xxxx-12 cont_productos_relacionados">
+                <table id="jqGridRel"></table>
+                <div id="jqGridPagerRel"></div>
+            </div>
         </div>
  
-        <div class="w-xxxx-12 cont_header_panel">
-            <div class="_wrapp_form_serch">
-                <?php echo $MyFiltrosForm->openTag(); ?>
-                <?php echo $MyFiltrosForm->getAllRow(); ?>
-                <?php echo $MyFiltrosForm->endTag(); ?>
-                
+        <h1 class="titulo_seccion_admin">Otros productos</h1>
+
+        <div class="w-xxxx-12 cont_global_admin">
+            <div class="w-xxxx-12 cont_header_panel">
+                <div class="_wrapp_form_serch">
+                    <form name="buscarGrid" action="" method="get" id="paginar">                
+                        <div class="form-group form_buscar"><input type="submit" name="buscar" class="_btn _primary" id="btsSearchGridAdmin" value="Buscar"></div>
+                    </form>
+                </div>
             </div>
         </div>
-        <h1 class="titulo_seccion_admin">Otros productos</h1>
-        <div  class="w-xxxx-12 cont_gral_admin <?php echo $class_grid; ?>">
-            <div >
-                <div class="w-xxxx-12">
-                    <div class="w-xxxx-12 contenedor_titulo_columnas">
-                        <?php $i = 1; ?>
-                        <?php foreach($titulo_columnas_grid as $k =>$v): ?>
-                        <div class="<?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>"><?php echo makeHTMLOrder( $k, $v);  ?></div>
-                        <?php endforeach; ?>
-                        <div class="w-xxxx-1">
-                              <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
-                                <?=_catalog('Relacionar')?>
-                              <?php endif; ?>
-                        </div>
-                      
-                    </div>
-                    <div class="contenedor_columnas_info"  >
-                    <div class="w-xxxx-12 contenedor_columnas"  >
-                        <?php $i = 1; ?>
-                        <?php foreach($value_columnas_grid as $k): ?>
-                        <div class="{{_data.thisClass}}   <?php echo (isset($css_columnas_grid[$k]) ? $css_columnas_grid[$k] : ""); ?>">{{_data.<?php echo $k;  ?>}}</div>
-                        <?php endforeach; ?>
-                        <div class='w-xxxx-2 {{_data.thisClass}}'>
-                            <?php if($MyAccessList->MeDasChancePasar($permisos_grid)):  ?>
-                            <input type="checkbox" name="relacionado[]" value="{{_data.id}}" />
-                            <?php endif; ?>
-                        </div>
-                       
-                    </div>
-                    </div>
-                </div>
-                <div class="w-xxxx-12">
-                    <div class="no_hay_datos" ><?php echo $error_grid; ?></div>
-                </div>
-                <div class="w-xxxx-12">
-                    <?php echo render("admin/widget.paginar.phtml"); ?>
-                </div>
-            </div>
+        <div  class="w-xxxx-12 cont_gral_admin relacionados">
+            <table id="jqGrid"></table>
+            <div id="jqGridPager"></div>
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
-window.admingrid = <?php echo json_encode($lista_admin_data); ?>;
+window.parentId = '<?=$MyRequest->getRequest('id')?>';
+window.path = '<?=$MyRequest->link($path)?>';
+window.pathRel = 'admin/catalog-products/relacionados_actual.php'; 
+window.query = '&id=<?=$MyRequest->getRequest('id')?>';
 </script>
 <script >
 $(window).load(function(){
-    $("input[name='relacionado[]']").change(function(){
+    var isGridMobile = ($(window).width() <= 767 ? true : false);
 
-        if($(this).is(':checked'))
-        {
-            ajax_products_agregarProductoRelacionado('<?=$id?>',$(this).attr('value'))
-        }
-        else{
-            ajax_products_quitarProductoRelacionado('<?=$id?>',$(this).attr('value'))
-        }
-      
+    $("#jqGrid").GridAdmin({
+        search : true,
+        entity : 'catalog_rel'+window.query,
+        redirectOnSelectRow:false,
+        gridPager : "#jqGridPager",
+        btnSearch: "#btsSearchGridAdmin",
+        redirectPath : '',
+        pathData : window.path,
+        error : "<?=_('No hay productos registrados')?>",
+        callbackFuncion : "relateProducts",
+        colModel: [
+            { label: '<?=_('ID BACK')?>', name: 'id', key:true, hidden:true, width: 50 },
+            { label: '<?=_('STATUS BACK')?>', name: 'status', hidden:true, width: 50 },
+            { label: '<?=_('STORE ID')?>', name: 'store_id', hidden:true,  width: 50 },
+            { label: '<?=_('ID')?>', name: '_id', hidden:isGridMobile, width: 100 },
+            { label: '<?=_('Thumb')?>', name: 'images', hidden:isGridMobile, width: 100, search:false },
+            { label: '<?=_('Nombre')?>', name: 'name', width: 250 },
+            { label: '<?=_('SKU')?>', name: 'sku', width: 250 },
+            { 
+            name: 'acciones', 
+            index: 'acciones', 
+            width: 200, 
+            align: 'center', 
+            sortable: false, 
+            search: false,
+            formatter: creadorDeBotones // Vincula la función que creamos en el paso 2
+            }
+        ],
+        subGrid: isGridMobile,
+        subGridRowExpanded: showChildGrid,
+        width:920
     });
-    ajax_products_cargarProductosRelacionados('<?=$id?>');
-});
+
+    $("#jqGridRel").GridAdmin({
+        search : false,
+        entity : 'catalog_rel_true'+window.query,
+        redirectOnSelectRow:false,
+        gridPager : "#jqGridPagerRel",
+        btnSearch: "",
+        redirectPath : '',
+        pathData : window.pathRel,
+        error : "<?=_('No hay productos relacionados')?>",
+        callbackFuncion : "relateProducts2",
+        colModel: [
+            { label: '<?=_('ID BACK')?>', name: 'id', key:true, hidden:true, width: 50 },
+            { label: '<?=_('STATUS BACK')?>', name: 'status', hidden:true, width: 50 },
+            { label: '<?=_('STORE ID')?>', name: 'store_id', hidden:true,  width: 50 },
+            { label: '<?=_('ID')?>', name: '_id', hidden:isGridMobile, width: 100 },
+            { label: '<?=_('Thumb')?>', name: 'images', hidden:isGridMobile, width: 100, search:false },
+            { label: '<?=_('Nombre')?>', name: 'name', width: 250 },
+            { label: '<?=_('SKU')?>', name: 'sku', width: 250 },
+            { 
+            name: 'acciones', 
+            index: 'acciones', 
+            width: 200, 
+            align: 'center', 
+            sortable: false, 
+            search: false,
+            formatter: creadorDeBotones2 // Vincula la función que creamos en el paso 2
+            }
+        ],
+        subGrid: isGridMobile,
+        subGridRowExpanded: showChildGrid,
+        width:920
+    });
+ });
+
+ function creadorDeBotones(cellvalue, options, rowObject) {
+    
+    var id = options.rowId; // Obtiene el ID único de la fila actual
+
+    var boton = '<a class="btn_adm_relacionar btn_adm_relacionar_product_mp_switch " data-id="'+id+'" href="#'+rowObject.status+'"></a>';
+
+   
+    return boton;
+}
+
+function showChildGrid(parentRowID, parentRowKey) {
+    var childGridID = parentRowID + "_table";
+    var childGridPagerID = parentRowID + "_pager";
+    
+    if($(window).width() <= 767) {
+      
+        var id  = $(this).find('#' + parentRowKey + ' td[aria-describedby$="_:id"]').text();
+        var thumb  = $(this).find('#' + parentRowKey + ' td[aria-describedby$="_images"]').html();
+        var type  = $(this).find('#' + parentRowKey + ' td[aria-describedby$="_type"]').text();
+        var store  = $(this).find('#' + parentRowKey + ' td[aria-describedby$="_store"]').text();
+      
+        $('#' + parentRowID).append('<p>ID: '+id+'</p>');
+        $('#' + parentRowID).append('<p>Thumb: '+thumb+'</p>');
+       
+    }
+}
+function relateProducts() {
+    $.fn.buttonDelete('a.btn_adm_relacionar_product_mp_switch')
+    
+    $(".btn_adm_relacionar").click(function(event){
+        event.preventDefault();
+        var nuevo_estado = ($(this).attr("href").replace("#","") == "activar" ? 1 : 0);
+        if(nuevo_estado == 1) {
+            ajax_products_agregarProductoRelacionado(window.parentId ,$(this).attr('data-id'))
+        } else {
+            ajax_products_quitarProductoRelacionado(window.parentId ,$(this).attr('data-id'))
+        }
+        
+    });
+}
+
+function creadorDeBotones2(cellvalue, options, rowObject) {
+    
+    var id = options.rowId; // Obtiene el ID único de la fila actual
+
+    var boton = '<a class="btn_adm_relacionar_ btn_adm_relacionar_product_mp_switch2" data-id="'+id+'" href="#'+rowObject.status+'"></a>';
+
+   
+    return boton;
+}
+
+function relateProducts2() {
+    $.fn.buttonDelete('a.btn_adm_relacionar_product_mp_switch2')
+    
+    $(".btn_adm_relacionar_").click(function(event){
+        event.preventDefault();
+        var nuevo_estado = ($(this).attr("href").replace("#","") == "activar" ? 1 : 0);
+        if(nuevo_estado == 1) {
+            ajax_products_agregarProductoRelacionado(window.parentId ,$(this).attr('data-id'))
+        } else {
+            ajax_products_quitarProductoRelacionado(window.parentId ,$(this).attr('data-id'))
+        }
+        
+    });
+}
 
 </script>

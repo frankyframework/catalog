@@ -50,7 +50,27 @@ class CatalogproductsModel  extends \Franky\Database\Mysql\objectOperations
 
         foreach($data as $k => $v)
         {
-            $this->where()->addAnd("catalog_products.".$k,$v,'=');
+            if(!empty($v) || is_numeric($v))
+            {
+                if(is_array($v))
+                {
+                    $this->where()->concat('AND (');
+                    foreach ($v as $_v)
+                    {
+                        $this->where()->addOr($k,$_v,'=');
+
+                    }
+                    $this->where()->concat(')');
+                }
+                else
+                {
+                    if(in_array($k,['id','uid','parent_id','store','set_attribute','url_key'])) {
+                        $this->where()->addAnd($k,$v,'=');
+                    } else {
+                        $this->where()->addAnd($k,"%".$v."%",'like');
+                    }
+                } 
+            }
         }
 
         if($this->busca != "")

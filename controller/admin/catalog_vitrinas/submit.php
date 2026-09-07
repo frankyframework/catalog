@@ -58,13 +58,13 @@ if($CatalogvitrinaModel->existeClave($CatalogvitrinaEntity->clave(),$Catalogvitr
 if(!$error)
 {
     
-    if($MySession->GetVar('vitrina'))
+    if($MySession->GetVar('productsVitrina'))
     {
-        $items['productos'] = $MySession->GetVar('vitrina');
+        $items['productos'] = $MySession->GetVar('productsVitrina');
     }
-    else{
-        $items['category'] = $category;
-    }
+   
+    $items['category'] = $category;
+    
     
     $CatalogvitrinaEntity->items(json_encode($items));
 

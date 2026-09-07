@@ -15,5 +15,8 @@ return array
     "admin/catalog/catalogo_contacto/excel.php" => PROJECT_DIR."/modulos/catalog/controller/admin/catalogo_contacto/excel.php",
     "mi-cuenta/marketplace/submit.user.php" => PROJECT_DIR."/modulos/catalog/controller/mi-cuenta/marketplace/submit.user.php",
     "admin/catalogo-users/submit.php"  => PROJECT_DIR."/modulos/catalog/controller/admin/catalogo_users/submit.php",
+    "admin/catalog-products/relacionados_actual.php" => PROJECT_DIR."/modulos/catalog/controller/admin/catalog_products/relacionados_actual.php",
+    "admin/catalog_vitrinas/relacionados.php" => PROJECT_DIR."/modulos/catalog/controller/admin/catalog_vitrinas/relacionados.php",
+    "admin/catalog_vitrinas/relacionados_actual.php" => PROJECT_DIR."/modulos/catalog/controller/admin/catalog_vitrinas/relacionados_actual.php",
 );
 ?>

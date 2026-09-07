@@ -206,114 +206,6 @@ function ajax_products_quitarProductoRelacionadoVitrina($id_parent,$id){
     return $respuesta;
 }
 
-function ajax_products_cargarProductosRelacionadosVitrina($id)
-{
-    global $MyAccessList;
-    global $MyMessageAlert;
-    global $MyConfigure;
-    global $MySession;
-    $respuesta =[];
-    
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog") )
-    {
-        $Tokenizer = new \Franky\Haxor\Tokenizer;
-        
-        
-        $vitrina = $MySession->GetVar('vitrina');
-        if($vitrina === false){
-            
-            $CatalogvitrinaModel = new \Catalog\model\CatalogvitrinaModel;
-            $CatalogvitrinaEntity = new \Catalog\entity\CatalogvitrinaEntity;
-            
-            $CatalogvitrinaEntity->id($Tokenizer->decode($id));
-            $CatalogvitrinaModel->getData($CatalogvitrinaEntity->getArrayCopy());
-
-            $data = $CatalogvitrinaModel->getRows();
-
-            $data["items"] = json_decode($data["items"],true);
-    
-            $vitrina = $data['items']['productos'];
-            $MySession->SetVar('vitrina',$vitrina);
-        }
-        
-        
-        $lista_admin_data =[];
-        if(!empty($vitrina))
-        {
-            $CatalogproductsModel = new Catalog\model\CatalogproductsModel;
-            $CatalogproductsEntity = new Catalog\entity\CatalogproductsEntity;
-            $CatalogproductsModel->setsearchIds($vitrina);
-            $CatalogproductsModel->setTampag(10000);
-            if($CatalogproductsModel->getData($CatalogproductsEntity->getArrayCopy()) == REGISTRO_SUCCESS)
-            {
-                $iRow = 0;
-                while($registro = $CatalogproductsModel->getRows())
-                {
-                    $thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
-
-
-                    $img = "";
-                    $_img = getCoreConfig('catalog/product/placeholder');
-                    if($_img != "" && file_exists(PROJECT_DIR.$_img))
-                    {
-                        $img = makeHTMLImg(imageResize($_img,50,50, true),50,50,$registro['name']);
-                    }
-                    $registro["images"] = json_decode($registro["images"],true);
-                    if(!empty($registro['images']))
-                    {
-                        foreach($registro["images"] as $foto)
-                        {
-                            if($foto['principal'] == 1)
-                            {
-                                if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img']))
-                                {
-                                    $img = imageResize($MyConfigure->getUploadDir()."/catalog/products/".$registro["id"].'/'.$foto['img'],50,50, true);
-                                    $img = makeHTMLImg($img,50,50,$registro['name']);
-                                }
-                            }
-
-                        }
-                    }
-
-                    $lista_admin_data[$iRow] = array_merge($registro,array(
-                            "thisClass"     => $thisClass,
-                            "id" => $Tokenizer->token('catalog_products',$registro["id"]),
-                            "_id" => $registro["id"],
-                            "images"     => $img,
-                    ));
-
-
-                    $iRow++;
-                }
-
-            }
-        }
-        $respuesta['lista_admin_data_relacionados'] = ($lista_admin_data);
-        $titulo_columnas_grid = array("_id" => "ID","images" => "Thumb", "name" =>  "Nombre","sku" => "SKU");
-        $value_columnas_grid = array("_id" ,"images", "name","sku");
-
-        $css_columnas_grid = array("_id" => "w-xxxx-2" ,"images" => "w-xxxx-2" , "name" => "w-xxxx-4", "sku" => "w-xxxx-2");
-
-
-       
-
-        $respuesta['html'] = render(PROJECT_DIR.'/modulos/catalog/diseno/admin/catalog_vitrinas/widget.relacionados.phtml',
-                ['titulo_columnas_grid' =>$titulo_columnas_grid,
-                 'value_columnas_grid' => $value_columnas_grid,
-                 'css_columnas_grid' => $css_columnas_grid
-                ]
-        );
-        
-        
-    }
-    else
-    {
-        $respuesta["error"] = true;
-        $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
-    }
-    return $respuesta;
-}
-
 
 function ajax_products_agregarProductoRelacionado($id_parent,$id){
     
@@ -365,88 +257,6 @@ function ajax_products_quitarProductoRelacionado($id_parent,$id){
             $respuesta["error"] = true;
             $respuesta["message"] = $MyMessageAlert->Message("catalog_products_error_relacionar_eliminar");
         }
-    }
-    else
-    {
-        $respuesta["error"] = true;
-        $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
-    }
-    return $respuesta;
-}
-
-function ajax_products_cargarProductosRelacionados($id)
-{
-    global $MyAccessList;
-    global $MyMessageAlert;
-    global $MyConfigure;
-    $respuesta =[];
-    
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog")  || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
-    {
-        $CatalogproductrelatedModel =  new \Catalog\model\CatalogproductrelatedModel();
-        $CatalogproductrelatedEntity =  new \Catalog\entity\CatalogproductrelatedEntity();
-        $Tokenizer = new \Franky\Haxor\Tokenizer;
-        $CatalogproductrelatedEntity->id_parent($Tokenizer->decode($id));
-        $CatalogproductrelatedModel->setTampag(10000);
-        $lista_admin_data =[];
-        if($CatalogproductrelatedModel->getData($CatalogproductrelatedEntity->getArrayCopy()) == REGISTRO_SUCCESS)
-        {
-            $iRow = 0;
-            while($registro = $CatalogproductrelatedModel->getRows())
-            {
-                $thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
-
-
-                $img = "";
-                $_img = getCoreConfig('catalog/product/placeholder');
-                if($_img != "" && file_exists(PROJECT_DIR.$_img))
-                {
-                    $img = makeHTMLImg(imageResize($_img,50,50, true),50,50,$registro['name']);
-                }
-                $registro["images"] = json_decode($registro["images"],true);
-                if(!empty($registro['images']))
-                {
-                    foreach($registro["images"] as $foto)
-                    {
-                        if($foto['principal'] == 1)
-                        {
-                            if(!empty($foto["img"]) && file_exists($MyConfigure->getServerUploadDir()."/catalog/products/".$registro["id_product"].'/'.$foto['img']))
-                            {
-                                $img = imageResize($MyConfigure->getUploadDir()."/catalog/products/".$registro["id_product"].'/'.$foto['img'],50,50, true);
-                                $img = makeHTMLImg($img,50,50,$registro['name']);
-                            }
-                        }
-
-                    }
-                }
-
-                $lista_admin_data[$iRow] = array_merge($registro,array(
-                        "thisClass"     => $thisClass,
-                        "id" => $Tokenizer->token('catalog_products',$registro["id_product"]),
-                        "_id" => $registro["id_product"],
-                        "images"     => $img,
-                ));
-
-
-                $iRow++;
-            }
-            
-        }
-        $respuesta['lista_admin_data_relacionados'] = ($lista_admin_data);
-        $titulo_columnas_grid = array("_id" => "ID","images" => "Thumb", "name" =>  "Nombre","sku" => "SKU");
-        $value_columnas_grid = array("_id" ,"images", "name","sku");
-
-        $css_columnas_grid = array("_id" => "w-xxxx-2" ,"images" => "w-xxxx-2" , "name" => "w-xxxx-4", "sku" => "w-xxxx-2");
-
-
-       
-
-        $respuesta['html'] = render(PROJECT_DIR.'/modulos/catalog/diseno/admin/catalog_products/widget.relacionados.phtml',
-                ['titulo_columnas_grid' =>$titulo_columnas_grid,
-                 'value_columnas_grid' => $value_columnas_grid,
-                 'css_columnas_grid' => $css_columnas_grid
-                ]
-        );
     }
     else
     {
@@ -1460,10 +1270,8 @@ $MyAjax->register("setOrdenImagesProducts");
 $MyAjax->register("eliminarFotoCatalogProduct");
 $MyAjax->register("ajax_products_agregarProductoRelacionado");
 $MyAjax->register("ajax_products_quitarProductoRelacionado");
-$MyAjax->register("ajax_products_cargarProductosRelacionados");
 $MyAjax->register("ajax_products_agregarProductoRelacionadoVitrina");
 $MyAjax->register("ajax_products_quitarProductoRelacionadoVitrina");
-$MyAjax->register("ajax_products_cargarProductosRelacionadosVitrina");
 $MyAjax->register("DeleteCatalogVitrina");
 $MyAjax->register("ajax_products_cargarProductosConfigurables");
 $MyAjax->register("ajax_products_agregarProductoConfigurable");

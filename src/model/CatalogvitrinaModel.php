@@ -17,9 +17,28 @@ class CatalogvitrinaModel  extends \Franky\Database\Mysql\objectOperations
 
         foreach($data as $k => $v)
         {
-            $this->where()->addAnd("catalog_vitrinas.".$k,$v,'=');
-        }
+            if(!empty($v) || is_numeric($v))
+            {
+                if(is_array($v))
+                {
+                    $this->where()->concat('AND (');
+                    foreach ($v as $_v)
+                    {
+                        $this->where()->addOr("catalog_vitrinas.".$k,$_v,'=');
 
+                    }
+                    $this->where()->concat(')');
+                }
+                else
+                {
+                    if(in_array($k,['id','clave','createdAt','store'])) {
+                        $this->where()->addAnd("catalog_vitrinas.".$k,$v,'=');
+                    } else {
+                        $this->where()->addAnd("catalog_vitrinas.".$k,"%".$v."%",'like');
+                    }
+                } 
+            }
+        }
         $this->from()->addInner('catalog_stores','catalog_stores.id','catalog_vitrinas.store');
         return $this->getColeccion($campos);
     }

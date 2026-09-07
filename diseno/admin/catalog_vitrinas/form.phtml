@@ -63,8 +63,28 @@
         <label id="subcategory[]-error" class="error" for="subcategory[]" style="display:none;"></label>
         </div>
         <div>
-            <a href="#" class="open_relacionar">Catalogo de Productos</a>
+            <h4><?= _('Productos en la vitrina') ?></h4>
+        
+            <div  class="w-xxxx-12 cont_gral_admin">
+                <table id="jqGridRel"></table>
+                <div id="jqGridPagerRel"></div>
+            </div>
         </div>
+        <div>
+                    
+                    <div class="w-xxxx-12 cont_header_panel">
+
+                            <div class="_wrapp_form_serch">  
+                            <h4><?= _('Agregar productos a la vitrina') ?></h4>
+                            <a href="<?php echo $MyRequest->url($frm_constante_link); ?>" class="_btn_new"  id="btsSearchGridAdmin">Buscar</a>            
+                            </div>
+                        </div>
+                    <div  class="w-xxxx-12 cont_gral_admin">
+                    
+                        <table id="jqGrid"></table>
+                        <div id="jqGridPager"></div>
+                    </div>
+                </div>
      
 
         <?php  echo $adminForm->getRow("random"); ?>
@@ -81,30 +101,17 @@
 
 </div>
 
-<div id="relacionar_overlay"  class="overlay w-xxxx-12">
-      
-       <div class="overlay-content">
-       <div class="w-xxxx-6 cont_photo galeria" >
-           <div class="clear">&nbsp;</div>
-       </div>
-       <div class="lightbox_home_error_message">
-        
-        <a href="javascript:void(0)" class="cerrar_x" onclick="cerrarOverlayRelacionar()">&times;</a>
-           <div class="w-xxxx-12 bkg_message_home">
-
-
-               <iframe id="iframe_relacionar" src="" frameborder="0" width="80%"></iframe>
-
-
-            </div>
-       </div>
-   </div>
-</div>
 
 <script >
 $(document).ready(function()
 {
-  $( "#frmvitrina" ).validate();
+  $( "#frmvitrina" ).validate({
+        submitHandler: function(form)
+        {
+             $('.ui-search-toolbar').find('input,select').prop('disabled',true);
+             return true;
+        }
+    });
   
   $('input[name="category[]"]').change(function(){
       if($(this).is(':checked'))
@@ -117,44 +124,7 @@ $(document).ready(function()
       }
   });
 });
-</script>
-
-
-<script>
-var abrirOverlayRelacionar = function(){
-   $("#iframe_relacionar").attr('src','<?=$MyRequest->url(FRM_CATALOG_VITRINA_RELACIONADOS);?>?id=<?=$data['id']?>&callback=<?=$_callback?>&store=<?=$store?>').css({'height':($(window).height()*0.8)});
-  $("#relacionar_overlay").css({'height':'100%'}).fadeTo(1000,1);
-  $("body").addClass("no_scroll");
-}
-
-var cerrarOverlayRelacionar = function() {
-
-      $("#relacionar_overlay").fadeTo(1000,0,function(){
-          $(this).css({'height':'0%'})
-      });
-
-      $("#iframe_relacionar").attr('src','');
-
-      $("body").removeClass("no_scroll");
-};
-$('.open_relacionar').click(function(e){
-    e.preventDefault();
-    abrirOverlayRelacionar();
-});
- $(document).keyup(function(event){
-
-        if(event.which==27)
-        {
-            if($("#relacionar_overlay").is(":visible"))
-            {
-                cerrarOverlayRelacionar();
-            }
-            
-        }
-    });
-
-
-    $('#jstree').on('changed.jstree', function (e, data) {
+$('#jstree').on('changed.jstree', function (e, data) {
     var i, j, r = [];
     $('input[name="category[]"]').prop('checked',false);
     for(i = 0, j = data.selected.length; i < j; i++) {
@@ -172,4 +142,159 @@ $('.open_relacionar').click(function(e){
     },
   "plugins" : [ "checkbox" ]
 });
+</script>
+<script type="text/javascript">
+window.parentId = '<?=$MyRequest->getRequest('id')?>';
+window.path = 'admin/catalog_vitrinas/relacionados.php'; 
+window.pathRel = 'admin/catalog_vitrinas/relacionados_actual.php'; 
+window.query = '&id=<?=$MyRequest->getRequest('id')?>';
+</script>
+
+<script>
+$(window).load(function(){
+    var isGridMobile = ($(window).width() <= 767 ? true : false);
+
+    var  storesData = <?= json_encode(getCatalogStores())?>;
+    storesData = ";"+Object.entries(storesData)
+    .map(([id, nombre]) => `${id}:${nombre}`)
+    .join(';');
+
+    $("#jqGrid").GridAdmin({
+        search : true,
+        entity : 'catalog_rel_vitrina'+window.query,
+        redirectOnSelectRow:false,
+        gridPager : "#jqGridPager",
+        btnSearch: "#btsSearchGridAdmin",
+        redirectPath : '',
+        pathData : window.path,
+        error : "<?=_('No hay productos registrados')?>",
+        callbackFuncion : "relateProducts",
+        colModel: [
+            { label: '<?=_('ID BACK')?>', name: 'id', key:true, hidden:true, width: 50 },
+            { label: '<?=_('STATUS BACK')?>', name: 'status', hidden:true, width: 50 },
+            { label: '<?=_('STORE ID')?>', name: 'store_id', hidden:true,  width: 50 },
+            { label: '<?=_('ID')?>', name: '_id', hidden:isGridMobile, width: 100 },
+            { label: '<?=_('Thumb')?>', name: 'images', hidden:isGridMobile, width: 100, search:false },
+            { label: '<?=_('Nombre')?>', name: 'name', width: 250 },
+            { label: '<?=_('SKU')?>', name: 'sku', width: 200 },
+            { label: '<?=_('Store')?>', name: 'store', width: 150 , stype: 'select',
+                searchoptions: { value: storesData}
+            },
+            { 
+            name: 'acciones', 
+            index: 'acciones', 
+            width: 150, 
+            align: 'center', 
+            sortable: false, 
+            search: false,
+            formatter: creadorDeBotones // Vincula la función que creamos en el paso 2
+            }
+        ],
+        subGrid: isGridMobile,
+        subGridRowExpanded: showChildGrid,
+        width:970,
+        removeUrlTop: false
+    });
+
+    $("#jqGridRel").GridAdmin({
+        search : false,
+        entity : 'catalog_rel_true'+window.query,
+        redirectOnSelectRow:false,
+        gridPager : "#jqGridPagerRel",
+        btnSearch: "",
+        redirectPath : '',
+        pathData : window.pathRel,
+        error : "<?=_('No hay productos relacionados')?>",
+        callbackFuncion : "relateProducts2",
+        colModel: [
+            { label: '<?=_('ID BACK')?>', name: 'id', key:true, hidden:true, width: 50 },
+            { label: '<?=_('STATUS BACK')?>', name: 'status', hidden:true, width: 50 },
+            { label: '<?=_('STORE ID')?>', name: 'store_id', hidden:true,  width: 50 },
+            { label: '<?=_('ID')?>', name: '_id', hidden:isGridMobile, width: 100 },
+            { label: '<?=_('Thumb')?>', name: 'images', hidden:isGridMobile, width: 100, search:false },
+            { label: '<?=_('Nombre')?>', name: 'name', width: 250 },
+            { label: '<?=_('SKU')?>', name: 'sku', width: 250 },
+            { 
+            name: 'acciones', 
+            index: 'acciones', 
+            width: 200, 
+            align: 'center', 
+            sortable: false, 
+            search: false,
+            formatter: creadorDeBotones2 // Vincula la función que creamos en el paso 2
+            }
+        ],
+        subGrid: isGridMobile,
+        subGridRowExpanded: showChildGrid,
+        width:920,
+        removeUrlTop: false
+    });
+ });
+
+ function creadorDeBotones(cellvalue, options, rowObject) {
+    
+    var id = options.rowId; // Obtiene el ID único de la fila actual
+
+    var boton = '<a class="btn_adm_relacionar btn_adm_relacionar_product_mp_switch " data-id="'+id+'" href="#'+rowObject.status+'"></a>';
+
+   
+    return boton;
+}
+
+function showChildGrid(parentRowID, parentRowKey) {
+    var childGridID = parentRowID + "_table";
+    var childGridPagerID = parentRowID + "_pager";
+    
+    if($(window).width() <= 767) {
+      
+        var id  = $(this).find('#' + parentRowKey + ' td[aria-describedby$="_:id"]').text();
+        var thumb  = $(this).find('#' + parentRowKey + ' td[aria-describedby$="_images"]').html();
+        var type  = $(this).find('#' + parentRowKey + ' td[aria-describedby$="_type"]').text();
+        var store  = $(this).find('#' + parentRowKey + ' td[aria-describedby$="_store"]').text();
+      
+        $('#' + parentRowID).append('<p>ID: '+id+'</p>');
+        $('#' + parentRowID).append('<p>Thumb: '+thumb+'</p>');
+       
+    }
+}
+function relateProducts() {
+    $.fn.buttonDelete('a.btn_adm_relacionar_product_mp_switch')
+    
+    $(".btn_adm_relacionar").click(function(event){
+        event.preventDefault();
+        var nuevo_estado = ($(this).attr("href").replace("#","") == "activar" ? 1 : 0);
+        if(nuevo_estado == 1) {
+            ajax_products_agregarProductoRelacionadoVitrina(window.parentId ,$(this).attr('data-id'))
+        } else {
+            ajax_products_quitarProductoRelacionadoVitrina(window.parentId ,$(this).attr('data-id'))
+        }
+        
+    });
+}
+
+function creadorDeBotones2(cellvalue, options, rowObject) {
+    
+    var id = options.rowId; // Obtiene el ID único de la fila actual
+
+    var boton = '<a class="btn_adm_relacionar_ btn_adm_relacionar_product_mp_switch2" data-id="'+id+'" href="#'+rowObject.status+'"></a>';
+
+   
+    return boton;
+}
+
+function relateProducts2() {
+    $.fn.buttonDelete('a.btn_adm_relacionar_product_mp_switch2')
+    
+    $(".btn_adm_relacionar_").click(function(event){
+        event.preventDefault();
+        var nuevo_estado = ($(this).attr("href").replace("#","") == "activar" ? 1 : 0);
+        if(nuevo_estado == 1) {
+            ajax_products_agregarProductoRelacionadoVitrina(window.parentId ,$(this).attr('data-id'))
+        } else {
+            ajax_products_quitarProductoRelacionadoVitrina(window.parentId ,$(this).attr('data-id'))
+        }
+        
+    });
+}
+    
 </script>

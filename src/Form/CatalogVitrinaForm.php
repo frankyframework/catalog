@@ -25,15 +25,19 @@ class CatalogVitrinaForm  extends \Franky\Form\Form
 
         $this->add(array(
             'name' => 'store',
-           
-            'type'  => 'hidden',
+            'label' => _catalog('Tienda'),
+            'type'  => 'select',
+            'required'  => true,
+            'options' => array(),
             'atributos' => array(
+                'class'       => 'required'
              ),
             'label_atributos' => array(
-               
+                'class'       => 'desc_form_obligatorio'
                 )
         )
         );
+
 
         $this->add(array(
                 'name' => 'nombre',
