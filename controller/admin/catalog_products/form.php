@@ -4,6 +4,8 @@ use Catalog\model\CatalogproductsModel;
 use Catalog\entity\CatalogproductsEntity;
 use Catalog\model\CatalogcategoryModel;
 use Catalog\entity\CatalogcategoryEntity;
+use Catalog\model\CatalogproductrelatedModel;
+use Catalog\entity\CatalogproductrelatedEntity;
 use Franky\Haxor\Tokenizer;
 
 $Tokenizer = new Tokenizer();
@@ -37,6 +39,7 @@ $album = md5(session_id().time());
 $data_category = [];
 $data_subcategory = [];
 $adminForm = new ProductsForm("frmproduct");
+$relatedProducts = [];
 
 
 
@@ -62,6 +65,19 @@ if(!empty($id))
     $data["images"] = json_decode($data["images"],true);
     $data["category"] = json_decode($data["category"],true);
 
+    // Relaciones actuales se cargan en el formulario como cambios pendientes.
+    $relatedModel = new CatalogproductrelatedModel();
+    $relatedEntity = new CatalogproductrelatedEntity();
+    $relatedEntity->id_parent($id);
+    $relatedModel->setTampag(10000);
+    if($relatedModel->getData($relatedEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
+        while($related = $relatedModel->getRows()) {
+            $relatedProducts[] = ['id' => (int)$related['id_product'], 'name' => $related['name'], 'sku' => $related['sku']];
+        }
+    }
+    // Cada carga del formulario inicia un borrador limpio desde las relaciones persistidas.
+    $_SESSION['related_products_'.$album] = array_column($relatedProducts, 'id');
+
     $_SESSION['album_'.$album] = $data["images"];
     if(!empty($data['images']))
     {
@@ -77,6 +93,10 @@ if(!empty($id))
     
 
 }
+$relatedDraftIds = isset($_SESSION['related_products_'.$album]) && is_array($_SESSION['related_products_'.$album])
+    ? array_values(array_unique(array_map('intval', $_SESSION['related_products_'.$album])))
+    : array_column($relatedProducts, 'id');
+
 //print_r($data); exit;
 
 
@@ -127,4 +147,7 @@ if(!empty($data['parent_id']))
 $title_form = "$title";
 $MySession->SetVar('addProduct',$album);
 
-$MyMetatag->setCode("<script  src='/public/plugins/tinymce/tinymce.min.js'></script>");
+$MyMetatag->setCode("<script  src='/plugins/tinymce/tinymce.min.js'></script>");
+$MyMetatag->setJs("/plugins/jqGrid/js/jquery.jqGrid.js");
+$MyMetatag->setJs("/plugins/jqGrid/js/i18n/grid.locale-$lang_root.js");
+$MyMetatag->setCSS("/plugins/jqGrid/css/ui.jqgrid.css");

@@ -46,16 +46,6 @@
         <valor>No se puede vender esta cantidad para este producto</valor>
     </mensaje>
     <mensaje>
-        <llave>products_error_relacionar</llave>
-        <valor>Error al relacionar este producto</valor>
-    </mensaje>
-
-    <mensaje>
-        <llave>products_error_relacionar_eliminar</llave>
-        <valor>Error al quitar este producto</valor>
-    </mensaje>
-
-    <mensaje>
         <llave>products_error_configurar</llave>
         <valor>Error al configurar este producto</valor>
     </mensaje>

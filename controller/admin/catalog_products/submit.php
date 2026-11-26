@@ -8,6 +8,8 @@ use Franky\Haxor\Tokenizer;
 use Franky\Core\ObserverManager;
 use Catalog\model\CatalogCatalogReviewsModel;
 use Catalog\entity\CatalogCatalogReviewsEntity;
+use Catalog\model\CatalogproductrelatedModel;
+use Catalog\entity\CatalogproductrelatedEntity;
 
 $Tokenizer = new Tokenizer();
 $CatalogcategoryproductEntity    = new CatalogcategoryproductEntity();
@@ -27,10 +29,26 @@ $stock  = $MyRequest->getRequest('stock');
 $stock_infinito  = $MyRequest->getRequest('stock_infinito');
 $price  = $MyRequest->getRequest('price');
 $envio_requerido  = $MyRequest->getRequest('envio_requerido');
+$error = false;
+$hasRelatedField = array_key_exists('related_products', $_POST);
+$relatedRaw = $hasRelatedField && is_string($_POST['related_products'])
+    ? json_decode($_POST['related_products'], true)
+    : ($hasRelatedField ? null : []);
+$relatedIds = [];
+if(!$hasRelatedField || is_array($relatedRaw)) {
+    if(is_array($relatedRaw)) {
+        foreach($relatedRaw as $relatedId) {
+            if(is_numeric($relatedId) && (int)$relatedId > 0 && (int)$relatedId != (int)$id) $relatedIds[] = (int)$relatedId;
+        }
+    }
+} else {
+    $MyFlashMessage->setMsg("error", "No se pudo leer la selección de productos relacionados.");
+    $error = true;
+}
+$relatedIds = array_values(array_unique($relatedIds));
 $visible_in_search  = $MyRequest->getRequest('visible_in_search');
 $CatalogproductsEntity->description($description);
 $CatalogproductsEntity->sku(getFriendly($CatalogproductsEntity->sku()));
-$error = false;
 
 $CatalogproductsEntity->in_validation(0);
 $CatalogproductsEntity->validate(1);
@@ -114,6 +132,25 @@ if(empty($category))
     $error = true;
 }
 
+// Revalidar en servidor los IDs enviados por el campo oculto.
+if(!empty($relatedIds)) {
+    $validRelatedIds = [];
+    foreach($relatedIds as $relatedId) {
+        $relatedProductsModel = new CatalogproductsModel();
+        $relatedProductsEntity = new CatalogproductsEntity();
+        $relatedProductsEntity->id($relatedId);
+        if($relatedProductsModel->getData($relatedProductsEntity->getArrayCopy()) == REGISTRO_SUCCESS && $relatedProductsModel->getTotal() > 0) {
+            $validRelatedIds[] = (int)$relatedId;
+        }
+    }
+    if(count($validRelatedIds) != count($relatedIds)) {
+        $MyFlashMessage->setMsg("error", "Uno o más productos relacionados ya no están disponibles.");
+        $error = true;
+    } else {
+        $relatedIds = $validRelatedIds;
+    }
+}
+
 
 
 
@@ -191,12 +228,50 @@ if(!$error)
 
         saveDataCatalogCustomAttribute($id,'catalog_products',$CatalogproductsEntity->set_attribute());
 
+        // Reemplazar relaciones únicamente si el formulario envió su selección.
+        if($hasRelatedField) {
+            $savedRelatedIds = [];
+            $savedRelatedModel = new CatalogproductrelatedModel();
+            $savedRelatedEntity = new CatalogproductrelatedEntity();
+            $savedRelatedEntity->id_parent($id);
+            $savedRelatedModel->setTampag(10000);
+            if($savedRelatedModel->getData($savedRelatedEntity->getArrayCopy()) == REGISTRO_SUCCESS) {
+                while($savedRelated = $savedRelatedModel->getRows()) {
+                    $savedRelatedIds[] = (int)$savedRelated['id_product'];
+                }
+            }
+
+            $relatedResult = REGISTRO_SUCCESS;
+            foreach(array_diff($savedRelatedIds, $relatedIds) as $relatedId) {
+                $relatedEntity = new CatalogproductrelatedEntity();
+                $relatedEntity->id_parent($id);
+                $relatedEntity->id_product($relatedId);
+                $relatedModel = new CatalogproductrelatedModel();
+                if($relatedModel->eliminar($relatedEntity->getArrayCopy()) != REGISTRO_SUCCESS) {
+                    $relatedResult = REGISTRO_ERROR;
+                }
+            }
+            foreach(array_diff($relatedIds, $savedRelatedIds) as $relatedId) {
+                $relatedEntity = new CatalogproductrelatedEntity();
+                $relatedEntity->id_parent($id);
+                $relatedEntity->id_product($relatedId);
+                $relatedModel = new CatalogproductrelatedModel();
+                if($relatedModel->save($relatedEntity->getArrayCopy()) != REGISTRO_SUCCESS) {
+                    $relatedResult = REGISTRO_ERROR;
+                }
+            }
+            if($relatedResult != REGISTRO_SUCCESS) {
+                $MyFlashMessage->setMsg("error", "El producto se guardó, pero ocurrió un error al guardar sus productos relacionados.");
+            }
+        }
+
         $CatalogproductsEntity->exchangeArray([]);
         $CatalogproductsEntity->id($id);
         $CatalogproductsEntity->custom_attributes(json_encode(getCustomAttrsResolver($id)));
         $CatalogproductsModel->save($CatalogproductsEntity->getArrayCopy());
         
         $MySession->UnsetVar('album_'.$album);
+        unset($_SESSION['related_products_'.$album]);
         $MySession->UnsetVar('addProduct');
 
         $location = (!empty($callback) ? ($callback) : $MyRequest->url(ADMIN_CATALOG_PRODUCTS)."?store_b=".$CatalogproductsEntity->store());

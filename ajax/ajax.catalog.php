@@ -207,62 +207,27 @@ function ajax_products_quitarProductoRelacionadoVitrina($id_parent,$id){
 }
 
 
-function ajax_products_agregarProductoRelacionado($id_parent,$id){
-    
+function ajax_products_setRelacionadoPendiente($draftKey,$id,$selected){
     global $MyAccessList;
     global $MyMessageAlert;
-    $respuesta =[];
-    
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog")  || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
-    {
-        $CatalogproductrelatedModel =  new \Catalog\model\CatalogproductrelatedModel();
-        $CatalogproductrelatedEntity =  new \Catalog\entity\CatalogproductrelatedEntity();
-        $Tokenizer = new \Franky\Haxor\Tokenizer;
-        $CatalogproductrelatedEntity->id_parent($Tokenizer->decode($id_parent));
-        $CatalogproductrelatedEntity->id_product($Tokenizer->decode($id));
-        
-        
-        if($CatalogproductrelatedModel->save($CatalogproductrelatedEntity->getArrayCopy()) != REGISTRO_SUCCESS)
-        {
-            $respuesta["error"] = true;
-            $respuesta["message"] = $MyMessageAlert->Message("catalog_products_error_relacionar");
-        }
+    $respuesta = ['error' => false];
+    if(!$MyAccessList->MeDasChancePasar("administrar_products_catalog") &&
+       !(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))) {
+        return ['error' => true, 'message' => $MyMessageAlert->Message("sin_privilegios")];
     }
-    else
-    {
-        $respuesta["error"] = true;
-        $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
+    if(!preg_match('/^[a-f0-9]{32}$/', (string)$draftKey) && !ctype_digit((string)$draftKey)) {
+        return ['error' => true, 'message' => 'Formulario inválido'];
     }
-    return $respuesta;
-}
-
-
-function ajax_products_quitarProductoRelacionado($id_parent,$id){
-    
-    global $MyAccessList;
-    global $MyMessageAlert;
-    $respuesta =[];
-    
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog") || (getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace")))
-    {
-        $CatalogproductrelatedModel =  new \Catalog\model\CatalogproductrelatedModel();
-        $CatalogproductrelatedEntity =  new \Catalog\entity\CatalogproductrelatedEntity();
-        $Tokenizer = new \Franky\Haxor\Tokenizer;
-        $CatalogproductrelatedEntity->id_parent($Tokenizer->decode($id_parent));
-        $CatalogproductrelatedEntity->id_product($Tokenizer->decode($id));
-        
-        
-        if($CatalogproductrelatedModel->eliminar($CatalogproductrelatedEntity->getArrayCopy()) != REGISTRO_SUCCESS)
-        {
-            $respuesta["error"] = true;
-            $respuesta["message"] = $MyMessageAlert->Message("catalog_products_error_relacionar_eliminar");
-        }
+    $productId = (int)$id;
+    if($productId < 1) return ['error' => true, 'message' => 'Producto inválido'];
+    $sessionKey = 'related_products_'.$draftKey;
+    $pending = isset($_SESSION[$sessionKey]) && is_array($_SESSION[$sessionKey]) ? array_map('intval', $_SESSION[$sessionKey]) : [];
+    if((int)$selected === 1) {
+        if(!in_array($productId, $pending, true)) $pending[] = $productId;
+    } else {
+        $pending = array_values(array_diff($pending, [$productId]));
     }
-    else
-    {
-        $respuesta["error"] = true;
-        $respuesta["message"] = $MyMessageAlert->Message("sin_privilegios");
-    }
+    $_SESSION[$sessionKey] = array_values(array_unique($pending));
     return $respuesta;
 }
 
@@ -1268,8 +1233,7 @@ $MyAjax->register("DeleteCatalogCategory");
 $MyAjax->register("DeleteCatalogProduct");
 $MyAjax->register("setOrdenImagesProducts");
 $MyAjax->register("eliminarFotoCatalogProduct");
-$MyAjax->register("ajax_products_agregarProductoRelacionado");
-$MyAjax->register("ajax_products_quitarProductoRelacionado");
+$MyAjax->register("ajax_products_setRelacionadoPendiente");
 $MyAjax->register("ajax_products_agregarProductoRelacionadoVitrina");
 $MyAjax->register("ajax_products_quitarProductoRelacionadoVitrina");
 $MyAjax->register("DeleteCatalogVitrina");

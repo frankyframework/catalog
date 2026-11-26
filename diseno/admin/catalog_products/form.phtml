@@ -1,7 +1,17 @@
-<div class="w-xxxx-12">
-    <div class="content">
-        <h1 class="align_center"></h1>
-        <h3 class="align_center"></h3>
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
+    <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin"><?= _($title_form) ?></h1>
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="_wrapp_form_serch">
+                <div class="form-group"><a class="_btn _secondary" href="<?= ($MyRequest->getRequest('callback') ? $Tokenizer->decode($MyRequest->getRequest('callback')) : $MyRequest->url(ADMIN_CATALOG_PRODUCTS))?>" ><?= _('Atras') ?></a></div>
+                <div class="form-group"><a class="_btn _primary save-form-top" href="#"><?= _('Guardar') ?></a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-xxxx-12">
+    <div class="content_form">
         <?php echo $adminForm->openTag(); ?>
         <?php  echo $adminForm->get("callback"); ?>
 
@@ -114,13 +124,33 @@
 
         <?php  //echo $adminForm->getRow("videos"); ?>
 
+        <div class="form-group" id="related-products-section">
+          <h3>Productos relacionados</h3>
+          <p>Los cambios se aplicarán cuando guardes el producto.</p>
+          <input type="hidden" name="related_products" id="related-products-value" value="<?=htmlspecialchars(json_encode($relatedDraftIds), ENT_QUOTES, 'UTF-8')?>">
+          <?php if(!empty($id)): ?>
+            <div class="w-xxxx-12 cont_productos_relacionados">
+              <table id="jqGridRel"></table><div id="jqGridPagerRel"></div>
+            </div>
+            <h3>Otros productos</h3>
+            <div class="w-xxxx-12 cont_header_panel">
+              <div class="form-group form_buscar"><button type="button" class="_btn _primary" id="btsSearchRelatedGrid">Buscar</button></div>
+            </div>
+            <div class="w-xxxx-12 cont_gral_admin relacionados">
+              <table id="jqGrid"></table><div id="jqGridPager"></div>
+            </div>
+          <?php else: ?>
+            <p>Guarda el producto primero para poder buscar y relacionar productos.</p>
+          <?php endif; ?>
+        </div>
+
         <?php  echo $adminForm->getRow("guardar"); ?>
 
         <?php echo $adminForm->endTag(); ?>
 
     </div>
 
-  
+    </div>
 
 </div>
 
@@ -128,11 +158,26 @@
 <script type="text/javascript">
 window.productId = "<?= $id ?>";
 window.album = "<?= $album; ?>";
+window.relatedParentId = "<?= $data['id'] ?? '' ?>";
+window.relatedDraftKey = "<?= $album ?>";
+window.relatedGridPath = "<?= $MyRequest->link('admin/catalog-products/related-grid.php') ?>";
+window.relatedGridPathRel = "admin/catalog-products/relacionados_actual.php";
+window.relatedGridQuery = "&id=<?=urlencode($data['id'] ?? '')?>&draftKey=<?=urlencode($album)?>";
+window.relatedProductRows = {};
 </script>
 <script >
 $(document).ready(function()
 {
-  $( "#frmproduct" ).validate();
+  $( "#frmproduct" ).validate({
+    submitHandler: function(form) {
+      $('.ui-search-toolbar').find('input,select').prop('disabled', true);
+      return true;
+    }
+  });
+  $('.save-form-top').click(function(e){
+      e.preventDefault();
+      $('#frmproduct').trigger('submit');
+  });
   $('textarea[name=meta_keyword]').tagsInput({width:'auto'});
   $('input[name=videos]').tagsInput({width:'auto'});
 
@@ -141,7 +186,76 @@ $(document).ready(function()
       ajax_getCatalogCustomAttrFrm(window.productId );
   });
   ajax_getCatalogCustomAttrFrm(window.productId );
+
+  if($('#jqGrid').length) {
+    var mobileRelatedGrid = ($(window).width() <= 767);
+    function buildRelatedColumns() {
+      return [
+        {label:'ID BACK',name:'id',key:true,hidden:true,width:50},
+        {label:'STATUS BACK',name:'status',hidden:true,width:50},
+        {label:'STORE ID',name:'store_id',hidden:true,width:50},
+        {label:'ID',name:'_id',hidden:mobileRelatedGrid,width:100},
+        {label:'Thumb',name:'images',hidden:mobileRelatedGrid,width:100,search:false},
+        {label:'Nombre',name:'name',width:250},
+        {label:'SKU',name:'sku',width:250},
+        {name:'acciones',index:'acciones',width:200,align:'center',sortable:false,search:false,formatter:relatedProductButton}
+      ];
+    }
+    $('#jqGrid').GridAdmin({search:true,entity:'catalog_rel'+window.relatedGridQuery,redirectOnSelectRow:false,gridPager:'#jqGridPager',btnSearch:'#btsSearchRelatedGrid',redirectPath:'',pathData:window.relatedGridPath,error:'No hay productos registrados',callbackFuncion:'bindRelatedProductButtons',colModel:buildRelatedColumns(),subGrid:mobileRelatedGrid,subGridRowExpanded:showRelatedProductChild,width:920,removeUrlTop:false});
+    $('#jqGridRel').GridAdmin({search:false,entity:'catalog_rel_true'+window.relatedGridQuery,redirectOnSelectRow:false,gridPager:'#jqGridPagerRel',btnSearch:'',redirectPath:'',pathData:window.relatedGridPathRel,error:'No hay productos relacionados',callbackFuncion:'bindRelatedProductButtons',colModel:buildRelatedColumns(),subGrid:mobileRelatedGrid,subGridRowExpanded:showRelatedProductChild,width:920,removeUrlTop:false});
+  }
+
 });
+
+window.stageRelatedProduct = function(id, selected) {
+  var ids = JSON.parse($('#related-products-value').val() || '[]').map(String);
+  id = String(id);
+  if(selected && ids.indexOf(id) === -1) ids.push(id);
+  if(!selected) ids = ids.filter(function(value) { return value !== id; });
+  $('#related-products-value').val(JSON.stringify(ids));
+
+  // Actualizar el grid seleccionado directamente para que no dependa del filtro del otro grid.
+  if(selected) {
+    var candidate = window.relatedProductRows[id];
+    if(candidate && $('#jqGridRel').jqGrid('getDataIDs').indexOf(candidate.id) === -1) {
+      candidate.status = 'desactivar';
+      $('#jqGridRel').jqGrid('addRowData', candidate.id, candidate, 'last');
+    }
+  } else {
+    var selectedIds = $('#jqGridRel').jqGrid('getDataIDs');
+    for(var j = 0; j < selectedIds.length; j++) {
+      var related = $('#jqGridRel').jqGrid('getRowData', selectedIds[j]);
+      if(String(related._id) === id) $('#jqGridRel').jqGrid('delRowData', selectedIds[j]);
+    }
+  }
+
+  window.refreshRelatedProductGridUrls(ids);
+  ajax_products_setRelacionadoPendiente(window.album, id, selected ? 1 : 0);
+};
+
+window.refreshRelatedProductGridUrls = function(ids) {
+  var query = '&id=' + encodeURIComponent(window.relatedParentId) +
+    '&draftKey=' + encodeURIComponent(window.relatedDraftKey) +
+    '&draftIds=' + encodeURIComponent(ids.join(','));
+  $('#jqGrid').jqGrid('setGridParam', {url: window.relatedGridPath + '?callback=?&qwery=catalog_rel' + query});
+  $('#jqGridRel').jqGrid('setGridParam', {url: window.relatedGridPathRel + '?callback=?&qwery=catalog_rel_true' + query});
+};
+
+function relatedProductButton(cellvalue, options, row) {
+  window.relatedProductRows[String(row._id)] = row;
+  return '<a class="btn_adm_relacionar btn_adm_relacionar_product_mp_switch" data-id="'+row._id+'" href="#'+row.status+'"></a>';
+}
+function bindRelatedProductButtons() {
+  $.fn.buttonDelete('a.btn_adm_relacionar_product_mp_switch');
+  $('#related-products-section .btn_adm_relacionar').off('click').on('click', function(event) {
+    event.preventDefault();
+    var selected = $(this).attr('href').replace('#','') === 'activar';
+    window.stageRelatedProduct($(this).attr('data-id'), selected);
+  });
+}
+function showRelatedProductChild(rowId) {
+  if($(window).width() <= 767) $('#'+rowId).append('<p>'+$('#'+rowId+' td[aria-describedby$="_images"]').html()+'</p>');
+}
 </script>
 <script>
 function uploadMultiGaleria(e)
@@ -243,16 +357,23 @@ $(document).ready(function()
 });
 
 
-var sortGaleria = function() {    
-      $( "#cont_fotos" ).sortable({
-          connectWith: ".fondo_galeria",
-          update: function(event, ui){
-              var newOrder = $(this).sortable('toArray').toString();
-              setOrdenImagesProducts(window.album,newOrder);  
-          }  ,
-          placeholder: 'ui-state-default'
-      });
-      $( "#cont_fotos" ).disableSelection();
+var sortGaleria = function() {
+      var gallery = $("#cont_fotos");
+      if(!gallery.length) return;
+      if(gallery.hasClass('ui-sortable')) {
+          gallery.sortable('refresh');
+      } else {
+          gallery.sortable({
+              items: '> .img_foto_clientes',
+              connectWith: ".fondo_galeria",
+              update: function(){
+                  var newOrder = $(this).sortable('toArray').toString();
+                  setOrdenImagesProducts(window.album,newOrder);
+              },
+              placeholder: 'ui-state-default'
+          });
+      }
+      gallery.disableSelection();
     }
     
 </script>

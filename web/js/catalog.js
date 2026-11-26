@@ -35,4 +35,6 @@
         });
       }
   }
-  catalogCarrucelRelacionados();
+  $(window).on('load',function() {
+    catalogCarrucelRelacionados();
+  });

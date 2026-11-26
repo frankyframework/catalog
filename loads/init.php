@@ -65,7 +65,7 @@ if($CatalogUsersModel->getData($CatalogUsersEntity->getArrayCopy()) == REGISTRO_
     $urlBanity = $data['username']; 
 }
 
-$MyMetatag->setCss("/modulos/catalog/web/css/catalog.css");
-$MyMetatag->setJs("/modulos/catalog/web/js/catalog.js");
-$MyMetatag->setJs("/modulos/catalog/web/js/ajax.catalog.js");
+$MyMetatag->setCss("/static/".getCoreConfig('base/debug/cacheversion')."/catalog/web/css/catalog.css");
+$MyMetatag->setJs("/static/".getCoreConfig('base/debug/cacheversion')."/catalog/web/js/catalog.js");
+$MyMetatag->setJs("/static/".getCoreConfig('base/debug/cacheversion')."/catalog/web/js/ajax.catalog.js");
 ?>

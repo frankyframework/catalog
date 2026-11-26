@@ -1,8 +1,19 @@
 
-<div class="w-xxxx-12">
-    <div class="content">
-        <h1 class="align_center"></h1>
-        <h3 class="align_center"></h3>
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
+    <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin"><?= _($title_form) ?></h1>
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="_wrapp_form_serch">
+                <div class="form-group"><a class="_btn _secondary" href="<?= ($MyRequest->getRequest('callback') ? $Tokenizer->decode($MyRequest->getRequest('callback')) : $MyRequest->url(LISTA_CATALOG_VITRINA))?>" ><?= _('Atras') ?></a></div>
+                <div class="form-group"><a class="_btn _primary save-form-top" href="#"><?= _('Guardar') ?></a></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-xxxx-12">
+    <div class="content_form">
+        
         <?php echo $adminForm->openTag(); ?>
         <?php  echo $adminForm->get("callback"); ?>
 
@@ -70,21 +81,17 @@
                 <div id="jqGridPagerRel"></div>
             </div>
         </div>
-        <div>
-                    
-                    <div class="w-xxxx-12 cont_header_panel">
-
-                            <div class="_wrapp_form_serch">  
-                            <h4><?= _('Agregar productos a la vitrina') ?></h4>
-                            <a href="<?php echo $MyRequest->url($frm_constante_link); ?>" class="_btn_new"  id="btsSearchGridAdmin">Buscar</a>            
-                            </div>
-                        </div>
-                    <div  class="w-xxxx-12 cont_gral_admin">
-                    
-                        <table id="jqGrid"></table>
-                        <div id="jqGridPager"></div>
-                    </div>
-                </div>
+        <div>                                           
+            <div  class="w-xxxx-12 cont_gral_admin">
+            <div class="_wrapp_form_serch">  
+                <a href="<?php echo $MyRequest->url($frm_constante_link); ?>" class="_btn_new"  id="btsSearchGridAdmin">Buscar</a>            
+            </div>
+            <h4><?= _('Agregar productos a la vitrina') ?></h4>    
+                <table id="jqGrid"></table>
+             
+                <div id="jqGridPager"></div>
+            </div>
+        </div>
      
 
         <?php  echo $adminForm->getRow("random"); ?>
@@ -98,7 +105,7 @@
     </div>
 
   
-
+    </div>
 </div>
 
 
@@ -297,4 +304,8 @@ function relateProducts2() {
     });
 }
     
+$('.save-form-top').click(function(e){
+    e.preventDefault();
+    $('#frmvitrina').trigger('submit');
+});
 </script>

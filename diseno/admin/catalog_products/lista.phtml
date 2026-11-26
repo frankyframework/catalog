@@ -19,7 +19,6 @@
 </div>
 <script type="text/javascript">
 window.frm_constante_link = '<?=$MyRequest->link($frm_constante_link)?>';
-window.frm_rel_link = '<?=$MyRequest->link($link_related)?>';
 window.permisos_grid = '<?=$permisos_grid?>';
 </script>
 <script >
@@ -33,7 +32,7 @@ $(window).load(function(){
 
     $("#jqGrid").GridAdmin({
         search : true,
-        entity : 'blog',
+        entity : 'catalog',
         redirectOnSelectRow:true,
         gridPager : "#jqGridPager",
         btnSearch: "#btsSearchGridAdmin",
@@ -76,21 +75,17 @@ $(window).load(function(){
      
     var icon_delete = (rowObject.status  == "activar" ? 'icon-c-encender' : 'icon-r-eliminar');
     var boton1 =  "";
-    var boton2 =  "";
     var boton3 =  "";
     if (window.frm_constante_link.length > 0){
         boton1 = '<a href="'+window.frm_constante_link+'?id=' + id + '&callback='+rowObject.callback+'&store='+rowObject.store_id+'" class="btn_adm_editar"><span class="icon icon-editar"> </span></a> ';
     }
 
-    if (window.frm_rel_link.length > 0){
-        boton2= '<a href="'+window.frm_rel_link+'?id=' + id + '&_callback='+rowObject.callback+'&store='+rowObject.store_id+'" class=""><span class="icon icon-grupo"> </span></a> ';
-    }
     if(window.permisos_grid.length > 0) {
         var boton3 = '<a class="btn_adm_eliminar " data-id="'+id+'" href="#'+rowObject.status+'"><span class="icon '+icon_delete+'"> </span></a>';
 
     }
    
-    return boton1 + boton2 + boton3;
+    return boton1 + boton3;
 }
 
 function showChildGrid(parentRowID, parentRowKey) {

@@ -8,7 +8,14 @@ use Catalog\entity\CatalogproductrelatedEntity;
 $Tokenizer = new Tokenizer();
 $CatalogproductsModel = new CatalogproductsModel();
 $id		= $MyRequest->getRequest('id');
-$_callback	= $MyRequest->getRequest('_callback');
+$callback = $MyRequest->getRequest('callback');
+
+if(!$MyAccessList->MeDasChancePasar("administrar_products_catalog") &&
+   !(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))) {
+    header('Content-Type: application/json; charset=utf-8');
+    echo $callback . '(' . json_encode(["rows" => [], "total" => 0, "page" => 1, "records" => 0]) . ');';
+    die;
+}
 
 
 $producto_actual = [];
@@ -25,9 +32,6 @@ if(!empty($Tokenizer->decode($id)))
     }
 }
 
-if ($MyRequest->isAjax()) {
-
-    $callback	= $MyRequest->getRequest('callback');
     if(empty($producto_actual)) {
 
         $dataRows = ["rows" => [], "total" => 0, "page" => 1,"records" => 0];
@@ -47,6 +51,13 @@ if ($MyRequest->isAjax()) {
         {
             $relacionados[] = $registro['id_product'];
         }
+    }
+    $draftKey = $MyRequest->getRequest('draftKey');
+    $draftIdsRequest = $MyRequest->getRequest('draftIds', '__missing__');
+    if(!empty($draftKey) && $draftIdsRequest !== '__missing__') {
+        $relacionados = array_values(array_unique(array_filter(array_map('intval', explode(',', $draftIdsRequest)))));
+    } elseif(!empty($draftKey) && isset($_SESSION['related_products_'.$draftKey]) && is_array($_SESSION['related_products_'.$draftKey])) {
+        $relacionados = array_map('intval', $_SESSION['related_products_'.$draftKey]);
     }
    
     $filters = $MyRequest->getRequest('filters');
@@ -79,15 +90,6 @@ if ($MyRequest->isAjax()) {
    
     $CatalogproductsEntity = new CatalogproductsEntity($request);
     
-
-    $tiendas = getCatalogStores();
-
-    if(empty($store)) {
-        foreach($tiendas as $k => $v) {
-            $store =  $k;
-            break;
-        }
-    }
 
     $CatalogproductsModel->setExcludeId($Tokenizer->decode($id));
     $CatalogproductsModel->setPage($MyRequest->getRequest('page',1));
@@ -152,33 +154,3 @@ if ($MyRequest->isAjax()) {
     header('Content-Type: application/json; charset=utf-8');
     echo $callback . '(' . json_encode($dataRows). ');';
     die;
-} else {
-   
-    if(empty($producto_actual)) {
-        $MyRequest->redirect($Tokenizer->decode($_callback));
-    }
-
-    $MyMetatag->setJs("/public/plugins/jqGrid/js/jquery.jqGrid.js");
-    $MyMetatag->setJs("/public/plugins/jqGrid/js/i18n/grid.locale-$lang_root.js");
-    $MyMetatag->setCSS("/public/plugins/jqGrid/css/ui.jqgrid.css");
-
-    $permisos_grid = "";
-    $path = "";
-    if($MyAccessList->MeDasChancePasar("administrar_products_catalog"))
-    {
-        $permisos_grid = "administrar_products_catalog";
-        $path = ADMIN_CATALOG_PRODUCTS_RELATED;
-    }
-    if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_products_catalog_marketplace"))
-    {
-        $permisos_grid = "administrar_products_catalog_marketplace";
-        $path = ADMIN_CATALOG_PRODUCTS_RELATED_MARKETPLACE;
-    }
-  
-}
-?>
-
-
-
-
-

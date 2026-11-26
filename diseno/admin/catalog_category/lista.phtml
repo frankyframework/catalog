@@ -1,9 +1,19 @@
-<div class="w-xxxx-12 w-xxx-12 w-xx-12 w-x-12 _wrapp_form_serch">
-                <?php echo $MyFiltrosForm->openTag(); ?>
-                <?php echo $MyFiltrosForm->getAllRow(); ?>
-                <?php echo $MyFiltrosForm->endTag(); ?>
-              
+<div class="content">
+    <div class="w-xxxx-12 cont_global_admin">
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="_wrapp_form_serch">
+                <div class="form-group">
+                    <?php echo $MyFiltrosForm->openTag(); ?>
+                    <?php echo $MyFiltrosForm->getAllRow(); ?>
+                    <?php echo $MyFiltrosForm->endTag(); ?>
+                </div>
+                <div class="form-group"><button class="_btn _secondary remove_category">Eliminar</button></div>
+                <div class="form-group"><a class="_btn_new add_category" data-store="<?=$store_b?>" href="#">Nuevo</a></div>
+                
             </div>
+        </div>
+    </div>
+</div>
 <div class="w-xxxx-12 w-xxx-12 w-xx-12 w-x-12">
             
     <div class="w-xxxx-4 w-xxx-4 w-xx-4 w-x-4 ">
@@ -49,13 +59,7 @@
         </div>
     </div>
     <div class="w-xxxx-8 w-xxx-8 w-xx-8 w-x-8" >
-        <div id="actions">
-            <button class="add_category">Nuevo</button>
-            <button class="remove_category">Eliminar</button>
-        </div>
         <div id="content_form"></div>
-
-    
     </div>
 </div>
 
@@ -65,7 +69,7 @@
         window.cat_selected = data.instance.get_node(data.selected[0]).id.replace('cat_','');
         if(window.cat_selected != 0)
         {
-            ajax_getFrmCategpry(window.cat_selected,'','<?=$store_b?>');
+            ajax_getFrmCategpry(window.cat_selected,'', $('.add_category').attr('data-store'));
             $('.add_category').show();
             $('.remove_category').show();
         }
@@ -81,8 +85,9 @@
         
   }).jstree();
 
-    $('.add_category').click(function(){
-        ajax_getFrmCategpry('',window.cat_selected,'<?=$store_b?>');
+    $('.add_category').click(function(e){
+        e.preventDefault();
+        ajax_getFrmCategpry('',window.cat_selected,$(this).attr('data-store'));
     });
 
     $('.remove_category').click(function(){

@@ -52,47 +52,21 @@ function eliminarFotoCatalogProductHTML(response)
 }
 
 
-function ajax_products_agregarProductoRelacionado(id_parent,id)
+function ajax_products_setRelacionadoPendiente(draftKey,id,selected)
 {
     var var_query = {
-          "function": "ajax_products_agregarProductoRelacionado",
-          "vars_ajax":[id_parent,id]
+          "function": "ajax_products_setRelacionadoPendiente",
+          "vars_ajax":[draftKey,id,selected]
         };
-    
-    pasarelaAjax('GET', var_query, "ajax_products_agregarProductoRelacionadoHTML", var_query.vars_ajax);
+    pasarelaAjax('GET', var_query, "ajax_products_setRelacionadoPendienteHTML", var_query.vars_ajax);
 }
 
-function ajax_products_agregarProductoRelacionadoHTML(response,id_parent)
+function ajax_products_setRelacionadoPendienteHTML(response)
 {
-    var respuesta = null;
-
-    if(response != "null")
-    {
-        respuesta = JSON.parse(response);
-
-        if(respuesta["error"])
-        {
-
-            if(respuesta["message"]){
-                 _alert(respuesta["message"],"Error")
-            }
-        }
-
+    if($("#related-products-section").length) {
+        $("#jqGrid").trigger("reloadGrid", [{current:true}]);
+        $("#jqGridRel").trigger("reloadGrid", [{current:true}]);
     }
-    $("#jqGrid").trigger("reloadGrid", [{ current: true }]);
-    $("#jqGridRel").trigger("reloadGrid", [{ current: true }]);
-}
-
-
-
-function ajax_products_quitarProductoRelacionado(id_parent,id)
-{
-    var var_query = {
-          "function": "ajax_products_quitarProductoRelacionado",
-          "vars_ajax":[id_parent,id]
-        };
-    
-    pasarelaAjax('GET', var_query, "ajax_products_agregarProductoRelacionadoHTML",var_query.vars_ajax );
 }
 
 

@@ -1,4 +1,4 @@
-@import "../base/web/less/variables"; // variables.less
+@import "modulos/base/web/base/less/variables"; // variables.less
 .cont_search_bar_ecommerce {
     position: relative;
     ._search_bar_pipe {
@@ -579,4 +579,20 @@ main {
         }
     }
 
+}
+#cont_fotos.fondo_galeria {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+#cont_fotos.fondo_galeria > .img_foto_clientes {
+    float: none;
+    width: auto;
+    box-sizing: border-box;
+}
+
+#cont_fotos.fondo_galeria .img_foto_clientes img {
+    max-width: 100%;
+    height: auto;
 }

@@ -462,7 +462,7 @@ function getCatalogVitrina($clave)
                     $registro['thumb_resize'] =  "";
                     $img = "";
                     $_img = getCoreConfig('catalog/product/placeholder');
-                    if($_img != "" && file_exists(PROJECT_DIR.$_img))
+                    if($_img != "" && file_exists(PROJECT_DIR."/public/".$_img))
                     {
                     $registro['thumb_resize'] = imageResize($_img,500,500, false);
                     }

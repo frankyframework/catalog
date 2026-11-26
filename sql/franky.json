@@ -169,20 +169,6 @@
             "modulo":"catalog"
         },
         {
-            "php":"admin/catalog_products/relacionados.php",
-            "css":"",
-            "js":[],
-            "jquery":[],
-            "resource":"administrar_products_catalog",
-            "constante":"ADMIN_CATALOG_PRODUCTS_RELATED",
-            "url":"admin/catalog-products/relacionados/",
-            "nombre":"Productos relacionados",
-            "ajax":["base/ajax.admin.js","catalog/ajax.admin.js"],
-            "status":1,
-            "editable":1,
-            "modulo":"catalog"
-        },
-        {
             "php":"admin/catalog_vitrinas/lista.php",
             "css":"",
             "js":[],
@@ -388,20 +374,6 @@
             "url":"mi-cuenta/catalog-products/calificaciones/",
             "nombre":"Administrar calificaciones y comentarios",
             "ajax":["base/ajax.admin.js"],
-            "status":1,
-            "editable":1,
-            "modulo":"catalog"
-        },
-        {
-            "php":"mi-cuenta/catalog_products/relacionados.php",
-            "css":"",
-            "js":[],
-            "jquery":[],
-            "resource":"administrar_products_catalog_marketplace",
-            "constante":"ADMIN_CATALOG_PRODUCTS_RELATED_MARKETPLACE",
-            "url":"mi-cuenta/catalog-products/relacionados/",
-            "nombre":"Productos relacionados",
-            "ajax":["base/ajax.admin.js","catalog/ajax.admin.js"],
             "status":1,
             "editable":1,
             "modulo":"catalog"
