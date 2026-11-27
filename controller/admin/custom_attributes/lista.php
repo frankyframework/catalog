@@ -2,84 +2,77 @@
 use Developer\Form\filtrosForm;
 use Catalog\model\CustomattributesModel;
 use Catalog\entity\CustomattributesEntity;
-use Franky\Core\paginacion;
 use Franky\Haxor\Tokenizer;
 
-$MyPaginacion = new paginacion();
-$Tokenizer = new Tokenizer();
+if ($MyRequest->isAjax()) {
+        $callback	= $MyRequest->getRequest('callback');
+        $filters = $MyRequest->getRequest('filters');
+        $dataPost = json_decode(stripslashes($filters),true);
+        if(isset($dataPost['rules'])) {
+                $dataPost = $dataPost['rules'];
+        }
+        $requestFranky = [];
+        $request = [];
+        if(!empty($dataPost)) {
+                foreach($dataPost as $data) {
+                $request[$data['field']] = $MyRequest->Sanitizacion($data['data']);
+                }
+        }	
+        $sortInput  = (!empty($MyRequest->getRequest('sidx',"catalog_products.id")) ? : "createdAt");
 
+        $CustomattributesModel = new CustomattributesModel();
+        $CustomattributesEntity = new CustomattributesEntity($request);
+        $Tokenizer = new Tokenizer();
+        $CustomattributesEntity->entity('catalog_products');  
+        if(getCoreConfig('catalog/marketplace/enabled') == 1 && 
+        $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+        {
+                $CustomattributesEntity->uid($MySession->getVar('id'));
+        }
+        $CustomattributesModel->setPage($MyRequest->getRequest('page',1));
+        $CustomattributesModel->setTampag($MyRequest->getRequest('rows',12));
+        $CustomattributesModel->setOrdensql($sortInput." ".$MyRequest->getRequest('sord',"ASC"));
 
-$MyPaginacion->setPage($MyRequest->getRequest('page',1));
-$MyPaginacion->setCampoOrden($MyRequest->getRequest('por',"createdAt"));
-$MyPaginacion->setOrden($MyRequest->getRequest('order',"ASC"));
-$MyPaginacion->setTampageDefault($MyRequest->getRequest('tampag',25));		
-$busca_b	= $MyRequest->getRequest('busca_b');	
-$entity_b	= $MyRequest->getRequest('entity_b');	
+       
+        $result	 = $CustomattributesModel->getData($CustomattributesEntity->getArrayCopy());
+        $dataRows = ["rows" => [], "total" => ceil($CustomattributesModel->getTotal() / $MyRequest->getRequest('rows',12)), "page" => (int)$MyRequest->getRequest('page',1),"records" => $CustomattributesModel->getTotal()];
 
+        if($CustomattributesModel->getTotal() > 0)
+        {
+	
 
-$CustomattributesModel = new CustomattributesModel();
-$CustomattributesEntity = new CustomattributesEntity();
+                while($registro = $CustomattributesModel->getRows())
+                {
+                                $registro = array_filter($registro, function($llave) {
+                                return !is_numeric($llave);
+                                }, ARRAY_FILTER_USE_KEY);
+                        
+                                $dataRows['rows'][]  = array_merge($registro,array(
+                                "id" => $Tokenizer->token("custom_attributes", $registro["id"]),
+                                "callback" => $Tokenizer->token("custom_attributes", $MyRequest->getURI()),    
+                                "createdAt" 	=> getFechaUI($registro["createdAt"]),
+                            "   status"  => ($registro["status"] == 1 ?"desactivar" : "activar"),
+                                ));
+                        $iRow++;
+                }
+        }
+        header('Content-Type: application/json; charset=utf-8');
+        echo $callback . '(' . json_encode($dataRows). ');';
+        die;
+} else {
 
-$CustomattributesEntity->entity('catalog_products');  
-if(getCoreConfig('catalog/marketplace/enabled') == 1 && 
-$MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
-{
-        $CustomattributesEntity->uid($MySession->getVar('id'));
-}
-$CustomattributesModel->setPage($MyPaginacion->getPage());
-$CustomattributesModel->setTampag($MyPaginacion->getTampageDefault());
-$CustomattributesModel->setOrdensql($MyPaginacion->getCampoOrden()." ".$MyPaginacion->getOrden());
+        $MyMetatag->setJs("/plugins/jqGrid/js/jquery.jqGrid.js");
+        $MyMetatag->setJs("/plugins/jqGrid/js/i18n/grid.locale-$lang_root.js");
+        $MyMetatag->setCSS("/plugins/jqGrid/css/ui.jqgrid.css");
 
-$CustomattributesModel->setBusca($busca_b);
-$result	 = $CustomattributesModel->getData($CustomattributesEntity->getArrayCopy());
-$MyPaginacion->setTotal($CustomattributesModel->getTotal());
+        $frm_constante_link = FRM_CATALOG_CUSTOM_ATTRIBUTES;
+        $permisos_grid = "administrar_catalogo_custom_attributes";
 
-$lista_admin_data = array();
-if($CustomattributesModel->getTotal() > 0)
-{
-	$iRow = 0;	
-
-	while($registro = $CustomattributesModel->getRows())
-	{
-		$thisClass  = ((($iRow % 2) == 0) ? "formFieldDk" : "formFieldLt");
-        
-		$lista_admin_data[] = array_merge($registro,array(
-                "id" => $Tokenizer->token("custom_attributes", $registro["id"]),
-                "callback" => $Tokenizer->token("custom_attributes", $MyRequest->getURI()),    
-                "createdAt" 	=> getFechaUI($registro["createdAt"]),
-                "thisClass"     => $thisClass,
-                "nuevo_estado"  => ($registro["status"] == 1 ?"desactivar" : "activar"),
-                ));
-                $iRow++;
+        if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
+        {
+                $frm_constante_link = FRM_CATALOG_CUSTOM_ATTRIBUTES_MARKETPLACE;
+                $permisos_grid = "administrar_catalogo_custom_attributes_marketplace";
         }
 }
 
-
-
-$MyFrankyMonster->setPHPFile(getVista("admin/template/grid.phtml"));
-$title_grid = _catalog("Atributos presonalizados");
-$class_grid = "cont_custom_attributes";
-$error_grid = _catalog("No hay atributos registrados");
-$deleteFunction = "EliminarCatalogCustomAttribute";
-$frm_constante_link = FRM_CATALOG_CUSTOM_ATTRIBUTES;
-$permisos_grid = "administrar_catalogo_custom_attributes";
-if(getCoreConfig('catalog/marketplace/enabled') == 1 && $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace"))
-{
-        $frm_constante_link = FRM_CATALOG_CUSTOM_ATTRIBUTES_MARKETPLACE;
-        $permisos_grid = "administrar_catalogo_custom_attributes_marketplace";
-}
-
-$titulo_columnas_grid = array("createdAt" => _catalog("Fecha"),"name" => _catalog("Nombre"),"entity" => _catalog("Entidad"));
-$value_columnas_grid = array("createdAt", "name","entity" );
-
-$css_columnas_grid = array("createdAt" => "w-xxxx-4" ,"name" => "w-xxxx-3" ,"entity" => "w-xxxx-3" );
-
-
-$MyFiltrosForm = new filtrosForm('paginar');
-$MyFiltrosForm->setMobile($Mobile_detect->isMobile());
-$MyFiltrosForm->addBusca();
-$MyFiltrosForm->addSubmit();
-
-
-$MyFiltrosForm->setAtributoInput("busca_b", "value",$busca_b);
 ?>

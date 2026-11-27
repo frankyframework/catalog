@@ -19,9 +19,30 @@ class CustomattributesModel  extends \Franky\Database\Mysql\objectOperations
         $data = $this->optimizeEntity($data);
         $campos = ["id","uid","store","icon","searchable","name","label","type","data","source","entity","createdAt","updateAt","status","required","extra", "position", "visible"];
 
+
         foreach($data as $k => $v)
         {
-            $this->where()->addAnd("catalog_custom_attributes.".$k,$v,'=');
+            if(!empty($v) || is_numeric($v))
+            {
+                if(is_array($v))
+                {
+                    $this->where()->concat('AND (');
+                    foreach ($v as $_v)
+                    {
+                        $this->where()->addOr("catalog_custom_attributes.".$k,$_v,'=');
+
+                    }
+                    $this->where()->concat(')');
+                }
+                else
+                {
+                    if(in_array($k,['id','status','createdAt'])) {
+                        $this->where()->addAnd("catalog_custom_attributes.".$k,$v,'=');
+                    } else {
+                        $this->where()->addAnd("catalog_custom_attributes.".$k,"%".$v."%",'like');
+                    }
+                } 
+            }
         }
 
         if($this->busca != "")

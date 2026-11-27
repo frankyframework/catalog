@@ -1,13 +1,18 @@
+
 <div class="content">
     <div class="w-xxxx-12"><?php echo breadcrumbs(); ?></div>
-    <div class="w-xxxx-12">
-        <div class="w-xxxx-5 m-r-xxxx-1 change_float_right">
-            <h2><?=$title_form?></h2>
-            <ul class="_ul_default">
-                <li>Aqui descripcion</li>
-            </ul>
+    <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin"><?= _($title_form) ?></h1>
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="_wrapp_form_serch">
+                <div class="form-group"><a class="_btn _secondary" href="<?= ($MyRequest->getRequest('callback') ? $Tokenizer->decode($MyRequest->getRequest('callback')) : $backlink)?>" ><?= _('Atras') ?></a></div>
+                <div class="form-group"><a class="_btn _primary save-form-top" href="#"><?= _('Guardar') ?></a></div>
+            </div>
         </div>
-         <div class="w-xxxx-4 m-l-xxxx-1 change_float_left">
+    </div>
+
+    <div class="w-xxxx-12">
+    <div class="content_form">
         <?php echo $adminForm->openTag(); ?>
         <?php echo $adminForm->get('callback'); ?>
         <?php echo $adminForm->get('type_option'); ?>

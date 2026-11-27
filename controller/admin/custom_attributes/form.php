@@ -60,10 +60,13 @@ $adminForm->setData($data);
 $categorias = getCatalogCategorys('sql',['status' => 1]);
 $adminForm->setAtributoInput("callback","value", urldecode($callback));
 $adminForm->setAtributoInput("type_option","value", $type_option);
+
+$backlink = ADMIN_CATALOG_CUSTOM_ATTRIBUTES;
 if(getCoreConfig('catalog/marketplace/enabled') == 1 && 
     $MyAccessList->MeDasChancePasar("administrar_catalogo_custom_attributes_marketplace") &&
     getCoreConfig('catalog/marketplace/set-global') == 0 )
     {
     $adminForm->deleteInput('searchable');
+    $backlink = ADMIN_CATALOG_CUSTOM_ATTRIBUTES_MARKETPLACE;
 }
 $title_form = "Atributos personalizados";

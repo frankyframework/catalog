@@ -1,0 +1,110 @@
+<div class="content">
+    <div class="w-xxxx-12"><?php echo breadcrumbs(); ?> </div>
+        <div class="w-xxxx-12 cont_global_admin">
+        <h1 class="titulo_seccion_admin"><?= _('Atributos presonalizados') ?></h1>
+        <div class="w-xxxx-12 cont_header_panel">
+            <div class="_wrapp_form_serch">
+                <form name="buscarGrid" action="" method="get" id="paginar">                
+                    <div class="form-group form_buscar"><input type="submit" name="buscar" class="_btn _primary" id="btsSearchGridAdmin" value="Buscar"></div>
+                </form>
+                <a href="<?php echo $MyRequest->url($frm_constante_link); ?>" class="_btn_new">Nuevo</a>
+      
+            </div>
+        </div>
+
+        <div  class="w-xxxx-12 cont_gral_admin vitrinas">
+        <table id="jqGrid"></table>
+        <div id="jqGridPager"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+window.frm_constante_link = '<?=$MyRequest->link($frm_constante_link)?>';
+window.permisos_grid = '<?=$permisos_grid?>';
+</script>
+<script >
+$(window).load(function(){
+    var isGridMobile = ($(window).width() <= 767 ? true : false);
+
+    var  storesData = <?= json_encode(getCatalogStores())?>;
+    storesData = Object.entries(storesData)
+    .map(([id, nombre]) => `${id}:${nombre}`)
+    .join(';');
+
+    $("#jqGrid").GridAdmin({
+        search : true,
+        entity : 'custom_attributes',
+        redirectOnSelectRow:true,
+        gridPager : "#jqGridPager",
+        btnSearch: "#btsSearchGridAdmin",
+        redirectPath : window.frm_constante_link,
+        pathData : window.location.pathname,
+        error : "<?=_('No hay atrinutos registrados')?>",
+        deleteFunction : "EliminarCatalogCustomAttribute",
+        colModel: [
+            { label: '<?=_('ID BACK')?>', name: 'id', key:true, hidden:true, width: 50 },
+            { label: '<?=_('Callback')?>', name: 'callback',  hidden:true, width: 50 },
+            { label: '<?=_('Status')?>', name: 'status',  hidden:true, width: 50 },
+            { label: '<?=_('Nombre')?>', name: 'name',  width: 250, },
+            { label: '<?=_('Entidad')?>', name: 'entity',  width: 250, search:false},
+            { label: '<?=_('Fecha')?>', name: 'createdAt', width: 250, hidden:isGridMobile, 
+                
+                searchoptions: {
+                    dataInit: function (element) {
+                        $(element).datepicker({
+                            id: 'orderDate_datePicker',
+                            dateFormat:"yy-mm-dd",
+                            maxDate: "+0D",
+                            showOn: 'focus'
+                        });
+                    },
+                    sopt: ["ge","le","eq"]
+                } 
+            },
+            { 
+            name: 'acciones', 
+            index: 'acciones', 
+            width: 200, 
+            align: 'center', 
+            sortable: false, 
+            search: false,
+            formatter: creadorDeBotones // Vincula la función que creamos en el paso 2
+            }
+        ],
+        subGrid: isGridMobile,
+        subGridRowExpanded: showChildGrid,
+        width:970
+    });
+ });
+
+ function creadorDeBotones(cellvalue, options, rowObject) {
+    
+    var id = options.rowId; // Obtiene el ID único de la fila actual
+     
+    var icon_delete = (rowObject.status  == "activar" ? 'icon-c-encender' : 'icon-r-eliminar');
+    var boton1 =  "";
+    var boton2 =  "";
+    if (window.frm_constante_link.length > 0){
+        boton1 = '<a href="'+window.frm_constante_link+'?id=' + id + '&callback='+rowObject.callback+'&store='+rowObject.store_id+'" class="btn_adm_editar"><span class="icon icon-editar"> </span></a> ';
+    }
+
+    if(window.permisos_grid.length > 0) {
+        var boton2 = '<a class="btn_adm_eliminar " data-id="'+id+'" href="#'+rowObject.status+'"><span class="icon '+icon_delete+'"> </span></a>';
+    }
+    return boton1 + boton2;
+}
+
+function showChildGrid(parentRowID, parentRowKey) {
+    var childGridID = parentRowID + "_table";
+    var childGridPagerID = parentRowID + "_pager";
+    
+    if($(window).width() <= 767) {
+      
+        var createdAt  = $(this).find('#' + parentRowKey + ' td[aria-describedby$="_createdAt"]').text();
+      
+        $('#' + parentRowID).append('<p>ID: '+createdAt+'</p>');
+       
+    }
+}
+
+</script>
