@@ -69,6 +69,12 @@ return array(
                             'data' => ['0' => 'No', '1' => 'Si'],
                             'value' => 1
                           ),
+                    array('path' => 'catalog/calificaciones/comentarios-por-pagina',
+                            'type' => 'text',
+                            'label' => 'Opiniones por carga (scroll infinito)',
+                            'validation' => array('numeric' => true),
+                            'value' => '10'
+                          ),
                    
               
           )
