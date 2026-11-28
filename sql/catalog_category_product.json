@@ -1,27 +1,26 @@
 {
-    "schema" :
-    {
-        "attributes":[
+    "schema": {
+        "attributes": [
             {
-                "name":"id_category",
-                "type":"int",
-                "length":11,
-                "null":0
+                "name": "id_category",
+                "type": "int",
+                "length": 11,
+                "null": 0
             },
             {
-                "name":"id_product",
-                "type":"int",
-                "length":11,
-                "null":0
+                "name": "id_product",
+                "type": "int",
+                "length": 11,
+                "null": 0
             }
-
         ],
-        "config":{
-            "primary":["id_category","id_product"],
-            "engine":"MyISAM"
-            
+        "config": {
+            "primary": [
+                "id_category",
+                "id_product"
+            ],
+            "engine": "MyISAM"
         }
-    }
-    ,
-    "data":[]
+    },
+    "data": []
 }

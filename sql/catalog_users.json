@@ -1,177 +1,174 @@
 {
-    "schema" :
-    {
-        "attributes":[
+    "schema": {
+        "attributes": [
             {
-                "name":"id",
-                "type":"int",
-                "length":11,
-                "null":0,
-                "auto_increment":1
+                "name": "id",
+                "type": "int",
+                "length": 11,
+                "null": 0,
+                "auto_increment": 1
             },
             {
-                "name":"username",
-                "type":"varchar",
-                "length":255,
-                "null":0
+                "name": "username",
+                "type": "varchar",
+                "length": 255,
+                "null": 0
             },
             {
-                "name":"id_user",
-                "type":"int",
-                "length":11,
-                "null":0
+                "name": "id_user",
+                "type": "int",
+                "length": 11,
+                "null": 0
             },
             {
-                "name":"tipo_persona",
-                "type":"int",
-                "length":11,
-                "null":1
+                "name": "tipo_persona",
+                "type": "int",
+                "length": 11,
+                "null": 1
             },
             {
-                "name":"empresa",
-                "type":"varchar",
-                "length":255,
-                "null":1
+                "name": "empresa",
+                "type": "varchar",
+                "length": 255,
+                "null": 1
             },
             {
-                "name":"rfc",
-                "type":"varchar",
-                "length":13,
-                "null":1
+                "name": "rfc",
+                "type": "varchar",
+                "length": 13,
+                "null": 1
             },
             {
-                "name":"sector",
-                "type":"varchar",
-                "length":255,
-                "null":1
+                "name": "sector",
+                "type": "varchar",
+                "length": 255,
+                "null": 1
             },
             {
-                "name":"direccion",
-                "type":"text",
-                "null":1
+                "name": "direccion",
+                "type": "text",
+                "null": 1
             },
             {
-                "name":"latitud",
-                "type":"varchar",
-                "length":50,
-                "null":1
+                "name": "latitud",
+                "type": "varchar",
+                "length": 50,
+                "null": 1
             },
             {
-                "name":"longitud",
-                "type":"varchar",
-                "length":50,
-                "null":1
+                "name": "longitud",
+                "type": "varchar",
+                "length": 50,
+                "null": 1
             },
             {
-                "name":"logo",
-                "type":"varchar",
-                "length":255,
-                "null":1
+                "name": "logo",
+                "type": "varchar",
+                "length": 255,
+                "null": 1
             },
             {
-                "name":"image",
-                "type":"varchar",
-                "length":255,
-                "null":1
+                "name": "image",
+                "type": "varchar",
+                "length": 255,
+                "null": 1
             },
             {
-                "name":"descripcion",
-                "type":"text",
-                "null":1
+                "name": "descripcion",
+                "type": "text",
+                "null": 1
             },
             {
-                "name":"horario",
-                "type":"text",
-                "null":1
+                "name": "horario",
+                "type": "text",
+                "null": 1
             },
             {
-                "name":"web",
-                "type":"varchar",
-                "length":255,
-                "null":1
+                "name": "web",
+                "type": "varchar",
+                "length": 255,
+                "null": 1
             },
             {
-                "name":"email",
-                "type":"varchar",
-                "length":255,
-                "null":1
+                "name": "email",
+                "type": "varchar",
+                "length": 255,
+                "null": 1
             },
             {
-                "name":"tel",
-                "type":"varchar",
-                "length":10,
-                "null":1
+                "name": "tel",
+                "type": "varchar",
+                "length": 10,
+                "null": 1
             },
             {
-                "name":"wa",
-                "type":"varchar",
-                "length":10,
-                "null":1
+                "name": "wa",
+                "type": "varchar",
+                "length": 10,
+                "null": 1
             },
             {
-                "name":"fb",
-                "type":"varchar",
-                "length":255,
-                "null":1
+                "name": "fb",
+                "type": "varchar",
+                "length": 255,
+                "null": 1
             },
             {
-                "name":"ins",
-                "type":"varchar",
-                "length":255,
-                "null":1
+                "name": "ins",
+                "type": "varchar",
+                "length": 255,
+                "null": 1
             },
             {
-                "name":"x",
-                "type":"varchar",
-                "length":255,
-                "null":1
+                "name": "x",
+                "type": "varchar",
+                "length": 255,
+                "null": 1
             },
             {
-                "name":"ttk",
-                "type":"varchar",
-                "length":255,
-                "null":1
+                "name": "ttk",
+                "type": "varchar",
+                "length": 255,
+                "null": 1
             },
             {
-                "name":"meta_title",
-                "type":"varchar",
-                "length":255,
-                "null":0
+                "name": "meta_title",
+                "type": "varchar",
+                "length": 255,
+                "null": 0
             },
             {
-                "name":"meta_description",
-                "type":"varchar",
-                "length":255,
-                "null":0
+                "name": "meta_description",
+                "type": "varchar",
+                "length": 255,
+                "null": 0
             },
             {
-                "name":"meta_keywords",
-                "type":"text",
-                "null":1
+                "name": "meta_keywords",
+                "type": "text",
+                "null": 1
             },
             {
-                "name":"verificado",
-                "type":"int",
-                "null":0,
-                "default" : 0
-
+                "name": "verificado",
+                "type": "int",
+                "null": 0,
+                "default": 0
             },
             {
-                "name":"createdAt",
-                "type":"datetime",
-                "null":0
+                "name": "createdAt",
+                "type": "datetime",
+                "null": 0
             },
             {
-                "name":"updateAt",
-                "type":"datetime",
-                "null":1
+                "name": "updateAt",
+                "type": "datetime",
+                "null": 1
             }
         ],
-        "config":{
-            "primary":"id",
-            "engine":"MyISAM"
+        "config": {
+            "primary": "id",
+            "engine": "MyISAM"
         }
-    }
-    ,
-    "data":[]
+    },
+    "data": []
 }

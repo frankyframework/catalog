@@ -1,50 +1,36 @@
 {
-    "schema" :
-    {
-        "attributes":[
+    "schema": {
+        "attributes": [
             {
-                "name":"id",
-                "type":"int",
-                "length":11,
-                "null":0,
-                "auto_increment":1
+                "name": "id",
+                "type": "int",
+                "length": 11,
+                "null": 0,
+                "auto_increment": 1
             },
             {
-                "name":"nombre",
-                "type":"varchar",
-                "length":20,
-                "null":1
+                "name": "nombre",
+                "type": "varchar",
+                "length": 20,
+                "null": 1
             },
             {
-                "name":"simbolo",
-                "type":"varchar",
-                "length":20,
-                "null":1
+                "name": "simbolo",
+                "type": "varchar",
+                "length": 20,
+                "null": 1
             },
             {
-                "name":"abreviatura",
-                "type":"varchar",
-                "length":20,
-                "null":0
+                "name": "abreviatura",
+                "type": "varchar",
+                "length": 20,
+                "null": 0
             }
-
         ],
-        "config":{
-            "primary":"id",
-            "engine":"MyISAM"
+        "config": {
+            "primary": "id",
+            "engine": "MyISAM"
         }
-    }
-    ,
-    "data":[
-        {
-            "nombre":"Pesos Mexicanos",
-            "simbolo":"$",
-            "abreviatura":"MXN"
-        },
-        {
-            "nombre":"Dolares",
-            "simbolo":"$",
-            "abreviatura":"USD"
-        }
-    ]
+    },
+    "data": []
 }

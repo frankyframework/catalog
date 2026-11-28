@@ -1,75 +1,70 @@
 {
-    "schema" :
-    {
-        "attributes":[
+    "schema": {
+        "attributes": [
             {
-                "name":"id",
-                "type":"int",
-                "length":11,
-                "null":0,
-                "auto_increment":1
+                "name": "id",
+                "type": "int",
+                "length": 11,
+                "null": 0,
+                "auto_increment": 1
             },
             {
-                "name":"idioma",
-                "type":"varchar",
-                "length":11,
-                "null":0
+                "name": "idioma",
+                "type": "varchar",
+                "length": 11,
+                "null": 0
             },
             {
-                "name":"url",
-                "type":"varchar",
-                "length":255,
-                "null":0
+                "name": "url",
+                "type": "varchar",
+                "length": 255,
+                "null": 0
             },
             {
-                "name":"nombre",
-                "type":"varchar",
-                "length":11,
-                "null":0
+                "name": "nombre",
+                "type": "varchar",
+                "length": 11,
+                "null": 0
             },
             {
-                "name":"moneda",
-                "type":"int",
-                "length":11,
-                "null":0
+                "name": "moneda",
+                "type": "int",
+                "length": 11,
+                "null": 0
             },
             {
-                "name":"iva",
-                "type":"int",
-                "length":11,
-                "null":0
+                "name": "iva",
+                "type": "int",
+                "length": 11,
+                "null": 0
             },
             {
-                "name":"marketplace",
-                "type":"int",
-                "length":1,
-                "null":1
+                "name": "marketplace",
+                "type": "int",
+                "length": 1,
+                "null": 1
             },
             {
-                "name":"status",
-                "type":"int",
-                "length":1,
-                "null":0
-            },
-            
-            {
-                "name":"createdAt",
-                "type":"datetime",
-                "null":0
-                
+                "name": "status",
+                "type": "int",
+                "length": 1,
+                "null": 0
             },
             {
-                "name":"updateAt",
-                "type":"datetime",
-                "null":1
+                "name": "createdAt",
+                "type": "datetime",
+                "null": 0
+            },
+            {
+                "name": "updateAt",
+                "type": "datetime",
+                "null": 1
             }
-
         ],
-        "config":{
-            "primary":"id",
-            "engine":"MyISAM"
+        "config": {
+            "primary": "id",
+            "engine": "MyISAM"
         }
-    }
-    ,
-    "data":[]
+    },
+    "data": []
 }
